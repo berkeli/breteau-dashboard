@@ -1,19 +1,18 @@
-import http from "http";
-
-import app from "./app";
-import { connectDb, disconnectDb } from "./db";
+import createServer from "./utils/createServer";
+import { disconnectDb } from "./db";
+import logger from "./utils/logger";
 
 const port = parseInt(process.env.PORT || "3000");
 
-const server = http.createServer(app);
+const server = createServer();
 
 server.on("listening", () => {
 	const addr = server.address();
 	const bind = typeof addr === "string" ? `pipe ${addr}` : `port ${addr.port}`;
 	// eslint-disable-next-line no-console
-	console.log(`Listening on ${bind}`);
+	logger.info(`Listening on ${bind}`);
 });
 
-process.on("SIGTERM", () => server.close(() => disconnectDb()));
+process.on("SIGTERM", () => disconnectDb());
 
-connectDb().then(() => server.listen(port));
+server.listen(port);

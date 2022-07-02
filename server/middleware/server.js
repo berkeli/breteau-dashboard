@@ -1,5 +1,6 @@
 import helmet from "helmet";
 import path from "path";
+import logger from "../utils/logger";
 
 export const configuredHelmet = () =>
 	helmet({
@@ -25,7 +26,7 @@ export const logErrors = () => (err, _, res, next) => {
 	if (res.headersSent) {
 		return next(err);
 	}
-	console.error(err);
+	logger.error(err);
 	res.sendStatus(500);
 };
 
