@@ -20,7 +20,7 @@
 		"lint:fix": "npm run lint:eslint -- --fix && npm run lint:prettier -- --write",
 		"lint:prettier": "prettier .",
 		"generate:prisma": "prisma generate --schema=./server/db/prisma/schema.prisma",
-		"migrate": "prisma migrate dev --name --schema=./server/db/prisma/schema.prisma init"
+		"migrate": "prisma migrate deploy --schema=./server/db/prisma/schema.prisma init"
 	},
 	"repository": {
 		"type": "git",
