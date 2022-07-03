@@ -1,6 +1,5 @@
 import express from "express";
 import morgan from "morgan";
-import path from "path";
 
 import router from "../routes/api";
 import {
@@ -11,9 +10,8 @@ import {
 } from "../middleware";
 
 const apiRoot = "/api";
-const staticDir = path.join(__dirname, "static");
 
-export default () => {
+export default (staticDir) => {
 	const app = express();
 	app.use(express.json());
 	app.use(configuredHelmet());
