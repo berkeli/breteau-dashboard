@@ -24,8 +24,11 @@ jobs:
           justlogin: true
       - name: Create Heroku app
         if: github.event.action == 'opened'
-        - run: heroku apps:create ${{ env.HEROKU_APP_NAME }}
-        - run: heroku addons:attach heroku-postgresql -a=${{ env.HEROKU_APP_NAME }}
+        run: heroku apps:create ${{ env.HEROKU_APP_NAME }}
+
+      - name: Attach PSQL addon to the app
+        if: github.event.action == 'opened'
+        run: heroku addons:attach heroku-postgresql -a=${{ env.HEROKU_APP_NAME }}
       
       - name: Add Heroku remote
         run: heroku git:remote --app=${{ env.HEROKU_APP_NAME }}
