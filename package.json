@@ -21,7 +21,7 @@
 		"lint:prettier": "prettier .",
 		"generate:prisma": "prisma generate --schema=./server/db/prisma/schema.prisma",
 		"generate:migrations": "prisma migrate dev --schema=./server/db/prisma/schema.prisma --name init",
-		"migrate": "prisma migrate deploy"
+		"migrate": "prisma migrate deploy --schema=./server/db/prisma/schema.prisma"
 	},
 	"repository": {
 		"type": "git",
