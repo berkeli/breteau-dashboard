@@ -1,4 +1,4 @@
-name: Create QA environment when a pull request is created against master and
+name: Create QA environment when a pull request is created against master and remove QA when PR closed
 on: 
   pull_request:
     types: [opened, synchronize, reopened, closed]
@@ -19,7 +19,7 @@ jobs:
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_email: user@example.com
+          heroku_email: berkelih@gmail.com
           heroku_app_name: ${{ env.HEROKU_APP_NAME }}
           justlogin: true
       - name: Create Heroku app
