@@ -7,6 +7,7 @@ import Loading from "./components/Loading";
 import LoginPage from "./pages/LoginPage";
 import About from "./pages/About";
 import Home from "./pages/Home";
+import Users from "./pages/users/Users";
 
 const App = () => {
 	const { isLoading, error, isAuthenticated } = useAuth0();
@@ -26,6 +27,7 @@ const App = () => {
 				<Layout>
 					<Routes>
 						<Route path="/" element={<Home />} />
+						<Route path="/users" element={<Users />} />
 						<Route path="/about/this/site" element={<About />} />
 					</Routes>
 				</Layout>

@@ -1,18 +1,19 @@
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Button, Image, VStack } from "@chakra-ui/react";
+import { Button, Flex, Image, VStack, useColorModeValue } from "@chakra-ui/react";
+import Logo from "../assets/breteau_logo.png";
 
 const LoginPage = () => {
 	const { loginWithPopup } = useAuth0();
+	const containerBg = useColorModeValue("teal.200", "teal.300");
 	return (
 		<VStack alignItems="center" justifyContent="center" minH="80vh">
-			<Image
-				src="https://www.breteaufoundation.org/wp-content/uploads/thegem-logos/logo_321f1ba5aee6fd961a7217c2dd66f313_2x.png"
-				mb="10"
-			/>
-			<Button onClick={() => loginWithPopup()} size="lg">
-				Login
-			</Button>
+			<Flex flexDirection="column" alignItems="center" bgColor={containerBg} px="2rem" py="1rem" borderRadius="2xl" shadow="2xl">
+				<Image src={Logo} mb="10" width="17.5rem" />
+				<Button onClick={() => loginWithPopup()} size="lg" colorScheme="blue">
+					Login
+				</Button>
+			</Flex>
 		</VStack>
 	);
 };
