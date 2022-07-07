@@ -9,3 +9,18 @@
 .message:hover {
 	background-color: yellow;
 }
+
+.schoolForm {
+	border: 2px solid orange;
+	
+}
+
+.inputBox {
+	border: 2px black solid;
+	margin: 5px;
+}
+
+.addButton {
+	background-color: orange;
+	padding: 10px 5px;
+}
