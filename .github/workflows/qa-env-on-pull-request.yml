@@ -1,0 +1,48 @@
+name: Create QA environment when a pull request is created against master and remove QA when PR closed
+on: 
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+
+
+jobs:
+  heroku-pull-request:
+    runs-on: ubuntu-latest
+    env:
+      HEROKU_APP_NAME: ldn8-cyf-beateau-${{ github.event.number }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: ${{ github.event.action == 'closed' && 1 || 0 }}
+          ref: ${{ github.event.action != 'closed' && github.head_ref || '' }}
+      - name: Login to Heroku
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_email: berkelih@gmail.com
+          heroku_app_name: ${{ env.HEROKU_APP_NAME }}
+          justlogin: true
+      - name: Create Heroku app
+        if: github.event.action == 'opened'
+        run: heroku apps:create ${{ env.HEROKU_APP_NAME }}
+
+      - name: Attach PSQL addon to the app
+        if: github.event.action == 'opened'
+        run: heroku addons:attach ${{ secrets.HEROKU_PSQL_ADDON}} -a=${{ env.HEROKU_APP_NAME }}
+      
+      - name: Add Heroku remote
+        run: heroku git:remote --app=${{ env.HEROKU_APP_NAME }}
+      
+      - name: Push to Heroku
+        run: git push heroku ${{ github.head_ref }}:master --force
+
+      - name: Add comment to PR
+        if: github.event.action == 'opened'
+        run: |
+          gh pr comment ${{ github.event.number }} --body '[Heroku app](https://dashboard.heroku.com/apps/${{ env.HEROKU_APP_NAME }}): https://${{ env.HEROKU_APP_NAME }}.herokuapp.com'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Destroy Heroku app
+        if: github.event.action == 'closed'
+        run: heroku apps:destroy --app=${{ env.HEROKU_APP_NAME }} --confirm=${{ env.HEROKU_APP_NAME }}
