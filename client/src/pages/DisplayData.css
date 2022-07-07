@@ -1,0 +1,23 @@
+:root {
+  --header-colour: #37b0f0;
+  --white-colour: #ffffff;
+}
+
+.title-style {
+    font-size: 3rem;
+}
+
+.title-style span {
+    display: inline;
+  }
+.title-style span::after { content: "\A"; white-space: pre; }
+
+.header {
+  width: 100%;
+  padding:0.5rem 0;
+  text-align: center;
+  text-transform: uppercase;
+  font-size:2rem;
+  background: var(--header-colour);
+  color: var(--white-colour);
+}

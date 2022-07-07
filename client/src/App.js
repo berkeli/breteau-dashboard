@@ -4,6 +4,7 @@ import Layout from "./components/layout";
 
 import About from "./pages/About";
 import Home from "./pages/Home";
+import DisplayData from "./pages/DisplayData";
 
 const App = () => (
 	<Chakra>
@@ -11,6 +12,7 @@ const App = () => (
 			<Routes>
 				<Route path="/" element={<Home />} />
 				<Route path="/about/this/site" element={<About />} />
+				<Route path="/display" element={<DisplayData />} />
 			</Routes>
 		</Layout>
 	</Chakra>
