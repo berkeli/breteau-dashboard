@@ -1,15 +1,6 @@
-import { ManagementClient } from "auth0";
 import config from "../../config";
 import logger from "../../utils/logger";
-
-const auth0 = new ManagementClient({
-	domain: config.AUTH0_DOMAIN,
-	clientId: config.AUTH0_CLIENT_ID,
-	clientSecret: config.AUTH0_CLIENT_SECRET,
-});
-
-const queryToLucene = (string) =>
-	string.length > 2 ? `name:${string}*` : `name:*${string}*`;
+import { auth0, queryToLucene } from "./helpers";
 
 export const getUsers = (req, res) => {
 	const { searchQuery } = req.query;
@@ -33,11 +24,12 @@ export const getUsers = (req, res) => {
 };
 
 export const createUser = (req, res) => {
-	const { firstName, lastName, email } = req.query;
+	const { fullName, email } = req.body;
 
 	const user = {
-		name: `${firstName} ${lastName}`,
+		name: fullName,
 		email,
+		password: Math.random().toString(36).slice(-12),
 		email_verified: false,
 		connection: config.AUTH0_CONNECTION,
 		verify_email: false,
@@ -48,7 +40,39 @@ export const createUser = (req, res) => {
 			logger.error(err.message);
 			res.status(500).json(err);
 		} else {
+			resetUserPassword(
+				user.identities.user_id,
+				user.email,
+				config.AUTH0_CONNECTION_ID
+			);
 			res.json(user);
 		}
 	});
+};
+
+export const getRoles = (_, res) => {
+	auth0.getRoles({}, (err, roles) => {
+		if (err) {
+			logger.error(err.message);
+			res.status(500).json(err);
+		} else {
+			res.json(roles);
+		}
+	});
+};
+
+const resetUserPassword = async (user_id, email, connection_id) => {
+	auth0.createPasswordChangeTicket(
+		{
+			result_url: config.AUTH0_REDIRECT,
+			user_id,
+			email,
+			connection_id,
+		},
+		(err) => {
+			if (err) {
+				logger.error(err.message);
+			}
+		}
+	);
 };

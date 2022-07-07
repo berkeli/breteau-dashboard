@@ -7,6 +7,11 @@ const useFetch = (endpoint, options) => {
 	const [data, setData] = useState(null);
 	const [error, setError] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
+	const [trigger, setTrigger] = useState(true);
+
+	const triggerSearch = () => {
+		setTrigger(!trigger);
+	};
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -32,11 +37,12 @@ const useFetch = (endpoint, options) => {
 			}
 		};
 		fetchData();
-	}, [endpoint, getAccessTokenSilently, options]);
+	}, [endpoint, getAccessTokenSilently, options, trigger]);
 	return {
 		data,
 		isLoading,
 		error,
+		triggerSearch,
 	};
 };
 

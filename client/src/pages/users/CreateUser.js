@@ -1,21 +1,169 @@
-import { FormControl, FormLabel, Input, Text } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
+import {
+	Button,
+	Center,
+	Checkbox,
+	CheckboxGroup,
+	FormControl,
+	FormLabel,
+	Input,
+	Stack,
+	Text,
+	useToast,
+} from "@chakra-ui/react";
+import useFetch from "../../hooks/useFetch";
+import Loading from "../../components/Loading";
+import { useAuth0 } from "@auth0/auth0-react";
+import { API_URL } from "../../config";
+import _ from "lodash";
 
-const CreateUser = () => {
+const CreateUser = ({ triggerSearch, onClose }) => {
+	const toast = useToast();
+	const { getAccessTokenSilently } = useAuth0();
+	const { data: roles, isLoading, error } = useFetch("/users/roles");
+	const [submitState, setSubmitState] = useState({
+		loading: false,
+		error: null,
+	});
+
+	const [formData, setFormData] = useState({
+		fullName: "",
+		email: "",
+		roles: [],
+	});
+
+	const onChangeHandler = (e) => {
+		if (e.target.name === "roles") {
+			if (e.target.checked) {
+				setFormData({
+					...formData,
+					roles: [...formData.roles, e.target.value],
+				});
+			} else {
+				setFormData({
+					...formData,
+					roles: formData.roles.filter((role) => role !== e.target.value),
+				});
+			}
+		} else {
+			setFormData({
+				...formData,
+				[e.target.name]: e.target.value,
+			});
+		}
+	};
+
+	const onSubmitHandler = async () => {
+		setSubmitState({ ...submitState, loading: true });
+		const token = await getAccessTokenSilently();
+
+		const options = {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+			body: JSON.stringify(formData),
+		};
+		fetch(`${API_URL}/users`, options)
+			.then((res) => {
+				if (res.status === 200) {
+					_.debounce(triggerSearch, 500)();
+					_.debounce(onClose, 500)();
+					toast({
+						title: "User Created",
+						description:
+							"We have created the user account and sent invitation email",
+						status: "success",
+						duration: 5000,
+						isClosable: true,
+					});
+				}
+				return res.json();
+			})
+			.then((data) => {
+				if (data.message) {
+					setSubmitState({ ...submitState, error: data.message });
+				} else {
+					setSubmitState({
+						...submitState,
+						loading: false,
+					});
+				}
+			})
+			.catch((err) => {
+				setSubmitState({ ...submitState, loading: false, error: err });
+			});
+	};
+
+	if (isLoading || submitState.loading) {
+		return <Loading />;
+	}
+
+	if (submitState.error) {
+		return (
+			<Center>
+				<Text>
+					Something went wrong... <br />
+					{submitState.error}
+				</Text>
+			</Center>
+		);
+	}
+
 	return (
-		<form>
-			<Text as="h3"> Create a new User </Text>
-			<FormControl>
-				<FormLabel>First Name</FormLabel>
-				<Input id="firstName" aria-describedby="first name" required />
-				<FormLabel>Last Name</FormLabel>
-				<Input id="lastName" aria-describedby="last name" required />
-				<FormLabel>Email</FormLabel>
-				<Input id="email" aria-describedby="email" required />
-				<FormLabel>Role</FormLabel>
-				<Input id="role" aria-describedby="role" required />
-			</FormControl>
-		</form>
+		<>
+			{error && <Text>{error}</Text>}
+			<form>
+				<FormControl>
+					<FormLabel htmlFor="fullName">Full Name</FormLabel>
+					<Input
+						id="fullName"
+						name="fullName"
+						aria-describedby="full name"
+						value={formData.fullName}
+						required
+						onChange={(e) => onChangeHandler(e)}
+					/>
+					<FormLabel htmlFor="email" mt="4">
+						Email
+					</FormLabel>
+					<Input
+						id="email"
+						name="email"
+						aria-describedby="email"
+						required
+						value={formData.email}
+						onChange={(e) => onChangeHandler(e)}
+						type="email"
+					/>
+				</FormControl>
+				<FormControl mt="8">
+					<CheckboxGroup p={2}>
+						<FormLabel>Assign Roles</FormLabel>
+						<Stack spacing={5} direction="row">
+							{roles.map((role) => (
+								<Checkbox
+									name="roles"
+									key={role.id}
+									size="lg"
+									isChecked={formData.roles.includes(role.id)}
+									value={role.id}
+									onChange={(e) => onChangeHandler(e)}
+								>
+									{role.name}
+								</Checkbox>
+							))}
+						</Stack>
+					</CheckboxGroup>
+				</FormControl>
+				<Center>
+					<Button mt="8" type="submit" onClick={onSubmitHandler}>
+						Submit
+					</Button>
+				</Center>
+			</form>
+		</>
 	);
 };
 

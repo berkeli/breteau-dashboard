@@ -85,6 +85,7 @@
 		"helmet": "^5.0.2",
 		"jwks-rsa": "^2.1.4",
 		"jwt-decode": "^3.1.2",
+		"lodash": "^4.17.21",
 		"morgan": "^1.10.0",
 		"pino": "^8.1.0",
 		"pino-pretty": "^8.1.0",

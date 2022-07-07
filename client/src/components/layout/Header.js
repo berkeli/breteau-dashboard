@@ -7,7 +7,7 @@ import ThemeToggle from "./ThemeToggle";
 const Header = () => {
 	const { logout } = useAuth0();
 	return (
-		<Flex as="header" width="full" align="center">
+		<Flex as="header" width="full" align="center" mb="3rem">
 			<Box as="h1">
 				My app
 			</Box>
