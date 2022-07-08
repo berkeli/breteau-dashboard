@@ -8,7 +8,7 @@ jobs:
   heroku-pull-request:
     runs-on: ubuntu-latest
     env:
-      HEROKU_APP_NAME: ldn8-cyf-beateau-${{ github.event.number }}
+      HEROKU_APP_NAME: ldn8-cyf-breateau-${{ github.event.number }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -41,9 +41,9 @@ jobs:
 
       - name: Add comment to PR
         if: github.event.action == 'opened'
-        run: |
-          gh pr comment ${{ github.event.number }} --body '[Heroku app](https://dashboard.heroku.com/apps/${{ env.HEROKU_APP_NAME }}): https://${{ env.HEROKU_APP_NAME }}.herokuapp.com'
-        env:
+        uses: mb2dev/github-action-comment-pull-request@1.0.0
+        with:
+          message: "[Heroku app](https://dashboard.heroku.com/apps/${{ env.HEROKU_APP_NAME }}): https://${{ env.HEROKU_APP_NAME }}.herokuapp.com"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
       - name: Destroy Heroku app
