@@ -1,11 +1,12 @@
 import SchoolData from "./schools.json"; // 50 lines of Sample Data
-import DisplayEachCountry from "./DisplayEachCountry.js";
-
-import "./DisplayData.css";
+import DisplayTable from "./DisplayTable.js";
+import "./DisplaySchools.css";
 
 // Sort the Data by Countries, then by School Name, alphabetically
 
 function sortTheData(data) {
+	// Sort Each Country in alphabetical order
+
 	const eachCountry = new Set();
 	const sortedByCountry = [];
 	data.forEach((element) => {
@@ -19,25 +20,29 @@ function sortTheData(data) {
 	const result = [...eachCountry].sort((a, z) => a.localeCompare(z));
 
 	// Sort Each School in alphabetical order
-    for (let countryName in sortedByCountry) {
-         sortedByCountry[countryName].sort((a, z) => a.schoolName.localeCompare(z.schoolName));
-    }
+	for (let countryName in sortedByCountry) {
+		sortedByCountry[countryName].sort((a, z) =>
+			a.schoolName.localeCompare(z.schoolName)
+		);
+	}
 
-    return [result,sortedByCountry];
+	return [result, sortedByCountry];
 }
 
-function DisplayData() {
+function DisplaySchools() {
 
     const results=sortTheData(SchoolData);
 
 	return (
 		<main role="main">
 			<div>
-				<DisplayEachCountry theCountries={results[0]} theData={results[1]}>
-                </DisplayEachCountry>
+				<DisplayTable
+					countryNames = {results[0]}
+					schoolData={results[1]}>
+				</DisplayTable>
 			</div>
 		</main>
 	);
 }
 
-export default DisplayData;
+export default DisplaySchools;

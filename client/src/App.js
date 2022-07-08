@@ -4,7 +4,7 @@ import Layout from "./components/layout";
 
 import About from "./pages/About";
 import Home from "./pages/Home";
-import DisplayData from "./pages/DisplayData";
+import DisplaySchools from "./pages/DisplaySchools";
 
 const App = () => (
 	<Chakra>
@@ -12,7 +12,7 @@ const App = () => (
 			<Routes>
 				<Route path="/" element={<Home />} />
 				<Route path="/about/this/site" element={<About />} />
-				<Route path="/display" element={<DisplayData />} />
+				<Route path="/schools" element={<DisplaySchools />} />
 			</Routes>
 		</Layout>
 	</Chakra>

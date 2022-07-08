@@ -1,0 +1,8 @@
+.title-style {
+    font-size: 3rem;
+}
+
+.title-style span {
+    display: inline;
+  }
+.title-style span::after { content: "\A"; white-space: pre; }

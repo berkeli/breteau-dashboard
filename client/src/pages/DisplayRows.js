@@ -5,6 +5,7 @@ import {
 } from "@chakra-ui/react";
 
 const DisplayRows = ({ countryName, schoolData }) => {
+
 	const listRows = schoolData[countryName].map(
 		({ id, schoolName, responsible, status, location, deploymentYear }) => (
 			<Tr key={id}>
