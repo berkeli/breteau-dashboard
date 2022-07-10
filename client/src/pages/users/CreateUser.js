@@ -11,16 +11,13 @@ import {
 	Text,
 	useToast,
 } from "@chakra-ui/react";
-import useFetch from "../../hooks/useFetch";
-import Loading from "../../components/Loading";
 import { useAuth0 } from "@auth0/auth0-react";
 import { API_URL } from "../../config";
 import _ from "lodash";
 
-const CreateUser = ({ triggerSearch, onClose }) => {
+const CreateUser = ({ triggerSearch, onClose, roles }) => {
 	const toast = useToast();
 	const { getAccessTokenSilently } = useAuth0();
-	const { data: roles, isLoading, error } = useFetch("/users/roles");
 	const [submitState, setSubmitState] = useState({
 		loading: false,
 		error: null,
@@ -96,10 +93,6 @@ const CreateUser = ({ triggerSearch, onClose }) => {
 			});
 	};
 
-	if (isLoading || submitState.loading) {
-		return <Loading />;
-	}
-
 	if (submitState.error) {
 		return (
 			<Center>
@@ -113,7 +106,6 @@ const CreateUser = ({ triggerSearch, onClose }) => {
 
 	return (
 		<>
-			{error && <Text>{error}</Text>}
 			<form>
 				<FormControl>
 					<FormLabel htmlFor="fullName">Full Name</FormLabel>
@@ -158,7 +150,7 @@ const CreateUser = ({ triggerSearch, onClose }) => {
 					</CheckboxGroup>
 				</FormControl>
 				<Center>
-					<Button mt="8" type="submit" onClick={onSubmitHandler}>
+					<Button mt="8" onClick={onSubmitHandler}>
 						Submit
 					</Button>
 				</Center>

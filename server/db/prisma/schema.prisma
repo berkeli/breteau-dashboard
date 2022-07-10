@@ -11,16 +11,41 @@ datasource db {
 }
 
 model User {
-  id          String @id @default(uuid())
-  name        String
-  email       String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  School    School[]
 }
 
 model School {
-  id          String @id @default(uuid())
-  name        String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
+  id             String         @id @default(uuid())
+  name           String
+  country        String
+  location       String
+  responsible    User           @relation(fields: [responsibleId], references: [id])
+  responsibleId  String
+  deploymentDate DateTime
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @default(now())
+  schoolSurveys  SchoolSurvey[]
+}
+
+model Programme {
+  id            String         @id @default(uuid())
+  name          String
+  schoolSurveys SchoolSurvey[]
+}
+
+model SchoolSurvey {
+  id                      String    @id @default(uuid())
+  school                  School    @relation(fields: [schoolId], references: [id])
+  schoolId                String
+  programme               Programme @relation(fields: [programmeId], references: [id])
+  programmeId             String
+  newStudentsReached      Int
+  existingStudentsReached Int
+  createdAt               DateTime  @default(now())
+  updatedAt               DateTime  @default(now())
 }

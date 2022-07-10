@@ -28,18 +28,23 @@ import CreateUser from "./CreateUser";
 const Users = () => {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [debouncedQ, setDebouncedQ] = useState("");
-	const { data, isLoading, error, triggerSearch } = useFetch(
-		`/users?searchQuery=${debouncedQ}`
-	);
+	const {
+		data: users,
+		isLoading,
+		error,
+		triggerSearch,
+	} = useFetch(`/users?searchQuery=${debouncedQ}`);
+
+	const roles = useFetch("/users/roles");
 
 	return (
 		<>
-			{" "}
 			<ActionsBox
 				searchQuery={searchQuery}
 				setSearchQuery={setSearchQuery}
 				setDebouncedQ={setDebouncedQ}
 				triggerSearch={triggerSearch}
+				roles={roles.data}
 			/>
 			<Box>
 				{isLoading && <Loading />}
@@ -49,12 +54,12 @@ const Users = () => {
 						{error.message}
 					</Text>
 				)}
-				{data && (
-					<Table>
+				{users && (
+					<Table variant="striped">
 						<UsersTableHeader />
 						<Tbody>
-							{data.map((user) => (
-								<UserRow key={user.id} user={user} />
+							{users.map((user) => (
+								<UserRow key={user.user_id} user={user} />
 							))}
 						</Tbody>
 					</Table>
@@ -69,6 +74,7 @@ const ActionsBox = ({
 	setSearchQuery,
 	setDebouncedQ,
 	triggerSearch,
+	roles,
 }) => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const handleChange = (e) => {
@@ -96,7 +102,11 @@ const ActionsBox = ({
 					<ModalHeader> Create a new User </ModalHeader>
 					<ModalCloseButton />
 					<ModalBody>
-						<CreateUser triggerSearch={triggerSearch} onClose={onClose} />
+						<CreateUser
+							triggerSearch={triggerSearch}
+							onClose={onClose}
+							roles={roles}
+						/>
 					</ModalBody>
 				</ModalContent>
 			</Modal>

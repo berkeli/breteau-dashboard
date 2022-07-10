@@ -2,29 +2,43 @@ import config from "../../config";
 import logger from "../../utils/logger";
 import { auth0, queryToLucene } from "./helpers";
 
-export const getUsers = (req, res) => {
-	const { searchQuery } = req.query;
+export const getUsers = async (req, res) => {
+	const { searchQuery, page, per_page } = req.query;
 	const params = {
 		search_engine: "v3",
 		sort: "created_at:-1",
+		page: page || 0,
+		per_page: per_page || 10,
 	};
 	if (searchQuery) {
 		params.q = queryToLucene(searchQuery);
 	}
-	auth0.getUsers(params, (err, users) => {
-		if (err) {
-			logger.error(err.message);
-			res.status(500).json({
-				message: "Error getting users",
-			});
-		} else {
-			res.json(users);
-		}
+
+	// get total count for pagination
+	const total_count = await auth0.getActiveUsersCount();
+	res.set({
+		total_count,
+		page: params.page,
+		per_page: params.per_page,
 	});
+
+	// get users and add roles to each user
+	auth0
+		.getUsers(params)
+		.then((users) => {
+			return mergeRolesIntoUsers(users);
+		})
+		.then((usersWithRoles) => {
+			res.json(usersWithRoles);
+		})
+		.catch((err) => {
+			logger.error(err);
+			res.status(500).json({ message: err.message });
+		});
 };
 
-export const createUser = (req, res) => {
-	const { fullName, email } = req.body;
+export const createUser = async (req, res) => {
+	const { fullName, email, roles } = req.body;
 
 	const user = {
 		name: fullName,
@@ -35,19 +49,18 @@ export const createUser = (req, res) => {
 		verify_email: false,
 	};
 
-	auth0.createUser(user, (err, user) => {
-		if (err) {
-			logger.error(err.message);
-			res.status(500).json(err);
-		} else {
-			resetUserPassword(
-				user.identities.user_id,
-				user.email,
-				config.AUTH0_CONNECTION_ID
-			);
+	await auth0
+		.createUser(user)
+		.then(async (user) => {
+			const id = user.user_id;
+			await resetUserPassword(id);
+			await assignRolesToUser(id, roles);
 			res.json(user);
-		}
-	});
+		})
+		.catch((err) => {
+			logger.error(err);
+			res.status(500).json({ message: err.message });
+		});
 };
 
 export const getRoles = (_, res) => {
@@ -61,18 +74,26 @@ export const getRoles = (_, res) => {
 	});
 };
 
-const resetUserPassword = async (user_id, email, connection_id) => {
-	auth0.createPasswordChangeTicket(
-		{
-			result_url: config.AUTH0_REDIRECT,
-			user_id,
-			email,
-			connection_id,
-		},
-		(err) => {
-			if (err) {
-				logger.error(err.message);
-			}
-		}
-	);
+const resetUserPassword = async (user_id) => {
+	await auth0.createPasswordChangeTicket({
+		result_url: config.AUTH0_REDIRECT,
+		user_id,
+	});
+};
+
+const assignRolesToUser = async (id, roles) => {
+	await auth0.assignRolestoUser({ id }, { roles });
+};
+
+const mergeRolesIntoUsers = async (users) => {
+	const usersWithRoles = [];
+
+	for (let i = 0; i < users.length; i++) {
+		const user = users[i];
+		await auth0.getUserRoles({ id: user.user_id }).then((roles) => {
+			user.roles = roles;
+			usersWithRoles.push(user);
+		});
+	}
+	return usersWithRoles;
 };
