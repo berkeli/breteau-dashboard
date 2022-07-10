@@ -1,4 +1,4 @@
-name: Create QA environment when a pull request is created against master and remove QA when PR closed
+name: Create QA environment when a pull request is created against master and remove the app when closed
 on: 
   pull_request:
     types: [opened, synchronize, reopened, closed]
@@ -8,7 +8,7 @@ jobs:
   heroku-pull-request:
     runs-on: ubuntu-latest
     env:
-      HEROKU_APP_NAME: ldn8-cyf-beateau-${{ github.event.number }}
+      HEROKU_APP_NAME: ldn8-cyf-breateau-${{ github.event.number }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -32,15 +32,18 @@ jobs:
       
       - name: Add Heroku remote
         run: heroku git:remote --app=${{ env.HEROKU_APP_NAME }}
+
+      - name: Add Heroku Config Vars
+        run: heroku config:set AUTH0_DOMAIN=${{secrets.AUTH0_DOMAIN}} AUTH0_CLIENT_ID=${{secrets.AUTH0_CLIENT_ID}} AUTH0_CLIENT_SECRET=${{secrets.AUTH0_CLIENT_SECRET}} AUTH0_AUDIENCE=https://${{ env.HEROKU_APP_NAME }}.herokuapp.com/api AUTH0_CONNECTION=${{secrets.AUTH0_CONNECTION}} AUTH0_CONNECTION_ID=${{secrets.AUTH0_CONNECTION_ID}}
       
       - name: Push to Heroku
         run: git push heroku ${{ github.head_ref }}:master --force
 
       - name: Add comment to PR
         if: github.event.action == 'opened'
-        run: |
-          gh pr comment ${{ github.event.number }} --body '[Heroku app](https://dashboard.heroku.com/apps/${{ env.HEROKU_APP_NAME }}): https://${{ env.HEROKU_APP_NAME }}.herokuapp.com'
-        env:
+        uses: mb2dev/github-action-comment-pull-request@1.0.0
+        with:
+          message: "[Heroku app](https://dashboard.heroku.com/apps/${{ env.HEROKU_APP_NAME }}): https://${{ env.HEROKU_APP_NAME }}.herokuapp.com"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
       - name: Destroy Heroku app
