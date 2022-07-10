@@ -1,17 +1,18 @@
 import config from "../../config";
 import logger from "../../utils/logger";
-import { auth0, queryToLucene } from "./helpers";
+import { auth0 } from "./helpers";
 
 export const getUsers = async (req, res) => {
 	const { searchQuery, page, per_page } = req.query;
 	const params = {
 		search_engine: "v3",
 		sort: "created_at:-1",
+		q: "-blocked:true",
 		page: page || 0,
 		per_page: per_page || 10,
 	};
 	if (searchQuery) {
-		params.q = queryToLucene(searchQuery);
+		params.q += ` AND name:${searchQuery}*`;
 	}
 
 	// get total count for pagination
