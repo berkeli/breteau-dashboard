@@ -6,6 +6,7 @@
 - [x] [Node] LTS support (verified working on 12.x, 14.x and 16.x LTS releases)
 - [x] [Express] server
 - [x] [React] client with [Webpack]
+- [x] [Chakra-UI] component library for styling
 - [x] Client-side routing with [React Router]
 - [x] Linting with [ESLint] and [Prettier]
 - [x] Dev mode (watch modes for client and server, proxy to avoid CORS issues)
@@ -13,16 +14,16 @@
 - [x] [Heroku] deployment
 - [x] [Cloud Foundry] deployment
 - [x] [Docker] build
-- [x] [MongoDB] database with [Mongoose]
+- [x] [PostgreSQL] database with [Prisma]
 
 ## Setup
 
 Pick one member of the team to own the repository and pipeline. That person should do the following:
 
 1.  Click the "Use this template" button above (see [GitHub's docs][1]) to create your team repository, and name it something appropriate for your project.
-2.  Set up a Mongo database, e.g. on [MongoDB Atlas], and get the connection URI.
+2.  Set up a PostgreSQL database, e.g. on [MongoDB Atlas], and get the connection URI.
 3.  In your repo, click the "Deploy to Heroku" button at the top of the README and create a Heroku account when prompted.
-4.  Fill in the name of the application, select Europe, enter the `MONGODB_URI` environment variable and then click "Deploy App".
+4.  Fill in the name of the application, select Europe, enter the `DATABASE_URL` environment variable and then click "Deploy App".
 5.  Once it has deployed successfully, click the "Manage app" button to view the application details.
 6.  Go to the "Deploy" tab, select "Connect to GitHub" and choose your repo.
 7.  Click "Enable automatic deploys".
@@ -38,6 +39,8 @@ commonly use:
 
 - `dev`: starts the frontend and backend in dev mode, with file watching (note that the backend runs on port 3100, and
   the frontend is proxied to it).
+- `generate:prisma`: generates prisma client for the backend, must be run after installing dependencies and whenever you make changes to the prisma schema
+- `generate:migrations`: generates and applies migrations based on prisma schema, which in turn creates necessary tables in the database.
 - `lint`: runs ESLint and Prettier against all the code in the project.
 - `serve`: builds and starts the app in production mode locally.
 
@@ -85,3 +88,6 @@ See the guidance in the [wiki].
 [react router]: https://reactrouter.com/web
 [webpack]: https://webpack.js.org/
 [wiki]: https://github.com/textbook/starter-kit/wiki
+[PostgreSQL]: https://www.postgresql.org/
+[Prisma]: https://www.prisma.io/docs/concepts/database-connectors/postgresql
+[Chakra-UI]: https://chakra-ui.com/
