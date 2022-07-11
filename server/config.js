@@ -1,6 +1,4 @@
-import * as env from "dotenv";
-
-env.config();
+require("dotenv").config();
 
 const config = {
 	AUTH0_DOMAIN: process.env.AUTH0_DOMAIN,

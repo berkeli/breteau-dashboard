@@ -11,19 +11,24 @@ const onRedirectCallback = (appState) => {
 	);
 };
 
-const providerConfig = {
-	domain: "ldn8-final-project.eu.auth0.com",
-	clientId: "2pr8vVOpoLHDPeB83W12JEsqwZl4rkH2",
-	redirectUri: window.location.origin,
-	onRedirectCallback,
-	audience: "http://localhost:3000/api",
+const asyncRender = async () => {
+	const config = await fetch("/api/envconfig");
+	const envConfig = await config.json();
+	const providerConfig = {
+		domain: envConfig.AUTH0_DOMAIN,
+		clientId: envConfig.AUTH0_CLIENT_ID,
+		redirectUri: window.location.origin,
+		onRedirectCallback,
+	};
+
+	ReactDOM.render(
+		<Auth0Provider {...providerConfig}>
+			<BrowserRouter history={history}>
+				<App />
+			</BrowserRouter>
+		</Auth0Provider>,
+		document.getElementById("root")
+	);
 };
 
-ReactDOM.render(
-	<Auth0Provider {...providerConfig}>
-		<BrowserRouter history={history}>
-			<App />
-		</BrowserRouter>
-	</Auth0Provider>,
-	document.getElementById("root")
-);
+asyncRender();
