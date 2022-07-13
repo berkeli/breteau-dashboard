@@ -6,7 +6,7 @@ export const checkJwt = jwt({
 	secret: jwksRsa.expressJwtSecret({
 		cache: true,
 		rateLimit: true,
-		jwksRequestsPerMinute: 5,
+		jwksRequestsPerMinute: 6,
 		jwksUri: `https://${config.AUTH0_DOMAIN}/.well-known/jwks.json`,
 	}),
 
