@@ -16,7 +16,6 @@ const providerConfig = {
 	clientId: process.env.AUTH0_CLIENT_ID,
 	redirectUri: window.location.origin,
 	onRedirectCallback,
-	audience: "http://localhost:3000/api",
 };
 
 ReactDOM.render(
