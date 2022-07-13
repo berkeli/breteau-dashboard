@@ -5,8 +5,9 @@ import { checkJwt } from "../middleware/auth/auth.middleware";
 import { PrismaClient } from "../db";
 
 const router = Router();
+router.get("/envconfig", envConfig);
+
 router
-	.get("/envconfig", envConfig)
 	.use(checkJwt)
 	.get("/", (_, res) => {
 		res.json({ message: "Breteau Dashboard" });

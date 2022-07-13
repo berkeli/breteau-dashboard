@@ -17,11 +17,11 @@ export const checkJwt = jwt({
 		cache: true,
 		rateLimit: true,
 		jwksRequestsPerMinute: 5,
-		jwksUri: `https://${authConfig.domain}/.well-known/jwks.json`,
+		jwksUri: `${authConfig.domain}/.well-known/jwks.json`,
 	}),
 
 	// Validate the audience and the issuer.
 	audience: authConfig.audience,
-	issuer: `https://${authConfig.domain}/`,
+	issuer: `${authConfig.domain}/`,
 	algorithms: authConfig.algorithms,
 });
