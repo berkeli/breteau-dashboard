@@ -25,7 +25,13 @@ const LoginPage = () => {
 			>
 				<Image src={Logo} mb="10" width={["70vw", "50vw", "30vw", "20vw"]} />
 				<Button
-					onClick={() => loginWithRedirect()}
+					onClick={() =>
+						loginWithRedirect({
+							appState: {
+								returnTo: window.location.pathname, // here
+							},
+						})
+					}
 					size="lg"
 					colorScheme="blue"
 				>
