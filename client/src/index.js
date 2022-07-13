@@ -11,25 +11,19 @@ const onRedirectCallback = (appState) => {
 	);
 };
 
-const asyncRender = async () => {
-	const config = await fetch("/api/envconfig");
-	const envConfig = await config.json();
-	const providerConfig = {
-		domain: envConfig.AUTH0_DOMAIN,
-		clientId: envConfig.AUTH0_CLIENT_ID,
-		redirectUri: window.location.origin,
-		onRedirectCallback,
-		audience: "http://localhost:3000/api",
-	};
-
-	ReactDOM.render(
-		<Auth0Provider {...providerConfig}>
-			<BrowserRouter history={history}>
-				<App />
-			</BrowserRouter>
-		</Auth0Provider>,
-		document.getElementById("root")
-	);
+const providerConfig = {
+	domain: process.env.AUTH0_DOMAIN,
+	clientId: process.env.AUTH0_CLIENT_ID,
+	redirectUri: window.location.origin,
+	onRedirectCallback,
+	audience: "http://localhost:3000/api",
 };
 
-asyncRender();
+ReactDOM.render(
+	<Auth0Provider {...providerConfig}>
+		<BrowserRouter history={history}>
+			<App />
+		</BrowserRouter>
+	</Auth0Provider>,
+	document.getElementById("root")
+);

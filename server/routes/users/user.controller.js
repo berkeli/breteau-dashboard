@@ -17,7 +17,6 @@ export const getUsers = async (req, res) => {
 
 	// get total count for pagination
 	const total_count = await auth0.getActiveUsersCount();
-	console.log("====", total_count);
 	res.set({
 		total_count,
 		page: params.page,
