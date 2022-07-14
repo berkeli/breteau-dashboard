@@ -12,6 +12,10 @@
 
 .schoolForm {
 	border: 2px solid orange;
+	width: 50%;
+	margin-left: 20px;
+	padding-left: 20px;
+	margin-bottom: 20px;
 	
 }
 
@@ -23,4 +27,14 @@
 .addButton {
 	background-color: orange;
 	padding: 10px 5px;
+	
+}
+
+.buttonSubmut {
+	margin-left: 50px;
+}
+
+.formName {
+	margin-top: 20px;
+	margin-left: 5px;
 }

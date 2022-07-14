@@ -24,7 +24,7 @@ function AddSchoolElement (props) {
         <div>
 
         <FormControl>
-            <FormLabel htmlFor={props.text}>{props.text}</FormLabel>
+            <FormLabel className="formName" htmlFor={props.text}>{props.text}</FormLabel>
            <Input id={props.text} className="inputBox" type="text" />
         </FormControl>
     </div>
@@ -34,8 +34,9 @@ function AddSchoolElement (props) {
 function AddButton () {
     return (
         <div>
-             <Button colorScheme='teal' size='md'>
-    Button
+
+             <Button colorScheme='teal' size='md' className="buttonSubmut">
+    Submit
   </Button>
         </div>
 
