@@ -11,6 +11,6 @@ export const checkJwt = jwt({
 	}),
 
 	// Validate the audience and the issuer.
-	audience: config.AUTH0_AUDIENCE,
+	audience: "breteau-api",
 	algorithms: ["RS256"],
 });
