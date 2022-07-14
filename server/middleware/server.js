@@ -10,6 +10,7 @@ export const configuredHelmet = () =>
 				objectSrc: ["'none'"],
 				scriptSrc: ["'self'", "unpkg.com", "polyfill.io"],
 				styleSrc: ["'self'", "https: 'unsafe-inline'"],
+				connectSrc: ["'self'", "small-dust-7659.eu.auth0.com"],
 				upgradeInsecureRequests: [],
 			},
 		},
