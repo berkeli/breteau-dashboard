@@ -24,7 +24,7 @@ const useFetch = (endpoint, options) => {
 					},
 				};
 				const response = await fetch(
-					`${process.env.API_URL}/${endpoint}`,
+					`${process.env.API_URL}${endpoint}`,
 					optionsWithToken
 				);
 				const json = await response.json();
