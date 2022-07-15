@@ -1,7 +1,5 @@
-import { PrismaClient } from "@prisma/client";
+import { Pool } from "pg";
 
-export const prisma = new PrismaClient();
+const pool = new Pool();
 
-export const disconnectDb = async () => {
-	prisma.$disconnect();
-};
+export default pool;
