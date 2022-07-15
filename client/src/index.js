@@ -12,11 +12,11 @@ const onRedirectCallback = (appState) => {
 };
 
 const providerConfig = {
-	domain: "ldn8-final-project.eu.auth0.com",
-	clientId: "2pr8vVOpoLHDPeB83W12JEsqwZl4rkH2",
+	domain: process.env.AUTH0_DOMAIN,
+	clientId: process.env.AUTH0_CLIENT_ID,
 	redirectUri: window.location.origin,
 	onRedirectCallback,
-	audience: "http://localhost:3000/api",
+	audience: process.env.AUTH0_AUDIENCE,
 };
 
 ReactDOM.render(
