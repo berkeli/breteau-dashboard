@@ -36,6 +36,7 @@ const Header = () => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const navLinks = [
 		{ name: "Schools", to: "/schools" },
+		{ name: "Projects", to: "/projects" },
 		{ name: "Users", to: "/users" },
 	];
 	return (
@@ -59,7 +60,7 @@ const Header = () => {
 							display={{ base: "none", md: "flex" }}
 						>
 							{navLinks.map((link) => (
-								<NavLink as={RouterLink} key={link} to={link.to}>
+								<NavLink as={RouterLink} key={link.to} to={link.to}>
 									{link.name}
 								</NavLink>
 							))}
