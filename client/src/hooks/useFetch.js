@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { API_URL } from "../config";
 
 const useFetch = (endpoint, options) => {
 	const { getAccessTokenSilently } = useAuth0();
@@ -25,7 +24,7 @@ const useFetch = (endpoint, options) => {
 					},
 				};
 				const response = await fetch(
-					`${API_URL}/${endpoint}`,
+					`${process.env.API_URL}/${endpoint}`,
 					optionsWithToken
 				);
 				const json = await response.json();

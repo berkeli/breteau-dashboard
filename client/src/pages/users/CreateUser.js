@@ -12,7 +12,6 @@ import {
 	useToast,
 } from "@chakra-ui/react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { API_URL } from "../../config";
 import _ from "lodash";
 
 const CreateUser = ({ triggerSearch, onClose, roles }) => {
@@ -62,7 +61,7 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 			},
 			body: JSON.stringify(formData),
 		};
-		fetch(`${API_URL}/users`, options)
+		fetch(`${process.env.API_URL}/users`, options)
 			.then((res) => {
 				if (res.status === 200) {
 					_.debounce(triggerSearch, 500)();
