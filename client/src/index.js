@@ -17,6 +17,7 @@ const providerConfig = {
 	redirectUri: window.location.origin,
 	onRedirectCallback,
 	audience: process.env.AUTH0_AUDIENCE,
+	cacheLocation: "localstorage",
 };
 
 ReactDOM.render(
