@@ -15,7 +15,6 @@ export const getInitiatives = (req, res) => {
 		if (err) {
 			throw err;
 		}
-		console.log(results.rows);
 		res.json(results.rows);
 	});
 };
