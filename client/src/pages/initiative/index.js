@@ -38,11 +38,11 @@ const Initiatives = () => {
 		triggerSearch,
 	} = useFetch(`/initiatives?searchQuery=${debouncedQ}`);
 
-	const areas = useFetch("/initiatives/areas");
+	const categories = useFetch("/initiatives/categories");
 
 	const fetchLatest = () => {
 		triggerSearch();
-		areas.triggerSearch();
+		categories.triggerSearch();
 	};
 
 	return (
@@ -52,7 +52,7 @@ const Initiatives = () => {
 				setSearchQuery={setSearchQuery}
 				setDebouncedQ={setDebouncedQ}
 				triggerSearch={fetchLatest}
-				areas={areas.data}
+				categories={categories.data}
 			/>
 
 			<Box>
@@ -90,7 +90,7 @@ const ActionsBox = ({
 	setSearchQuery,
 	setDebouncedQ,
 	triggerSearch,
-	areas,
+	categories,
 }) => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const handleChange = (e) => {
@@ -121,7 +121,7 @@ const ActionsBox = ({
 						<CreateInitiative
 							triggerSearch={triggerSearch}
 							onClose={onClose}
-							areas={areas}
+							categories={categories}
 						/>
 					</ModalBody>
 				</ModalContent>

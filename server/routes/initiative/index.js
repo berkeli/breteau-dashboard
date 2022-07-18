@@ -1,7 +1,7 @@
 import { Router } from "express";
 import {
 	getInitiatives,
-	getInitiativeAreas,
+	getInitiativeCategories,
 	createInitiative,
 } from "./controller";
 
@@ -9,7 +9,7 @@ const initiatives = Router();
 
 initiatives
 	.get("/", getInitiatives)
-	.get("/areas", getInitiativeAreas)
+	.get("/categories", getInitiativeCategories)
 	.post("/", createInitiative);
 
 export default initiatives;
