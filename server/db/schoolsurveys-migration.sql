@@ -21,7 +21,7 @@ CREATE TABLE schoolsurveys (
                              REFERENCES schoolstats (id),   FOREIGN KEY (programmeInitiativeId)
                              REFERENCES initiative (id));
 
--- Mock Data - ensure 'users, school, initiative' databases exist first
+-- Mock Data - ensure 'users, school, initiative' databases exist
 
 INSERT INTO schoolsurveys (surveyDate, 
                                           schoolId, deliveredById,
