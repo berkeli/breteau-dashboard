@@ -68,7 +68,7 @@ const Initiatives = () => {
 						<Thead>
 							<Tr>
 								<Th>Name</Th>
-								<Th>Area</Th>
+								<Th>Category</Th>
 								<Th>Description</Th>
 								<Th>Created At</Th>
 							</Tr>

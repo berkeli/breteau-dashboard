@@ -2,11 +2,11 @@ import { Td, Text, Tr } from "@chakra-ui/react";
 import React from "react";
 
 const InitiativeRow = ({ initiative }) => {
-	const { name, area, description, created_at } = initiative;
+	const { name, category, description, created_at } = initiative;
 	return (
 		<Tr>
 			<Td>{name}</Td>
-			<Td>{area}</Td>
+			<Td>{category}</Td>
 			<Td>
 				<Text noOfLines={[1, 2, 3]}>{description}</Text>
 			</Td>
