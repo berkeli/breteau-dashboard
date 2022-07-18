@@ -9,6 +9,6 @@ CREATE TABLE IF NOT EXISTS initiative (
    id serial PRIMARY KEY,
    name VARCHAR(255) NOT NULL,
    description VARCHAR(32000),
-   area VARCHAR(255) NOT NULL,
+   category VARCHAR(255) NOT NULL,
    created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );

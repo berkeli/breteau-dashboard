@@ -27,7 +27,7 @@ import CreateInitiative from "./CreateInitiative";
 import Loading from "../../components/Loading";
 import InitiativeRow from "./InitiativeRow";
 
-const Projects = () => {
+const Initiatives = () => {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [debouncedQ, setDebouncedQ] = useState("");
 
@@ -130,4 +130,4 @@ const ActionsBox = ({
 	);
 };
 
-export default Projects;
+export default Initiatives;
