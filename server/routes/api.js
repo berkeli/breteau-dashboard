@@ -2,6 +2,7 @@ import { Router } from "express";
 import users from "./users";
 import { checkJwt } from "../middleware/auth/auth.middleware";
 import { PrismaClient } from "../db";
+import { createSchool } from "./schools";
 
 const router = Router();
 
@@ -12,6 +13,7 @@ router.get("/", (_, res) => {
 	PrismaClient.users.findMany();
 });
 
+router.post("/schools", createSchool);
 router.use("/users", users);
 
 export default router;
