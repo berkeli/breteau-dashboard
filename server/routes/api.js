@@ -28,51 +28,6 @@ router.get("/", (_, res) => {
 	});
 });
 
-// GET all the Initiatives.
-router.get("/initiative", (_, response) => {
-	pool.query("SELECT * FROM initiative", (err, result) => {
-		if (err) {
-			logger.error(err);
-			response.status(500).json({ message: err.message });
-		} else {
-			response.json(result.rows);
-		}
-	});
-});
-
-// GET - Return a single Initiative by ID.
-router.get("/initiative/:initiativeId", function (request, response) {
-	const initiativeId = Number(request.params.initiativeId);
-
-	if (
-		Number.isNaN(initiativeId) ||
-		!Number.isSafeInteger(initiativeId) ||
-		initiativeId <= 0
-	) {
-		genericIntErrorMessage(initiativeId, response, 1);
-		return;
-	}
-
-	pool.query(
-		"SELECT * FROM initiative WHERE id=$1",
-		[initiativeId],
-		(err, result) => {
-			if (err) {
-				logger.error(err);
-				response.status(500).json({ message: err.message });
-			} else {
-				let reply = result.rows;
-				if (reply.length === 0) {
-					genericIntErrorMessage(initiativeId, response, 2, "Initiative");
-					return;
-				}
-
-				return response.json(reply); // Success
-			}
-		}
-	);
-});
-
 // GET - Return a single SchoolStat by ID.
 router.get("/schoolstat/:schoolstatId", function (request, response) {
 	const schoolStatId = Number(request.params.schoolStatId);
