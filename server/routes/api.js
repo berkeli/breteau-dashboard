@@ -61,44 +61,6 @@ router.get("/schoolstat/:schoolstatId", function (request, response) {
 	);
 });
 
-// GET - Return a single ScheduleTracker by ID.
-router.get("/scheduleTracker/:scheduleTrackerId", function (request, response) {
-	const scheduleTrackerId = Number(request.params.scheduleTrackerId);
-
-	if (
-		Number.isNaN(scheduleTrackerId) ||
-		!Number.isSafeInteger(scheduleTrackerId) ||
-		scheduleTrackerId <= 0
-	) {
-		genericIntErrorMessage(scheduleTrackerId, response, 1);
-		return;
-	}
-
-	pool.query(
-		"SELECT * FROM scheduleTracker WHERE id=$1",
-		[scheduleTrackerId],
-		(err, result) => {
-			if (err) {
-				logger.error(err);
-				response.status(500).json({ message: err.message });
-			} else {
-				let reply = result.rows;
-				if (reply.length === 0) {
-					genericIntErrorMessage(
-						scheduleTrackerId,
-						response,
-						2,
-						"SchoolTracker"
-					);
-					return;
-				}
-
-				return response.json(reply); // Success
-			}
-		}
-	);
-});
-
 router.use(checkJwt);
 router.use("/users", users);
 router.use("/initiatives", initiatives);
