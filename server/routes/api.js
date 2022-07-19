@@ -28,9 +28,9 @@ router.get("/", (_, res) => {
 	});
 });
 
-// GET all the Users.
-router.get("/users", (_, response) => {
-	pool.query("SELECT * FROM user", (err, result) => {
+// GET all the Initiatives.
+router.get("/initiative", (_, response) => {
+	pool.query("SELECT * FROM initiative", (err, result) => {
 		if (err) {
 			logger.error(err);
 			response.status(500).json({ message: err.message });
@@ -40,29 +40,108 @@ router.get("/users", (_, response) => {
 	});
 });
 
-// GET Return a single User by ID.
-router.get("/users/:userId", function (request, response) {
-	const userId = Number(request.params.userId);
+// GET - Return a single Initiative by ID.
+router.get("/initiative/:initiativeId", function (request, response) {
+	const initiativeId = Number(request.params.initiativeId);
 
-	if (Number.isNaN(userId) || !Number.isSafeInteger(userId) || userId <= 0) {
-		genericIntErrorMessage(userId, response, 1);
+	if (
+		Number.isNaN(initiativeId) ||
+		!Number.isSafeInteger(initiativeId) ||
+		initiativeId <= 0
+	) {
+		genericIntErrorMessage(initiativeId, response, 1);
 		return;
 	}
 
-	pool.query("SELECT * FROM users WHERE id=$1", [userId], (err, result) => {
-		if (err) {
-			logger.error(err);
-			response.status(500).json({ message: err.message });
-		} else {
-			let reply = result.rows;
-			if (reply.length === 0) {
-				genericIntErrorMessage(userId, response, 2, "User");
-				return;
-			}
+	pool.query(
+		"SELECT * FROM initiative WHERE id=$1",
+		[initiativeId],
+		(err, result) => {
+			if (err) {
+				logger.error(err);
+				response.status(500).json({ message: err.message });
+			} else {
+				let reply = result.rows;
+				if (reply.length === 0) {
+					genericIntErrorMessage(initiativeId, response, 2, "Initiative");
+					return;
+				}
 
-			return response.json(reply); // Success
+				return response.json(reply); // Success
+			}
 		}
-	});
+	);
+});
+
+// GET - Return a single SchoolStat by ID.
+router.get("/schoolstat/:schoolstatId", function (request, response) {
+	const schoolStatId = Number(request.params.schoolStatId);
+
+	if (
+		Number.isNaN(schoolStatId) ||
+		!Number.isSafeInteger(schoolStatId) ||
+		schoolStatId <= 0
+	) {
+		genericIntErrorMessage(schoolStatId, response, 1);
+		return;
+	}
+
+	pool.query(
+		"SELECT * FROM schoolstat WHERE id=$1",
+		[schoolStatId],
+		(err, result) => {
+			if (err) {
+				logger.error(err);
+				response.status(500).json({ message: err.message });
+			} else {
+				let reply = result.rows;
+				if (reply.length === 0) {
+					genericIntErrorMessage(schoolStatId, response, 2, "SchoolStat");
+					return;
+				}
+
+				return response.json(reply); // Success
+			}
+		}
+	);
+});
+
+// GET - Return a single ScheduleTracker by ID.
+router.get("/scheduleTracker/:scheduleTrackerId", function (request, response) {
+	const scheduleTrackerId = Number(request.params.scheduleTrackerId);
+
+	if (
+		Number.isNaN(scheduleTrackerId) ||
+		!Number.isSafeInteger(scheduleTrackerId) ||
+		scheduleTrackerId <= 0
+	) {
+		genericIntErrorMessage(scheduleTrackerId, response, 1);
+		return;
+	}
+
+	pool.query(
+		"SELECT * FROM scheduleTracker WHERE id=$1",
+		[scheduleTrackerId],
+		(err, result) => {
+			if (err) {
+				logger.error(err);
+				response.status(500).json({ message: err.message });
+			} else {
+				let reply = result.rows;
+				if (reply.length === 0) {
+					genericIntErrorMessage(
+						scheduleTrackerId,
+						response,
+						2,
+						"SchoolTracker"
+					);
+					return;
+				}
+
+				return response.json(reply); // Success
+			}
+		}
+	);
 });
 
 router.use(checkJwt);

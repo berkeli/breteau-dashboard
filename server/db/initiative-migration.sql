@@ -6,160 +6,158 @@ CREATE TABLE initiative (
    category VARCHAR(50) NOT NULL,
    description VARCHAR(255) NOT NULL,
    createdById INT NOT NULL,
-   createdAt TIMESTAMP NOT NULL DEFAULT NOW(),
-   updatedById INT NOT NULL,
-   updatedAt TIMESTAMP NOT NULL DEFAULT NOW()
+   createdAt TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
 -- Mock Data
 
 INSERT INTO initiative (name, category, description, 
-                            createdById, updatedById) 
+                            createdById) 
                             VALUES ('ODS','Computer Software: Programming, Data Processing',
                                     'Integer ac leo.',
-                                    13,13);
+                                    19);
 INSERT INTO initiative (name, category, description, 
-                            createdById, updatedById) 
+                            createdById) 
                             VALUES ('GSD','Major Banks',
                                     'Quisque arcu libero, rutrum ac, lobortis vel, dapibus at, diam.',
-                                    15,15);
+                                    4);
 INSERT INTO initiative (name, category, description, 
-                            createdById, updatedById) 
+                            createdById) 
                             VALUES ('Kaizen Blitz','Major Pharmaceuticals',
                                     'Integer a nibh.',
-                                    18,18);
+                                    9);
 INSERT INTO initiative (name, category, description, 
-                            createdById, updatedById) 
+                            createdById) 
                             VALUES ('RMDS','Apparel',
                                     'Fusce posuere felis sed lacus.',
-                                    2,2);
+                                    7);
 INSERT INTO initiative (name, category, description, 
-                            createdById, updatedById) 
+                            createdById) 
                             VALUES ('LyX','Semiconductors',
                                     'Quisque arcu libero, rutrum ac, lobortis vel, dapibus at, diam.',
-                                    2,2);
+                                    6);
 INSERT INTO initiative (name, category, description, 
-                            createdById, updatedById) 
+                            createdById) 
                             VALUES ('MCAD','Marine Transportation',
                                     'Aenean auctor gravida sem.',
-                                    4,4);
+                                    9);
 INSERT INTO initiative (name, category, description, 
-                            createdById, updatedById) 
+                            createdById) 
                             VALUES ('LPR','Specialty Chemicals',
                                     'Praesent id massa id nisl venenatis lacinia.',
-                                    7,7);
+                                    12);
 INSERT INTO initiative (name, category, description, 
-                            createdById, updatedById) 
+                            createdById) 
                             VALUES ('DFD','Climate Change',
                                     'Aliquam erat volutpat.',
-                                    14,14);
+                                    17);
 INSERT INTO initiative (name, category, description, 
-                            createdById, updatedById) 
+                            createdById) 
                             VALUES ('TBB','Biotechnology: Biological Products (No Diagnostic ',
                                     'Aliquam erat volutpat.',
-                                    1,1);
+                                    16);
 INSERT INTO initiative (name, category, description, 
-                            createdById, updatedById) 
+                            createdById) 
                             VALUES ('HP QTP','Computer Software: Programming, Data Processing',
                                     'Sed accumsan felis.',
-                                    1,1);
+                                    15);
 INSERT INTO initiative (name, category, description, 
-                            createdById, updatedById) 
+                            createdById) 
                             VALUES ('First Year Experience','Positive Feedback',
                                     'In hac habitasse platea dictumst.',
-                                    19,19);
+                                    20);
 INSERT INTO initiative (name, category, description, 
-                            createdById, updatedById) 
+                            createdById) 
                             VALUES ('Lawson HRIS','Soft Skills',
                                     'Fusce consequat.',
-                                    4,4);
+                                    2);
 INSERT INTO initiative (name, category, description, 
-                            createdById, updatedById) 
+                            createdById) 
                             VALUES ('NRSWA','Professional Services',
                                     'Integer aliquet, massa id lobortis convallis, tortor risus dapibus augue, vel accumsan tellus nisi eu orci.',
-                                    17,17);
+                                    11);
 INSERT INTO initiative (name, category, description, 
-                            createdById, updatedById) 
+                            createdById) 
                             VALUES ('HACCP','Good Health',
                                     'Duis aliquam convallis nunc.',
-                                    1,1);
+                                    12);
 INSERT INTO initiative (name, category, description, 
-                            createdById, updatedById) 
+                            createdById) 
                             VALUES ('ICT','Semiconductors',
                                     'Quisque porta volutpat erat.',
-                                    11,11);
+                                    17);
 INSERT INTO initiative (name, category, description, 
-                            createdById, updatedById) 
+                            createdById) 
                             VALUES ('Django','Oil Refining/Marketing',
                                     'Morbi non quam nec dui luctus rutrum.',
-                                    13,13);
+                                    19);
 INSERT INTO initiative (name, category, description, 
-                            createdById, updatedById) 
+                            createdById) 
                             VALUES ('Teaching','Electronic Components',
                                     'Nulla ac enim.',
-                                    2,2);
+                                    6);
 INSERT INTO initiative (name, category, description, 
-                            createdById, updatedById) 
+                            createdById) 
                             VALUES ('ISO 14971','Other Specialty Stores',
                                     'Integer pede justo, lacinia eget, tincidunt eget, tempus vel, pede.',
-                                    14,14);
+                                    10);
 INSERT INTO initiative (name, category, description, 
-                            createdById, updatedById) 
+                            createdById) 
                             VALUES ('BCNE','Nutrition',
                                     'Maecenas ut massa quis augue luctus tincidunt.',
-                                    8,8);
+                                    17);
 INSERT INTO initiative (name, category, description, 
-                            createdById, updatedById) 
+                            createdById) 
                             VALUES ('JCreator','Semiconductors',
                                     'In hac habitasse platea dictumst.',
-                                    8,8);
+                                    19);
 INSERT INTO initiative (name, category, description, 
-                            createdById, updatedById) 
+                            createdById) 
                             VALUES ('Sustainability','History',
                                     'In hac habitasse platea dictumst.',
-                                    20,20);
+                                    20);
 INSERT INTO initiative (name, category, description, 
-                            createdById, updatedById) 
+                            createdById) 
                             VALUES ('Spring Framework','Finance: Consumer Services',
                                     'Aliquam quis turpis eget elit sodales scelerisque.',
-                                    2,2);
+                                    20);
 INSERT INTO initiative (name, category, description, 
-                            createdById, updatedById) 
+                            createdById) 
                             VALUES ('DBC','Oil & Gas Production',
                                     'Morbi vestibulum, velit id pretium iaculis, diam erat fermentum justo, nec condimentum neque sapien placerat ante.',
-                                    19,19);
+                                    9);
 INSERT INTO initiative (name, category, description, 
-                            createdById, updatedById) 
+                            createdById) 
                             VALUES ('IKEv2','Television Services',
                                     'Aliquam non mauris.',
-                                    18,18);
+                                    15);
 INSERT INTO initiative (name, category, description, 
-                            createdById, updatedById) 
+                            createdById) 
                             VALUES ('RTL Coding','Coding and Development',
                                     'Maecenas leo odio, condimentum id, luctus nec, molestie sed, justo.',
-                                    12,12);
+                                    9);
 INSERT INTO initiative (name, category, description, 
-                            createdById, updatedById) 
+                            createdById) 
                             VALUES ('PTT','Business Services',
                                     'Cras in purus eu magna vulputate luctus.',
-                                    2,2);
+                                    19);
 INSERT INTO initiative (name, category, description, 
-                            createdById, updatedById) 
+                            createdById) 
                             VALUES ('Uranium','Medical/Dental Instruments',
                                     'Integer ac neque.',
-                                    13,13);
+                                    12);
 INSERT INTO initiative (name, category, description, 
-                            createdById, updatedById) 
+                            createdById) 
                             VALUES ('VSX','Maths',
                                     'Integer ac neque.',
-                                    11,11);
+                                    3);
 INSERT INTO initiative (name, category, description, 
-                            createdById, updatedById) 
+                            createdById) 
                             VALUES ('ISO 27001','Maths',
                                     'Nulla ut erat id mauris vulputate elementum.',
-                                    14,14);
+                                    8);
 INSERT INTO initiative (name, category, description, 
-                            createdById, updatedById) 
+                            createdById) 
                             VALUES ('NCDA','Real Estate Investment Trusts',
                                     'Nullam sit amet turpis elementum ligula vehicula consequat.',
-                                    1,1);
+                                    1);
