@@ -2,33 +2,45 @@ import React, { useState } from "react";
 import {
 	Button,
 	Center,
-	Checkbox,
-	CheckboxGroup,
 	FormControl,
 	FormLabel,
 	Input,
-	Stack,
+	Select,
 	Text,
+	Textarea,
 	useToast,
 } from "@chakra-ui/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import _ from "lodash";
 
-const CreateUser = ({ triggerSearch, onClose, roles }) => {
+const CreateInitiative = ({ triggerSearch, onClose, categories }) => {
 	const toast = useToast();
 	const { getAccessTokenSilently } = useAuth0();
 	const [submitState, setSubmitState] = useState({
 		loading: false,
 		error: null,
 	});
+	const [categoryDropdown, setCategoryDropdown] = useState(
+		categories.length > 0
+	);
 
 	const [formData, setFormData] = useState({
-		fullName: "",
-		email: "",
-		roles: [],
+		name: "",
+		description: "",
+		category: "",
 	});
 
 	const onChangeHandler = (e) => {
+		if (
+			e.target.name === "category" &&
+			categoryDropdown &&
+			e.target.value === "createnew"
+		) {
+			setCategoryDropdown(false);
+			setFormData({ ...formData, area: "" });
+			return;
+		}
+
 		if (e.target.name === "roles") {
 			if (e.target.checked) {
 				setFormData({
@@ -61,15 +73,14 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 			},
 			body: JSON.stringify(formData),
 		};
-		fetch(`${process.env.API_URL}/users`, options)
+		fetch(`${process.env.API_URL}/initiatives`, options)
 			.then((res) => {
 				if (res.status === 200) {
 					_.debounce(triggerSearch, 500)();
 					_.debounce(onClose, 500)();
 					toast({
-						title: "User Created",
-						description:
-							"We have created the user account and sent invitation email",
+						title: "Initiative Created",
+						description: "Initiative created successfully",
 						status: "success",
 						duration: 5000,
 						isClosable: true,
@@ -107,46 +118,59 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 		<>
 			<form>
 				<FormControl>
-					<FormLabel htmlFor="fullName">Full Name</FormLabel>
+					<FormLabel htmlFor="name">Name</FormLabel>
 					<Input
-						id="fullName"
-						name="fullName"
-						aria-describedby="full name"
-						value={formData.fullName}
+						id="name"
+						name="name"
+						aria-describedby="initiative name"
+						value={formData.name}
 						required
 						onChange={(e) => onChangeHandler(e)}
 					/>
-					<FormLabel htmlFor="email" mt="4">
-						Email
+					<FormLabel htmlFor="category" mt="4">
+						Category
 					</FormLabel>
-					<Input
-						id="email"
-						name="email"
-						aria-describedby="email"
-						required
-						value={formData.email}
-						onChange={(e) => onChangeHandler(e)}
-						type="email"
-					/>
+
+					{categoryDropdown ? (
+						<Select
+							placeholder="Select area"
+							name="category"
+							id="category"
+							aria-describedby="initiative category"
+							value={formData.category}
+							onChange={(e) => onChangeHandler(e)}
+						>
+							{categories.map(({ category }) => (
+								<option value={category} key={category}>
+									{category}
+								</option>
+							))}
+							<option value="createnew">Create a New Category</option>
+						</Select>
+					) : (
+						<Input
+							id="category"
+							name="category"
+							aria-describedby="category"
+							required
+							value={formData.category}
+							onChange={(e) => onChangeHandler(e)}
+							type="text"
+						/>
+					)}
 				</FormControl>
 				<FormControl mt="8">
-					<CheckboxGroup p={2}>
-						<FormLabel>Assign Roles</FormLabel>
-						<Stack spacing={5} direction="row">
-							{roles.map((role) => (
-								<Checkbox
-									name="roles"
-									key={role.id}
-									size="lg"
-									isChecked={formData.roles.includes(role.id)}
-									value={role.id}
-									onChange={(e) => onChangeHandler(e)}
-								>
-									{role.name}
-								</Checkbox>
-							))}
-						</Stack>
-					</CheckboxGroup>
+					<FormLabel htmlFor="description" mt="4">
+						Description
+					</FormLabel>
+					<Textarea
+						id="description"
+						name="description"
+						aria-describedby="description"
+						required
+						value={formData.description}
+						onChange={(e) => onChangeHandler(e)}
+					/>
 				</FormControl>
 				<Center>
 					<Button mt="8" onClick={onSubmitHandler}>
@@ -158,4 +182,4 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 	);
 };
 
-export default CreateUser;
+export default CreateInitiative;

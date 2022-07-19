@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import CreateSchool from "./CreateSchool";
 
 import Users from "./pages/users/Users";
+import Initiatives from "./pages/initiative";
 
 const App = () => {
 	const { isLoading, error, isAuthenticated } = useAuth0();
@@ -29,6 +30,7 @@ const App = () => {
 				<Layout>
 					<Routes>
 						<Route path="/" element={<Home />} />
+						<Route path="/initiatives" element={<Initiatives />} />
 						<Route path="/users" element={<Users />} />
 						<Route path="/about/this/site" element={<About />} />
 						<Route path="/createschool" element={<CreateSchool />} />
