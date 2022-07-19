@@ -86,7 +86,8 @@
 		"morgan": "^1.10.0",
 		"pg": "^8.7.3",
 		"pino": "^8.1.0",
-		"pino-pretty": "^8.1.0"
+		"pino-pretty": "^8.1.0",
+		"recharts": "^2.1.12"
 	},
 	"engines": {
 		"node": "^12 || ^14 || ^16",
