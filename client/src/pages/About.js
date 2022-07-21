@@ -1,6 +1,6 @@
 const About = () => (
 	<main role="main">
-		
+
 	</main>
 );
 

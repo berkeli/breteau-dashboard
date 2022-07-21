@@ -9,6 +9,7 @@ import About from "./pages/About";
 import Home from "./pages/Home";
 import Users from "./pages/users/Users";
 import Initiatives from "./pages/initiative";
+import SchoolStats from "./pages/schoolstat/SchoolStats";
 
 const App = () => {
 	const { isLoading, error, isAuthenticated } = useAuth0();
@@ -31,6 +32,7 @@ const App = () => {
 						<Route path="/initiatives" element={<Initiatives />} />
 						<Route path="/users" element={<Users />} />
 						<Route path="/about/this/site" element={<About />} />
+						<Route path="/schoolstats" element={<SchoolStats />} />
 					</Routes>
 				</Layout>
 			) : (
