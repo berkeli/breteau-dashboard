@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import { Chakra } from "./components/Chakra";
 
 import Layout from "./components/layout";
-gi
+import Loading from "./components/Loading";
 import LoginPage from "./pages/LoginPage";
 import About from "./pages/About";
 import Home from "./pages/Home";
