@@ -8,6 +8,9 @@ import {
 const initiatives = Router();
 
 initiatives
+	.get("/createschool", (req, res) => {
+		res.send("Hello2");
+	})
 	.get("/", getInitiatives)
 	.get("/categories", getInitiativeCategories)
 	.post("/", createInitiative);

@@ -11,6 +11,7 @@ import CreateSchool from "./CreateSchool";
 
 import Users from "./pages/users/Users";
 import Initiatives from "./pages/initiative";
+import ScheduleTracker from "./pages/ScheduleTracker";
 
 const App = () => {
 	const { isLoading, error, isAuthenticated } = useAuth0();
@@ -31,6 +32,7 @@ const App = () => {
 					<Routes>
 						<Route path="/" element={<Home />} />
 						<Route path="/initiatives" element={<Initiatives />} />
+						<Route path="/schedule-tracker" element={<ScheduleTracker />} />
 						<Route path="/users" element={<Users />} />
 						<Route path="/about/this/site" element={<About />} />
 						<Route path="/createschool" element={<CreateSchool />} />

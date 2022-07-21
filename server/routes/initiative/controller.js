@@ -41,3 +41,7 @@ export const createInitiative = (req, res) => {
 		}
 	);
 };
+
+export const CreateSchool = (req, res) => {
+	res.send("Hello World");
+};
