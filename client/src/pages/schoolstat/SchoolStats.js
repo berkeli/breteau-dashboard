@@ -69,7 +69,7 @@ const SchoolStats = () => {
 							<Tr>
 								<Th>Country</Th>
 								<Th>Name</Th>
-								<Th>Country</Th>
+								<Th>Location</Th>
 								<Th>Person Responsible</Th>
 								<Th>Status</Th>
 								<Th>Deployment Date</Th>
