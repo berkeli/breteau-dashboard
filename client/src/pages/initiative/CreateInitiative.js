@@ -13,28 +13,30 @@ import {
 import { useAuth0 } from "@auth0/auth0-react";
 import _ from "lodash";
 
-const CreateInitiative = ({ triggerSearch, onClose, areas }) => {
+const CreateInitiative = ({ triggerSearch, onClose, categories }) => {
 	const toast = useToast();
 	const { getAccessTokenSilently } = useAuth0();
 	const [submitState, setSubmitState] = useState({
 		loading: false,
 		error: null,
 	});
-	const [areaDropdown, setAreaDropdown] = useState(areas.length > 0);
+	const [categoryDropdown, setCategoryDropdown] = useState(
+		categories.length > 0
+	);
 
 	const [formData, setFormData] = useState({
 		name: "",
 		description: "",
-		area: "",
+		category: "",
 	});
 
 	const onChangeHandler = (e) => {
 		if (
-			e.target.name === "area" &&
-			areaDropdown &&
+			e.target.name === "category" &&
+			categoryDropdown &&
 			e.target.value === "createnew"
 		) {
-			setAreaDropdown(false);
+			setCategoryDropdown(false);
 			setFormData({ ...formData, area: "" });
 			return;
 		}
@@ -125,33 +127,33 @@ const CreateInitiative = ({ triggerSearch, onClose, areas }) => {
 						required
 						onChange={(e) => onChangeHandler(e)}
 					/>
-					<FormLabel htmlFor="area" mt="4">
-						Area
+					<FormLabel htmlFor="category" mt="4">
+						Category
 					</FormLabel>
 
-					{areaDropdown ? (
+					{categoryDropdown ? (
 						<Select
 							placeholder="Select area"
-							name="area"
-							id="area"
-							aria-describedby="initiative area"
-							value={formData.area}
+							name="category"
+							id="category"
+							aria-describedby="initiative category"
+							value={formData.category}
 							onChange={(e) => onChangeHandler(e)}
 						>
-							{areas.map(({ area }) => (
-								<option value={area} key={area}>
-									{area}
+							{categories.map(({ category }) => (
+								<option value={category} key={category}>
+									{category}
 								</option>
 							))}
-							<option value="createnew">Create a New Area</option>
+							<option value="createnew">Create a New Category</option>
 						</Select>
 					) : (
 						<Input
-							id="area"
-							name="area"
-							aria-describedby="area"
+							id="category"
+							name="category"
+							aria-describedby="category"
 							required
-							value={formData.area}
+							value={formData.category}
 							onChange={(e) => onChangeHandler(e)}
 							type="text"
 						/>

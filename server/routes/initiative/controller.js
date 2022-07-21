@@ -19,8 +19,8 @@ export const getInitiatives = (req, res) => {
 	});
 };
 
-export const getInitiativeAreas = (_, res) => {
-	pool.query("SELECT DISTINCT(area) FROM initiative", (err, results) => {
+export const getInitiativeCategories = (_, res) => {
+	pool.query("SELECT DISTINCT(category) FROM initiative", (err, results) => {
 		if (err) {
 			throw err;
 		}
@@ -29,10 +29,10 @@ export const getInitiativeAreas = (_, res) => {
 };
 
 export const createInitiative = (req, res) => {
-	const { name, area, description } = req.body;
+	const { name, category, description } = req.body;
 	pool.query(
-		"INSERT INTO initiative(name, area, description) VALUES ($1, $2, $3)",
-		[name, area, description],
+		"INSERT INTO initiative(name, category, description) VALUES ($1, $2, $3)",
+		[name, category, description],
 		(err, results) => {
 			if (err) {
 				throw err;
