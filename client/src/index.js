@@ -1,4 +1,4 @@
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { Auth0Provider } from "@auth0/auth0-react";
 
@@ -20,11 +20,12 @@ const providerConfig = {
 	cacheLocation: "localstorage",
 };
 
-ReactDOM.render(
+const container = document.getElementById("root");
+const root = createRoot(container);
+root.render(
 	<Auth0Provider {...providerConfig}>
 		<BrowserRouter history={history}>
 			<App />
 		</BrowserRouter>
-	</Auth0Provider>,
-	document.getElementById("root")
+	</Auth0Provider>
 );

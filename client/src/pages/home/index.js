@@ -3,17 +3,9 @@ import { BsPerson } from "react-icons/bs";
 import { GiTeacher } from "react-icons/gi";
 import { IoMdSchool } from "react-icons/io";
 import { GoLocation } from "react-icons/go";
-import StatsCard from "../components/home/StatsCard";
-import {
-	CartesianGrid,
-	Legend,
-	Line,
-	LineChart,
-	ResponsiveContainer,
-	Tooltip,
-	XAxis,
-	YAxis,
-} from "recharts";
+import StatsCard from "../../components/home/StatsCard";
+import CreateLineChart from "./CreateLineChart";
+import MapChart from "./MapChart";
 
 const stats = {
 	total: {
@@ -117,33 +109,10 @@ export function Home() {
 				/>
 			</SimpleGrid>
 			<SimpleGrid columns={{ base: 1, md: 2 }} spacing={{ base: 5, lg: 8 }}>
-				<ResponsiveContainer width="500px" height="300px">
-					<LineChart
-						width={500}
-						height={300}
-						data={data}
-						margin={{
-							top: 5,
-							right: 30,
-							left: 20,
-							bottom: 5,
-						}}
-					>
-						<CartesianGrid strokeDasharray="3 3" />
-						<XAxis dataKey="name" />
-						<YAxis />
-						<Tooltip />
-						<Legend />
-						<Line
-							type="monotone"
-							dataKey="pv"
-							stroke="#8884d8"
-							activeDot={{ r: 8 }}
-						/>
-						<Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-					</LineChart>
-				</ResponsiveContainer>
+				<CreateLineChart data={data} title="Students Reach" />
+				<CreateLineChart data={data} title="Teachers Reach" />
 			</SimpleGrid>
+			<MapChart />
 		</>
 	);
 }
