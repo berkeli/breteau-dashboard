@@ -97,7 +97,7 @@ const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 
 	return (
 		<>
-			<form>
+			<form method="post" action="index.html">
 				<FormControl>
 					<FormLabel htmlFor="school_id">School</FormLabel>
 					<Select
@@ -178,34 +178,6 @@ const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 						aria-describedby="Grades"
 						value={formData.school_grades}
 					></Input>
-					<Select
-						placeholder="Created By (id) "
-						name="created_ById "
-						id="school_created_ById "
-						aria-describedby="created_ById "
-						value={formData.school_created_ById}
-						onChange={(e) => onChangeHandler(e)}
-					>
-						{schools.map((school) => (
-							<option value={school.id} key={school.name}>
-								{school.name}
-							</option>
-						))}
-					</Select>
-					<Select
-						placeholder="created At"
-						name="created_At"
-						id="school_created_At"
-						aria-describedby="created_At "
-						value={formData.school_created_At}
-						onChange={(e) => onChangeHandler(e)}
-					>
-						{schools.map((school) => (
-							<option value={school.id} key={school.name}>
-								{school.name}
-							</option>
-						))}
-					</Select>
 				</FormControl>
 
 				{/* <FormLabel htmlFor="category" mt="4">
@@ -258,6 +230,8 @@ const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 						Submit
 					</Button>
 				</Center> */}
+
+				<Button type="submit">Add school</Button>
 			</form>
 		</>
 	);
