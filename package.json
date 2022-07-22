@@ -62,6 +62,7 @@
 		"react-icons": "^4.4.0",
 		"react-router-dom": "^6.2.1",
 		"react-simple-maps": "^2.3.0",
+		"react-tooltip": "^4.2.21",
 		"recharts": "^2.1.12",
 		"rimraf": "^3.0.2",
 		"style-loader": "^3.3.1",
