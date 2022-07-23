@@ -74,7 +74,10 @@ const CreateSchool = ({ triggerSearch, onClose, countries }) => {
 			formData.status === "" ||
 			formData.description === ""
 		) {
-			return { result: false, message: "Empty fields not allowed. All fields must be filled in." };
+			return {
+				result: false,
+				message: "Empty fields are not allowed. All fields must be filled in.",
+			};
 		}
 
 		// Date Validation

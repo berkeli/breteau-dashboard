@@ -63,12 +63,6 @@ export const createSchool = (req, res) => {
 			}
 			// Otherwise fetch the person 'id'
 			let responsibleId = results.rows[0].id;
-			// Format the Deployment Date
-			let [day, month, year] = deploymentdate.split("/");
-			// format Date string as `yyyy-mm-dd`
-			day = day.padStart(2, "0");
-			month = month.padStart(2, "0");
-			deploymentdate = `${year}-${month}-${day}`;
 			description = "ditto";
 			// For now, assume Person 1
 			let created_ById = 1;
