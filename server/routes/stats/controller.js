@@ -8,7 +8,7 @@ export const getTotals = async (req, res) => {
 		);
 
 		const schoolStat = await pool.query(
-			"SELECT COUNT(DISTINCT(country)) as countries, COUNT(*) AS schools FROM schoolstat"
+			"SELECT COUNT(DISTINCT(country)) as countries, COUNT(*) AS schools FROM school"
 		);
 
 		res.send({
@@ -52,13 +52,13 @@ export const getReach = async (req, res) => {
 export const countryStats = async (req, res) => {
 	try {
 		const query =
-			"SELECT schoolstat.country AS name, COUNT(DISTINCT(schoolstat.id)) AS school_count, " +
+			"SELECT school.country AS name, COUNT(DISTINCT(school.id)) AS school_count, " +
 			" SUM(scheduletracker.numofexistingteachers) AS existing_teachers, " +
 			" SUM(scheduletracker.numofnewteachers) AS new_teachers, " +
 			" SUM(scheduletracker.numofexistingstudents) AS existing_students, " +
 			" SUM(scheduletracker.numofnewstudents) AS new_students, " +
-			" MIN(schoolstat.deploymentdate) AS earliest_deployment " +
-			" FROM schoolstat LEFT JOIN scheduletracker ON schoolstat.id = scheduletracker.schoolid GROUP BY schoolstat.country";
+			" MIN(school.deploymentdate) AS earliest_deployment " +
+			" FROM school LEFT JOIN scheduletracker ON school.id = scheduletracker.schoolid GROUP BY school.country";
 
 		const countries = await pool.query(query);
 

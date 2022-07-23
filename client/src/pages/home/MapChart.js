@@ -10,7 +10,6 @@ import { Box, Heading, Text } from "@chakra-ui/react";
 import mapFeatures from "../../assets/mapFeatures.json";
 
 const MapChart = ({ setTooltipContent, countries }) => {
-	console.log("countries", countries);
 	return (
 		<ComposableMap data-tip="">
 			<ZoomableGroup>
@@ -60,7 +59,6 @@ const MapChart = ({ setTooltipContent, countries }) => {
 };
 
 const countryToolTip = (name, country) => {
-	console.log(country);
 	return (
 		<Box>
 			<Heading as="h4" size="sm">
