@@ -4,7 +4,7 @@ import { checkJwt } from "../middleware/auth/auth.middleware";
 import pool from "../db";
 import logger from "../utils/logger";
 import initiatives from "./initiative";
-import schoolstats from "./schoolstat";
+import schools from "./school";
 
 const router = Router();
 
@@ -32,7 +32,7 @@ function genericIntErrorMessage(theId, response, errType, text = "") {
 // GET - Return a single Person by ID.
 // This Endpoint is needed to convert numeric IDs to the name of the person
 
-router.get("/oneperson/:personId", function (request, response) {
+router.get("/personbyid/:personId", function (request, response) {
 	const personId = Number(request.params.personId);
 
 	if (
@@ -57,7 +57,42 @@ router.get("/oneperson/:personId", function (request, response) {
 					genericIntErrorMessage(personId, response, 2, "Person");
 					return;
 				}
-console.log(reply)
+
+				return response.json(reply); // Success
+			}
+		}
+	);
+});
+
+// GET - Using the Person's name, check their existence in the database
+// This Endpoint is needed to determine the numeric ID which corresponds to the name of the person
+
+router.get("/personbyname/:personId", function (request, response) {
+	const personId = Number(request.params.personId);
+
+	if (
+		Number.isNaN(personId) ||
+		!Number.isSafeInteger(personId) ||
+		personId <= 0
+	) {
+		genericIntErrorMessage(personId, response, 1);
+		return;
+	}
+
+	pool.query(
+		"SELECT * FROM person WHERE id=$1",
+		[personId],
+		(err, result) => {
+			if (err) {
+				logger.error(err);
+				response.status(500).json({ message: err.message });
+			} else {
+				let reply = result.rows;
+				if (reply.length === 0) {
+					genericIntErrorMessage(personId, response, 2, "Person");
+					return;
+				}
+
 				return response.json(reply); // Success
 			}
 		}
@@ -67,6 +102,6 @@ console.log(reply)
 router.use(checkJwt);
 router.use("/users", users);
 router.use("/initiatives", initiatives);
-router.use("/schoolstats", schoolstats);
+router.use("/schools", schools);
 
 export default router;

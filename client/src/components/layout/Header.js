@@ -38,7 +38,6 @@ const Header = () => {
 		{ name: "Schools", to: "/schools" },
 		{ name: "Initiatives", to: "/initiatives" },
 		{ name: "Users", to: "/users" },
-		{ name: "School Stats", to: "/schoolstats" },
 	];
 	return (
 		<>
