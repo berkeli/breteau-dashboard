@@ -5,6 +5,8 @@ import pool from "../db";
 import logger from "../utils/logger";
 import initiatives from "./initiative";
 import schools from "./school";
+import stats from "./stats";
+
 
 const router = Router();
 
@@ -101,6 +103,7 @@ router.get("/personbyname/:personId", function (request, response) {
 
 router.use(checkJwt);
 router.use("/users", users);
+router.use("/stats", stats);
 router.use("/initiatives", initiatives);
 router.use("/schools", schools);
 
