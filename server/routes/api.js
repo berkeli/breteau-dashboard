@@ -4,6 +4,7 @@ import { checkJwt } from "../middleware/auth/auth.middleware";
 import pool from "../db";
 import logger from "../utils/logger";
 import initiatives from "./initiative";
+import stats from "./stats";
 
 const router = Router();
 
@@ -19,6 +20,7 @@ router.get("/", (_, res) => {
 });
 router.use(checkJwt);
 router.use("/users", users);
+router.use("/stats", stats);
 router.use("/initiatives", initiatives);
 
 export default router;
