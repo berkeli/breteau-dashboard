@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-	Box,
 	Button,
 	Center,
 	FormControl,
@@ -50,28 +49,19 @@ const CreateSchool = ({ triggerSearch, onClose, countries }) => {
 		}
 	};
 
-	// Source: https://bobbyhadz.com/blog/javascript-date-validation-dd-mm-yyyy
-	// However handle one-digit days and one-digit months
+	// Date format is `yyyy-mm-dd`
 	function dateIsValid(dateStr) {
-		const regex = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
+		const regex = /^\d{4}-\d{2}-\d{2}$/;
 		if (dateStr.match(regex) === null) {
 			return false;
 		}
-
-		let [day, month, year] = dateStr.split("/");
-
-		// format Date string as `yyyy-mm-dd`
-		day = day.padStart(2, "0");
-		month = month.padStart(2, "0");
-		const isoFormattedStr = `${year}-${month}-${day}`;
-
-		const date = new Date(isoFormattedStr);
+		const date = new Date(dateStr);
 
 		const timestamp = date.getTime();
 		if (typeof timestamp !== "number" || Number.isNaN(timestamp)) {
 			return false;
 		}
-		return date.toISOString().startsWith(isoFormattedStr);
+		return date.toISOString().startsWith(dateStr);
 	}
 
 	// Some Validation
@@ -82,17 +72,20 @@ const CreateSchool = ({ triggerSearch, onClose, countries }) => {
 			formData.country === "" ||
 			formData.responsible === "" ||
 			formData.status === "" ||
-			formData.deploymentdate === "" ||
 			formData.description === ""
 		) {
-			return { result: false, message: "All fields must be filled in." };
+			return { result: false, message: "Empty fields not allowed. All fields must be filled in." };
 		}
 
 		// Date Validation
 
-		if (!dateIsValid(formData.deploymentdate)) {
+		if (
+			formData.deploymentdate === "" ||
+			!dateIsValid(formData.deploymentdate)
+		) {
 			return { result: false, message: "Invalid Deployment Date" };
 		}
+
 		return { result: true }; // Passed Simple Validation
 	};
 
@@ -257,6 +250,7 @@ const CreateSchool = ({ triggerSearch, onClose, countries }) => {
 						aria-describedby="deployment date"
 						value={formData.deploymentdate}
 						required
+						type="date" // Date Picker
 						onChange={(e) => onChangeHandler(e)}
 					/>
 				</FormControl>
