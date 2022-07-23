@@ -7,11 +7,11 @@ const SchoolRow = ({ schoolData }) => {
 		name,
 		location,
 		country,
-		responsibleid,
 		status,
 		deploymentdate,
-        description,
+		description,
 		created_at,
+		full_name,
 	} = schoolData;
 
 	let myDate = new Date(deploymentdate);
@@ -23,34 +23,13 @@ const SchoolRow = ({ schoolData }) => {
 		.toLocaleString()
 		.replace(", 00:00:00", "");
 
-	// Fetch the name of the 'Person Responsible' using the ID number
-	const {
-		data: thePerson,
-		isLoading,
-		error,
-	} = useFetch(`/personbyid/${responsibleid}`);
-
-	if (isLoading || error) {
-		return (
-			<Box>
-				{error && (
-					<Text align="center">
-						Something went wrong... <br />
-						{error.message}
-					</Text>
-				)}
-			</Box>
-		);
-	}
-	let personName = thePerson[0].full_name;
-
 	return (
 		<Tr>
 			<Td>{country}</Td>
 			<Td>{name}</Td>
 			<Td>{location}</Td>
 			<Td>{description}</Td>
-			<Td>{personName}</Td>
+			<Td>{full_name}</Td>
 			<Td>{status}</Td>
 			<Td>{dateOnly}</Td>
 			<Td>{new Date(created_at).toLocaleString()}</Td>
