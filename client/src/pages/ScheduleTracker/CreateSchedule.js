@@ -25,15 +25,15 @@ const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 	console.log(dropdownData);
 
 	const [formData, setFormData] = useState({
-		school_id: null,
-		initiative_id: null,
-		no_of_new_students: null,
-		no_of_existing_students: null,
-		no_of_new_teachers: null,
-		no_of_existing_teachers: null,
-		no_of_tablets: null,
+		school_id: "", // change to camel case
+		initiative_id: "",
+		noOfNewStudents: "",
+		noOfExistingStudents: null,
+		noOfNewTeachers: null,
+		noOfExistingTeachers: null,
+		noOfTablets: null,
 		grades: null,
-		languages_taught: null,
+		languagesTaught: null,
 	});
 
 	const onChangeHandler = (e) => {
@@ -45,6 +45,8 @@ const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 	const onSubmitHandler = async () => {
 		setSubmitState({ ...submitState, loading: true });
 		const token = await getAccessTokenSilently();
+
+		console.log("formData ", formData);
 
 		const options = {
 			method: "POST",
@@ -97,13 +99,13 @@ const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 
 	return (
 		<>
-			<form method="post" action="index.html">
+			<form>
 				<FormControl>
-					<FormLabel htmlFor="school_id">School</FormLabel>
+					<FormLabel htmlFor="schoolId">School</FormLabel>
 					<Select
 						placeholder="Select school"
-						name="school_id"
-						id="school_id"
+						name="schoolId"
+						id="schoolId"
 						aria-describedby="school name"
 						value={formData.school_id}
 						onChange={(e) => onChangeHandler(e)}
@@ -114,60 +116,78 @@ const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 							</option>
 						))}
 					</Select>
+					<FormLabel htmlFor="programmeInitiativeId">Initiative</FormLabel>
+					<Select
+						placeholder="Select Initiative"
+						name="programmeInitiativeId"
+						id="programmeInitiativeId"
+						aria-describedby="school name"
+						value={formData.school_id}
+						onChange={(e) => onChangeHandler(e)}
+					>
+						{schools.map((school) => (
+							<option value={school.id} key={school.name}>
+								{school.name}
+							</option>
+						))}
+					</Select>
+					<FormLabel htmlFor="duration">Duration by hour</FormLabel>
 					<Input
 						placeholder="Duration by hour"
-						name="school_duration"
-						id="school_duration"
+						name="duration"
+						id="duration"
 						type="number"
 						aria-describedby="school duration"
 						value={formData.school_duration}
 					></Input>
-					<Input
+					<FormLabel htmlFor="briefSummary">Brief Summary</FormLabel>
+					<Textarea
 						placeholder="Brief Summary"
 						name="briefSummary"
-						id="school_briefSummary"
+						id="briefSummary"
 						aria-describedby="Brief Summary"
 						value={formData.school_briefSummary}
-					></Input>
+					></Textarea>
+					<FormLabel htmlFor="numOfNewTeachers">Number of Teachers</FormLabel>
 					<Input
 						placeholder="Number Of New Teachers"
 						name="numOfNewTeachers"
-						id="school_numOfNewTeachers"
+						id="numOfNewTeachers"
 						aria-describedby="Number Of New Teachers"
 						value={formData.school_numOfNewTeachers}
 					></Input>
 					<Input
 						placeholder="Number Of New Students"
 						name="numOfNewStudents"
-						id="school_numOfNewStudents"
+						id="numOfNewStudents"
 						aria-describedby="Number Of New Students"
 						value={formData.school_numOfNewStudents}
 					></Input>
 					<Input
 						placeholder="Number Of Teachers"
 						name="numOfExistingTeachers"
-						id="school_numOfExistingTeachers"
+						id="numOfExistingTeachers"
 						aria-describedby="Number Of Teacher"
 						value={formData.school_numOfExistingTeachers}
 					></Input>
 					<Input
 						placeholder="Number Of Existing Students"
 						name="numOfExistingStudents"
-						id="school_numOfExistingStudents"
+						id="numOfExistingStudents"
 						aria-describedby="Number Of Existing Students"
 						value={formData.school_numOfExistingStudents}
 					></Input>
 					<Input
 						placeholder="Total Number of Tablets"
 						name="totalNumTablets"
-						id="school_totalNumTablets"
+						id="totalNumTablets"
 						aria-describedby="Total Number of Tablets"
 						value={formData.school_totalNumTablets}
 					></Input>
 					<Input
 						placeholder="Total Number of Tablets"
 						name="totalNumTablets"
-						id="school_totalNumTablets"
+						id="totalNumTablets"
 						aria-describedby="Total Number of Tablets"
 						value={formData.school_totalNumTablets}
 					></Input>
@@ -180,58 +200,11 @@ const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 					></Input>
 				</FormControl>
 
-				{/* <FormLabel htmlFor="category" mt="4">
-						Category
-					</FormLabel>
-
-					{categoryDropdown ? (
-						<Select
-							placeholder="Select area"
-							name="category"
-							id="category"
-							aria-describedby="initiative category"
-							value={formData.category}
-							onChange={(e) => onChangeHandler(e)}
-						>
-							{categories.map(({ category }) => (
-								<option value={category} key={category}>
-									{category}
-								</option>
-							))}
-							<option value="createnew">Create a New Category</option>
-						</Select>
-					) : (
-						<Input
-							id="category"
-							name="category"
-							aria-describedby="category"
-							required
-							value={formData.category}
-							onChange={(e) => onChangeHandler(e)}
-							type="text"
-						/>
-					)}
-				</FormControl>
-				<FormControl mt="8">
-					<FormLabel htmlFor="description" mt="4">
-						Description
-					</FormLabel>
-					<Textarea
-						id="description"
-						name="description"
-						aria-describedby="description"
-						required
-						value={formData.description}
-						onChange={(e) => onChangeHandler(e)}
-					/>
-				</FormControl>
 				<Center>
 					<Button mt="8" onClick={onSubmitHandler}>
 						Submit
 					</Button>
-				</Center> */}
-
-				<Button type="submit">Add school</Button>
+				</Center>
 			</form>
 		</>
 	);

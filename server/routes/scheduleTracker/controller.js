@@ -1,9 +1,10 @@
 import pool from "../../db";
+import { objectToQuery } from "../../utils/objectToQuery";
 
 export const getSchedules = (req, res) => {
 	const { searchQuery } = req.query;
 	const query = {
-		text: "SELECT * FROM schedule",
+		text: "SELECT * FROM scheduleTracker",
 	};
 
 	if (searchQuery) {
@@ -21,7 +22,23 @@ export const getSchedules = (req, res) => {
 
 export const getFormData = async (req, res) => {
 	try {
-		const schools = await pool.query("SELECT DISTINCT(name), id FROM school");
+		const schools = await pool.query(
+			"SELECT DISTINCT(name), id FROM schoolStat"
+		);
+		const initiatives = await pool.query(
+			"SELECT DISTINCT(name), id FROM initiative"
+		);
+		res.json({ schools: schools.rows, initiatives: initiatives.rows });
+	} catch (error) {
+		res.status(400).json({ message: error.message });
+	}
+};
+
+export const createScheduleTracker = async (req, res) => {
+	try {
+		const schools = await pool.query(
+			"SELECT DISTINCT(name), id FROM schoolStat"
+		);
 		const initiatives = await pool.query(
 			"SELECT DISTINCT(name), id FROM initiative"
 		);
