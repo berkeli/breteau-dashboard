@@ -12,12 +12,7 @@ import {
 	ModalContent,
 	ModalHeader,
 	ModalOverlay,
-	Table,
-	Tbody,
 	Text,
-	Th,
-	Thead,
-	Tr,
 	useDisclosure,
 } from "@chakra-ui/react";
 import _ from "lodash";
@@ -25,7 +20,7 @@ import { BiSearchAlt } from "react-icons/bi";
 import useFetch from "../../hooks/useFetch";
 import CreateSchool from "./CreateSchool";
 import Loading from "../../components/Loading";
-import SchoolRow from "./SchoolRow";
+import CreateReactTableForSchool from "./CreateReactTableForSchool";
 
 const School = () => {
 	const [searchQuery, setSearchQuery] = useState("");
@@ -63,26 +58,11 @@ const School = () => {
 						{error.message}
 					</Text>
 				)}
+				{/* Implemented as a React Table*/}
 				{schoolData && (
-					<Table variant="striped">
-						<Thead>
-							<Tr>
-								<Th>Country</Th>
-								<Th>Name</Th>
-								<Th>Location</Th>
-								<Th>Description</Th>
-								<Th>Person Responsible</Th>
-								<Th>Status</Th>
-								<Th>Deployment Date</Th>
-								<Th>Created At</Th>
-							</Tr>
-						</Thead>
-						<Tbody>
-							{schoolData.map((element) => (
-								<SchoolRow key={element.id} schoolData={element} />
-							))}
-						</Tbody>
-					</Table>
+					<CreateReactTableForSchool
+						schoolData={schoolData}
+					></CreateReactTableForSchool>
 				)}
 			</Box>
 		</>
