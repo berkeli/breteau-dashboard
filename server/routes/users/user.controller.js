@@ -1,7 +1,7 @@
 import config from "../../config";
 import logger from "../../utils/logger";
 import { auth0 } from "./helpers";
-import { pool } from "../../db";
+import pool from "../../db/";
 
 export const getUsers = async (req, res) => {
 	const { searchQuery, page, per_page } = req.query;
@@ -40,11 +40,14 @@ export const getUsers = async (req, res) => {
 };
 
 export const createUser = async (req, res) => {
-	const { fullName, email, roles } = req.body;
+	const { fullName, email, roles, country } = req.body;
 
 	const user = {
 		name: fullName,
 		email,
+		user_metadata: {
+			country,
+		},
 		password: Math.random().toString(36).slice(-12),
 		email_verified: false,
 		connection: config.AUTH0_CONNECTION,
@@ -58,10 +61,42 @@ export const createUser = async (req, res) => {
 			await resetUserPassword(id);
 			await assignRolesToUser(id, roles);
 			const query = {
-				text: "INSERT INTO person (auth0_id, full_name, email, roles) VALUES ($1, $2, $3, $4) ON CONFLICT (auth0_id) DO UPDATE SET full_name = $2, email = $3, roles = $4",
-				values: [id, fullName, email, roles.join(",")],
+				text: "INSERT INTO person (auth0_id, full_name, email, roles, country) VALUES ($1, $2, $3, $4, $5) ON CONFLICT (auth0_id) DO UPDATE SET full_name = $2, email = $3, roles = $4, country = $5",
+				values: [id, fullName, email, roles.join(","), country],
 			};
-			pool.query(query);
+			await pool.query(query);
+			res.json(user);
+		})
+		.catch((err) => {
+			logger.error(err);
+			res.status(500).json({ message: err.message });
+		});
+};
+
+export const updateUser = async (req, res) => {
+	const { fullName, email, roles, country, user_id, allRoles } = req.body;
+
+	const user = {
+		name: fullName,
+		email,
+		user_metadata: {
+			country,
+		},
+		connection: config.AUTH0_CONNECTION,
+	};
+
+	await auth0
+		.updateUser({ id: user_id }, user)
+		.then(async (user) => {
+			await auth0.removeRolesFromUser({ id: user_id }, { roles: allRoles });
+			if (roles.length > 0) {
+				await assignRolesToUser(user_id, roles);
+			}
+			const query = {
+				text: "INSERT INTO person (auth0_id, full_name, email, roles, country) VALUES ($1, $2, $3, $4, $5) ON CONFLICT (email) DO UPDATE SET auth0_id = $1, full_name = $2, email = $3, roles = $4, country = $5",
+				values: [user_id, fullName, email, roles.join(","), country],
+			};
+			await pool.query(query);
 			res.json(user);
 		})
 		.catch((err) => {
