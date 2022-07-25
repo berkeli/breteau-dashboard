@@ -1,6 +1,7 @@
 import config from "../../config";
 import logger from "../../utils/logger";
 import { auth0 } from "./helpers";
+import { pool } from "../../db";
 
 export const getUsers = async (req, res) => {
 	const { searchQuery, page, per_page } = req.query;
@@ -56,6 +57,11 @@ export const createUser = async (req, res) => {
 			const id = user.user_id;
 			await resetUserPassword(id);
 			await assignRolesToUser(id, roles);
+			const query = {
+				text: "INSERT INTO person (auth0_id, full_name, email, roles) VALUES ($1, $2, $3, $4) ON CONFLICT (auth0_id) DO UPDATE SET full_name = $2, email = $3, roles = $4",
+				values: [id, fullName, email, roles.join(",")],
+			};
+			pool.query(query);
 			res.json(user);
 		})
 		.catch((err) => {
