@@ -72,8 +72,16 @@ const ScheduleTracker = () => {
 							<Tr>
 								<Th>School</Th>
 								<Th>Initiative</Th>
-								<Th>New Students Reached</Th>
-								<Th>Existing Students Reached</Th>
+								<Th>Duration by hour</Th>
+								<Th>Number of New Teachers</Th>
+								<Th>Number of New Students</Th>
+								<Th>Number of Existing Teachers</Th>
+								<Th>Number of Existing Students</Th>
+								<Th>Number of Tablets</Th>
+								<Th>Grades</Th>
+								<Th>Languages Taught</Th>
+								<Th>Support Category</Th>
+								<Th>Support Type</Th>
 							</Tr>
 						</Thead>
 						<Tbody>
@@ -108,17 +116,17 @@ const ActionsBox = ({
 					<BiSearchAlt />
 				</InputLeftAddon>
 				<Input
-					placeholder="Search initiatives..."
+					placeholder="Search schedules..."
 					value={searchQuery}
 					width="auto"
 					onChange={handleChange}
 				/>
 			</InputGroup>
-			<Button onClick={onOpen}>Create Initiative</Button>
+			<Button onClick={onOpen}>Create schedule</Button>
 			<Modal isOpen={isOpen} onClose={onClose}>
 				<ModalOverlay />
 				<ModalContent p={2}>
-					<ModalHeader> Create a new Initiative </ModalHeader>
+					<ModalHeader> Create a new schedule </ModalHeader>
 					<ModalCloseButton />
 					<ModalBody>
 						<CreateSchedule

@@ -1,14 +1,16 @@
 import pool from "../../db";
+import { getUserId } from "../../utils/getUserId";
 import { objectToQuery } from "../../utils/objectToQuery";
 
 export const getSchedules = (req, res) => {
 	const { searchQuery } = req.query;
 	const query = {
-		text: "SELECT * FROM scheduleTracker",
+		text: "SELECT school.name as school, initiative.name as initiative, scheduleTracker.duration, scheduleTracker.numofnewstudents, scheduleTracker.numofexistingstudents,	scheduleTracker.numofnewteachers, scheduleTracker.numofexistingteachers, scheduleTracker.grades, scheduleTracker.languagestaught, scheduleTracker.totalnumtablets, scheduleTracker.supportcategory,	scheduleTracker.supporttype FROM scheduleTracker inner join school on school.id = scheduleTracker.schoolId inner join initiative on initiative.id = scheduleTracker.programmeInitiativeId",
 	};
 
 	if (searchQuery) {
-		query.text += " WHERE LOWER() LIKE $1";
+		query.text +=
+			" WHERE LOWER(school.name) LIKE $1 or LOWER(initiative.name) LIKE $1";
 		query.values = ["%" + searchQuery.toLowerCase() + "%"];
 	}
 
@@ -22,9 +24,7 @@ export const getSchedules = (req, res) => {
 
 export const getFormData = async (req, res) => {
 	try {
-		const schools = await pool.query(
-			"SELECT DISTINCT(name), id FROM schoolStat"
-		);
+		const schools = await pool.query("SELECT DISTINCT(name), id FROM school");
 		const initiatives = await pool.query(
 			"SELECT DISTINCT(name), id FROM initiative"
 		);
@@ -36,13 +36,15 @@ export const getFormData = async (req, res) => {
 
 export const createScheduleTracker = async (req, res) => {
 	try {
-		const schools = await pool.query(
-			"SELECT DISTINCT(name), id FROM schoolStat"
+		const userId = await getUserId(req);
+		const scheduleTracker = { ...req.body, created_byid: userId };
+		const insertQuery = objectToQuery(scheduleTracker);
+
+		const results = await pool.query(
+			`INSERT INTO scheduleTracker ${insertQuery}`
 		);
-		const initiatives = await pool.query(
-			"SELECT DISTINCT(name), id FROM initiative"
-		);
-		res.json({ schools: schools.rows, initiatives: initiatives.rows });
+
+		res.send(results.rows);
 	} catch (error) {
 		res.status(400).json({ message: error.message });
 	}

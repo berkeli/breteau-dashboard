@@ -25,15 +25,18 @@ const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 	console.log(dropdownData);
 
 	const [formData, setFormData] = useState({
-		school_id: "", // change to camel case
-		initiative_id: "",
-		noOfNewStudents: "",
-		noOfExistingStudents: null,
-		noOfNewTeachers: null,
-		noOfExistingTeachers: null,
-		noOfTablets: null,
-		grades: null,
-		languagesTaught: null,
+		schoolId: "",
+		programmeInitiativeId: "",
+		numOfNewStudents: 0,
+		numOfExistingStudents: 0,
+		numOfNewTeachers: 0,
+		numOfExistingTeachers: 0,
+		totalNumTablets: 0,
+		duration: 0,
+		grades: "",
+		languagesTaught: "",
+		supportCategory: "",
+		supportType: "",
 	});
 
 	const onChangeHandler = (e) => {
@@ -121,13 +124,13 @@ const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 						placeholder="Select Initiative"
 						name="programmeInitiativeId"
 						id="programmeInitiativeId"
-						aria-describedby="school name"
-						value={formData.school_id}
+						aria-describedby="initiative name"
+						value={formData.programmeInitiativeId}
 						onChange={(e) => onChangeHandler(e)}
 					>
-						{schools.map((school) => (
-							<option value={school.id} key={school.name}>
-								{school.name}
+						{initiatives.map((initiative) => (
+							<option value={initiative.id} key={initiative.name}>
+								{initiative.name}
 							</option>
 						))}
 					</Select>
@@ -137,8 +140,10 @@ const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 						name="duration"
 						id="duration"
 						type="number"
-						aria-describedby="school duration"
-						value={formData.school_duration}
+						min="0"
+						aria-describedby="duration"
+						value={formData.duration}
+						onChange={(e) => onChangeHandler(e)}
 					></Input>
 					<FormLabel htmlFor="briefSummary">Brief Summary</FormLabel>
 					<Textarea
@@ -146,57 +151,109 @@ const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 						name="briefSummary"
 						id="briefSummary"
 						aria-describedby="Brief Summary"
-						value={formData.school_briefSummary}
+						value={formData.briefSummary}
+						onChange={(e) => onChangeHandler(e)}
 					></Textarea>
-					<FormLabel htmlFor="numOfNewTeachers">Number of Teachers</FormLabel>
+					<FormLabel htmlFor="numOfNewTeachers">
+						Number of New Teachers
+					</FormLabel>
 					<Input
 						placeholder="Number Of New Teachers"
 						name="numOfNewTeachers"
 						id="numOfNewTeachers"
+						type="number"
+						min="0"
 						aria-describedby="Number Of New Teachers"
-						value={formData.school_numOfNewTeachers}
+						value={formData.numOfNewTeachers}
+						onChange={(e) => onChangeHandler(e)}
 					></Input>
+					<FormLabel htmlFor="numOfNewStudents">
+						Number of New Students
+					</FormLabel>
 					<Input
 						placeholder="Number Of New Students"
 						name="numOfNewStudents"
 						id="numOfNewStudents"
+						type="number"
+						min="0"
 						aria-describedby="Number Of New Students"
-						value={formData.school_numOfNewStudents}
+						value={formData.numOfNewStudents}
+						onChange={(e) => onChangeHandler(e)}
 					></Input>
+					<FormLabel htmlFor="numOfExistingTeachers">
+						Number Of Existing Teachers
+					</FormLabel>
 					<Input
-						placeholder="Number Of Teachers"
+						placeholder="Number Of Existing Teachers"
 						name="numOfExistingTeachers"
 						id="numOfExistingTeachers"
+						type="number"
+						min="0"
 						aria-describedby="Number Of Teacher"
-						value={formData.school_numOfExistingTeachers}
+						value={formData.numOfExistingTeachers}
+						onChange={(e) => onChangeHandler(e)}
 					></Input>
+					<FormLabel htmlFor="numOfExistingStudents">
+						Number Of Existing Students
+					</FormLabel>
 					<Input
 						placeholder="Number Of Existing Students"
 						name="numOfExistingStudents"
 						id="numOfExistingStudents"
+						type="number"
+						min="0"
 						aria-describedby="Number Of Existing Students"
-						value={formData.school_numOfExistingStudents}
+						value={formData.numOfExistingStudents}
+						onChange={(e) => onChangeHandler(e)}
 					></Input>
+					<FormLabel htmlFor="totalNumTablets">
+						Total Number of Tablets
+					</FormLabel>
 					<Input
 						placeholder="Total Number of Tablets"
 						name="totalNumTablets"
 						id="totalNumTablets"
+						type="number"
+						min="0"
 						aria-describedby="Total Number of Tablets"
-						value={formData.school_totalNumTablets}
+						value={formData.totalNumTablets}
+						onChange={(e) => onChangeHandler(e)}
 					></Input>
-					<Input
-						placeholder="Total Number of Tablets"
-						name="totalNumTablets"
-						id="totalNumTablets"
-						aria-describedby="Total Number of Tablets"
-						value={formData.school_totalNumTablets}
-					></Input>
+					<FormLabel htmlFor="grades">Grades</FormLabel>
 					<Input
 						placeholder="Grades"
 						name="grades"
-						id="school_grades"
+						id="grades"
 						aria-describedby="Grades"
-						value={formData.school_grades}
+						value={formData.grades}
+						onChange={(e) => onChangeHandler(e)}
+					></Input>
+					<FormLabel htmlFor="languagesTaught">Languages Taught</FormLabel>
+					<Input
+						placeholder="Languages Taught"
+						name="languagesTaught"
+						id="languagesTaught"
+						aria-describedby="languagesTaught"
+						value={formData.languagesTaught}
+						onChange={(e) => onChangeHandler(e)}
+					></Input>
+					<FormLabel htmlFor="supportCategory">Support Category</FormLabel>
+					<Input
+						placeholder="Support Category"
+						name="supportCategory"
+						id="supportCategory"
+						aria-describedby="supportCategory"
+						value={formData.supportCategory}
+						onChange={(e) => onChangeHandler(e)}
+					></Input>
+					<FormLabel htmlFor="supportType">Support Type</FormLabel>
+					<Input
+						placeholder="Support Type"
+						name="supportType"
+						id="supportType"
+						aria-describedby="supportType"
+						value={formData.supportType}
+						onChange={(e) => onChangeHandler(e)}
 					></Input>
 				</FormControl>
 

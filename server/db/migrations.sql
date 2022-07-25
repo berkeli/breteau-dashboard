@@ -1,8 +1,11 @@
+
+
 CREATE TABLE IF NOT EXISTS person (
    id serial PRIMARY KEY,
    full_name VARCHAR(255) NOT NULL,
    email VARCHAR(255) UNIQUE NOT NULL,
-   created_at TIMESTAMP NOT NULL DEFAULT NOW()
+   created_at TIMESTAMP NOT NULL DEFAULT NOW(), 
+   auth0_id VARCHAR(255) UNIQUE NOT NULL,
 );
 
 CREATE TABLE IF NOT EXISTS initiative (
@@ -13,18 +16,18 @@ CREATE TABLE IF NOT EXISTS initiative (
    created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE IF NOT EXISTS schedule (
+CREATE TABLE IF NOT EXISTS schedule (0
    id serial PRIMARY KEY,
-   school_id INT NOT NULL,
-   initiative_id INT NOT NULL, 
-   no_of_new_students INT NOT NULL,
-   no_of_existing_students INT NOT NULL,
-   no_of_new_teachers INT NOT NULL,
-   no_of_existing_teachers INT NOT NULL,
-   no_of_tablets INT NOT NULL,
+   schoolId INT NOT NULL,
+   initiativeId INT NOT NULL, 
+   noOfNewStudents INT NOT NULL,
+   noOfExistingStudents INT NOT NULL,
+   noOfNewTeachers INT NOT NULL,
+   noOfExistingTeachers INT NOT NULL,
+   noOfTablets INT NOT NULL,
    grades VARCHAR(255) NOT NULL,
-   languages_taught VARCHAR(255) NOT NULL,
-   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+   languagesTaught VARCHAR(255) NOT NULL,
+   createdAt TIMESTAMP NOT NULL DEFAULT NOW(),
      FOREIGN KEY (school_id)
       REFERENCES school (id),
    FOREIGN KEY (initiative_id)
