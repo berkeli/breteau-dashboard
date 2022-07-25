@@ -63,7 +63,7 @@ export const createSchool = (req, res) => {
 			}
 			// Otherwise fetch the person 'id'
 			let responsibleId = results.rows[0].id;
-			description = "ditto";
+
 			// For now, assume Person 1
 			let created_ById = 1;
 
