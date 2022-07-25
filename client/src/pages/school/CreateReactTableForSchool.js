@@ -36,7 +36,7 @@ const CreateReactTableForSchool = ({ schoolData }) => {
 				Header: "Deployment Date",
 				accessor: "deploymentdate",
 				sortType: (a, z) => {
-					return ( // Invert for dates
+					return (
 						a.values.deploymentdate_sortvalue -
 						z.values.deploymentdate_sortvalue
 					);
