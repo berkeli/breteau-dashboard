@@ -16,29 +16,56 @@ CREATE TABLE IF NOT EXISTS initiative (
    created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE IF NOT EXISTS schedule (0
-   id serial PRIMARY KEY,
-   schoolId INT NOT NULL,
-   initiativeId INT NOT NULL, 
-   noOfNewStudents INT NOT NULL,
-   noOfExistingStudents INT NOT NULL,
-   noOfNewTeachers INT NOT NULL,
-   noOfExistingTeachers INT NOT NULL,
-   noOfTablets INT NOT NULL,
-   grades VARCHAR(255) NOT NULL,
-   languagesTaught VARCHAR(255) NOT NULL,
-   createdAt TIMESTAMP NOT NULL DEFAULT NOW(),
-     FOREIGN KEY (school_id)
-      REFERENCES school (id),
-   FOREIGN KEY (initiative_id)
-      REFERENCES initiative (id)
-   
-);
 
-CREATE TABLE IF NOT EXISTS school (
+
+DROP TABLE IF EXISTS school;
+-- Create School Table
+-- Ensure 'person' database exist
+CREATE TABLE school (
    id serial PRIMARY KEY,
    name VARCHAR(255) NOT NULL,
-   description VARCHAR(32000),
-   created_at TIMESTAMP NOT NULL DEFAULT NOW()
-);
+   description VARCHAR(32000) NOT NULL,
+   location VARCHAR(50) NOT NULL,
+   country VARCHAR(50) NOT NULL,
+   responsibleId INT NOT NULL,
+   status VARCHAR(50) NOT NULL,
+   deploymentDate DATE NOT NULL,
+   tabletType VARCHAR(50),
+   numDoodleStudents INT,
+   internetDetails VARCHAR(50),
+   totalSchools INT,
+   created_ById INT NOT NULL,
+   created_At TIMESTAMP NOT NULL DEFAULT NOW(),
+   FOREIGN KEY (responsibleId)
+                             REFERENCES person (id),   
+   FOREIGN KEY (created_ById)
+                             REFERENCES person (id));
+
+DROP TABLE IF EXISTS scheduletracker;
+-- Create Schedule Tracker Table
+-- Ensure 'person, school, initiative' databases exist
+CREATE TABLE scheduletracker (
+   id serial PRIMARY KEY,
+   schoolId INT NOT NULL,
+   duration INT NOT NULL,
+   briefSummary VARCHAR(50) NOT NULL,
+   numOfNewTeachers INT NOT NULL,
+   numOfNewStudents INT NOT NULL,
+   numOfExistingTeachers INT NOT NULL,
+   numOfExistingStudents INT NOT NULL,
+   totalNumTablets INT NOT NULL,
+   supportCategory VARCHAR(50) NOT NULL,
+   supportType VARCHAR(50) NOT NULL,
+   programmeInitiativeId INT NOT NULL,
+   grades VARCHAR(255) NOT NULL,
+   languagesTaught VARCHAR(255) NOT NULL,
+   created_ById INT NOT NULL,
+   created_At TIMESTAMP NOT NULL DEFAULT NOW(),
+   FOREIGN KEY (created_ById)
+                             REFERENCES person (id),
+   FOREIGN KEY (schoolId)
+                             REFERENCES school (id),
+   FOREIGN KEY (programmeInitiativeId)
+                             REFERENCES initiative (id));
+
 

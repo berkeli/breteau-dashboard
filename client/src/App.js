@@ -1,17 +1,15 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { Route, Routes } from "react-router-dom";
 import { Chakra } from "./components/Chakra";
-
 import Layout from "./components/layout";
 import Loading from "./components/Loading";
 import LoginPage from "./pages/LoginPage";
 import About from "./pages/About";
 import Home from "./pages/Home";
-import CreateSchool from "./CreateSchool";
-
 import Users from "./pages/users/Users";
 import Initiatives from "./pages/initiative";
 import ScheduleTracker from "./pages/ScheduleTracker";
+import Schools from "./pages/school/School";
 
 const App = () => {
 	const { isLoading, error, isAuthenticated } = useAuth0();
@@ -34,8 +32,7 @@ const App = () => {
 						<Route path="/initiatives" element={<Initiatives />} />
 						<Route path="/schedule-tracker" element={<ScheduleTracker />} />
 						<Route path="/users" element={<Users />} />
-						<Route path="/about/this/site" element={<About />} />
-						<Route path="/createschool" element={<CreateSchool />} />
+						<Route path="/schools" element={<Schools />} />
 					</Routes>
 				</Layout>
 			) : (
