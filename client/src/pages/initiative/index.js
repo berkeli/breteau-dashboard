@@ -30,6 +30,23 @@ import InitiativeRow from "./InitiativeRow";
 const Initiatives = () => {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [debouncedQ, setDebouncedQ] = useState("");
+	const [expandedId, setExpandedId] = useState(null);
+
+	const expandRow = (e, id) => {
+		console.log(e.target.tagName);
+		if (
+			e.target.tagName === "path" ||
+			e.target.tagName === "svg" ||
+			e.target.tagName === "BUTTON"
+		) {
+			return;
+		}
+		if (expandedId === id) {
+			setExpandedId(null);
+		} else {
+			setExpandedId(id);
+		}
+	};
 
 	const {
 		data: initiatives,
@@ -81,6 +98,8 @@ const Initiatives = () => {
 									initiative={initiative}
 									categories={categories.data}
 									triggerSearch={fetchLatest}
+									expandedId={expandedId}
+									expandRow={expandRow}
 								/>
 							))}
 						</Tbody>

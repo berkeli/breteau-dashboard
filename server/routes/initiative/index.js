@@ -5,6 +5,7 @@ import {
 	createInitiative,
 	updateInitiative,
 	deleteInitiative,
+	getInitiativeStats,
 } from "./controller";
 
 const initiatives = Router();
@@ -12,6 +13,7 @@ const initiatives = Router();
 initiatives
 	.get("/", getInitiatives)
 	.get("/categories", getInitiativeCategories)
+	.get("/:id", getInitiativeStats)
 	.post("/", createInitiative)
 	.put("/", updateInitiative)
 	.delete("/:id", deleteInitiative);

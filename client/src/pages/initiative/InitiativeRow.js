@@ -1,6 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { AddIcon, CloseIcon, EditIcon } from "@chakra-ui/icons";
 import {
+	Fade,
 	IconButton,
 	Menu,
 	MenuButton,
@@ -20,8 +21,15 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import EditInitiative from "./EditInitiative";
+import ExpandedRow from "./ExpandedRow";
 
-const InitiativeRow = ({ initiative, triggerSearch, categories }) => {
+const InitiativeRow = ({
+	initiative,
+	triggerSearch,
+	categories,
+	expandedId,
+	expandRow,
+}) => {
 	const toast = useToast();
 	const { getAccessTokenSilently } = useAuth0();
 	const { name, category, description, created_at } = initiative;
@@ -60,47 +68,61 @@ const InitiativeRow = ({ initiative, triggerSearch, categories }) => {
 		}
 	};
 	return (
-		<Tr>
-			<Td>{name}</Td>
-			<Td>{category}</Td>
-			<Td>
-				<Text noOfLines={[1, 2, 3]}>{description}</Text>
-			</Td>
-			<Td>{new Date(created_at).toLocaleString()}</Td>
-			<Td>
-				<Menu>
-					<MenuButton
-						as={IconButton}
-						aria-label="Options"
-						icon={<AddIcon />}
-						variant="outline"
-					/>
-					<MenuList>
-						<MenuItem icon={<EditIcon />} onClick={onOpen}>
-							Edit Initiative
-						</MenuItem>
-						<MenuItem icon={<CloseIcon />} onClick={deleteInitiative}>
-							Delete Initiative
-						</MenuItem>
-					</MenuList>
-				</Menu>
-				<Modal isOpen={isOpen} onClose={onClose}>
-					<ModalOverlay />
-					<ModalContent p={2}>
-						<ModalHeader> Edit Initiative </ModalHeader>
-						<ModalCloseButton />
-						<ModalBody>
-							<EditInitiative
-								triggerSearch={triggerSearch}
-								onClose={onClose}
-								categories={categories}
-								initiative={initiative}
-							/>
-						</ModalBody>
-					</ModalContent>
-				</Modal>
-			</Td>
-		</Tr>
+		<>
+			<Tr
+				onClick={(e) => expandRow(e, initiative.id)}
+				cursor="pointer"
+			>
+				<Td>{name}</Td>
+				<Td>{category}</Td>
+				<Td>
+					<Text noOfLines={[1, 2, 3]}>{description}</Text>
+				</Td>
+				<Td>{new Date(created_at).toLocaleString()}</Td>
+				<Td>
+					<Menu>
+						<MenuButton
+							as={IconButton}
+							aria-label="Options"
+							icon={<AddIcon />}
+							variant="outline"
+						/>
+						<MenuList>
+							<MenuItem icon={<EditIcon />} onClick={onOpen}>
+								Edit Initiative
+							</MenuItem>
+							<MenuItem icon={<CloseIcon />} onClick={deleteInitiative}>
+								Delete Initiative
+							</MenuItem>
+						</MenuList>
+					</Menu>
+					<Modal isOpen={isOpen} onClose={onClose}>
+						<ModalOverlay />
+						<ModalContent p={2}>
+							<ModalHeader> Edit Initiative </ModalHeader>
+							<ModalCloseButton />
+							<ModalBody>
+								<EditInitiative
+									triggerSearch={triggerSearch}
+									onClose={onClose}
+									categories={categories}
+									initiative={initiative}
+								/>
+							</ModalBody>
+						</ModalContent>
+					</Modal>
+				</Td>
+			</Tr>
+			{expandedId === initiative.id && (
+				<Tr>
+					<Td colSpan={5}>
+						<Fade in={expandedId === initiative.id}>
+							<ExpandedRow initiative={initiative} />
+						</Fade>
+					</Td>
+				</Tr>
+			)}
+		</>
 	);
 };
 
