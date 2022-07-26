@@ -63,7 +63,8 @@ const CreateInitiative = ({ triggerSearch, onClose, categories }) => {
 		}
 	};
 
-	const onSubmitHandler = async () => {
+	const onSubmitHandler = async (e) => {
+		e.preventDefault();
 		setSubmitState({ ...submitState, loading: true });
 		const token = await getAccessTokenSilently();
 
@@ -190,6 +191,7 @@ const CreateInitiative = ({ triggerSearch, onClose, categories }) => {
 					<Button
 						mt="8"
 						onClick={onSubmitHandler}
+						type="submit"
 						disabled={formData.name === "" || formData.category === ""}
 					>
 						Submit
