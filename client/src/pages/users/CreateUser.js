@@ -5,6 +5,8 @@ import {
 	Checkbox,
 	CheckboxGroup,
 	FormControl,
+	FormErrorMessage,
+	FormHelperText,
 	FormLabel,
 	Input,
 	Stack,
@@ -49,7 +51,11 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 		}
 	};
 
-	const onSubmitHandler = async () => {
+	const validateInputs =
+		!formData.fullName || !formData.email || !formData.country;
+
+	const onSubmitHandler = async (e) => {
+		e.preventDefault();
 		setSubmitState({ ...submitState, loading: true });
 		const token = await getAccessTokenSilently();
 
@@ -106,7 +112,7 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 	return (
 		<>
 			<form>
-				<FormControl>
+				<FormControl isRequired isInvalid={!formData.fullName}>
 					<FormLabel htmlFor="fullName">Full Name</FormLabel>
 					<Input
 						id="fullName"
@@ -114,8 +120,19 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 						aria-describedby="full name"
 						value={formData.fullName}
 						required
-						onChange={(e) => onChangeHandler(e)}
+						onChange={onChangeHandler}
 					/>
+					{!formData.fullName === "" ? (
+						<FormHelperText>Enter full name of the user.</FormHelperText>
+					) : (
+						<FormErrorMessage>Name is required.</FormErrorMessage>
+					)}
+				</FormControl>
+				<FormControl
+					isRequired
+					isInvalid={formData.category === ""}
+				></FormControl>
+				<FormControl isRequired isInvalid={!formData.email}>
 					<FormLabel htmlFor="email" mt="4">
 						Email
 					</FormLabel>
@@ -125,9 +142,16 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 						aria-describedby="email"
 						required
 						value={formData.email}
-						onChange={(e) => onChangeHandler(e)}
+						onChange={onChangeHandler}
 						type="email"
 					/>
+					{!formData.email === "" ? (
+						<FormHelperText>Enter email of the user.</FormHelperText>
+					) : (
+						<FormErrorMessage>Email is required.</FormErrorMessage>
+					)}
+				</FormControl>
+				<FormControl isRequired isInvalid={!formData.country}>
 					<FormLabel htmlFor="country" mt="4">
 						Country
 					</FormLabel>
@@ -135,11 +159,15 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 						id="country"
 						name="country"
 						aria-describedby="country"
-						required
 						value={formData.country}
-						onChange={(e) => onChangeHandler(e)}
+						onChange={onChangeHandler}
 						type="text"
 					/>
+					{!formData.country === "" ? (
+						<FormHelperText>Enter Country of the user.</FormHelperText>
+					) : (
+						<FormErrorMessage>Country is required.</FormErrorMessage>
+					)}
 				</FormControl>
 				<FormControl mt="8">
 					<CheckboxGroup p={2}>
@@ -160,7 +188,12 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 					</CheckboxGroup>
 				</FormControl>
 				<Center>
-					<Button mt="8" onClick={onSubmitHandler}>
+					<Button
+						mt="8"
+						onClick={onSubmitHandler}
+						type="submit"
+						disabled={validateInputs}
+					>
 						Submit
 					</Button>
 				</Center>
