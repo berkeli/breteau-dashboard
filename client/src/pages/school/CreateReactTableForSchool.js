@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useEffect } from "react";
 import { useTable, useSortBy } from "react-table";
 import { Table, Tbody, Th, Thead, Tr, Td, chakra } from "@chakra-ui/react";
 import processSchoolRow from "./processSchoolRow";
@@ -6,7 +6,7 @@ import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 
 const CreateReactTableForSchool = ({ schoolData }) => {
 	// Prepare the data for React Table
-	const reactTableColumns = React.useMemo(
+	const reactTableColumns = useMemo(
 		() => [
 			{
 				Header: "Country",
@@ -55,7 +55,7 @@ const CreateReactTableForSchool = ({ schoolData }) => {
 		[]
 	);
 
-	const reactTableData = React.useMemo(
+	const reactTableData = useMemo(
 		() => schoolData.map((element) => processSchoolRow(element)),
 		[schoolData]
 	);
@@ -78,11 +78,11 @@ const CreateReactTableForSchool = ({ schoolData }) => {
 		useSortBy
 	);
 
-	// According to the confusing React-Table documentation, this is the only way to hide a column
+	// According to the complex React-Table documentation, this is the only way to hide a column
 	// See @ggascoigne AT https://github.com/TanStack/table/issues/1804
 	// https://codesandbox.io/s/relaxed-night-y5gcl?file=/src/App.js:980-985
 
-	React.useEffect(() => {
+	useEffect(() => {
 		setHiddenColumns(
 			reactTableColumns
 				.filter((column) => column.isVisible)

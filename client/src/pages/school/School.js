@@ -34,10 +34,12 @@ const School = () => {
 	} = useFetch(`/schools?searchQuery=${debouncedQ}`);
 
 	const countries = useFetch("/schools/countries");
+	const statuses = useFetch("/schools/statuses");
 
 	const fetchLatest = () => {
 		triggerSearch();
 		countries.triggerSearch();
+		statuses.triggerSearch();
 	};
 
 	return (
@@ -48,6 +50,7 @@ const School = () => {
 				setDebouncedQ={setDebouncedQ}
 				triggerSearch={fetchLatest}
 				countries={countries.data}
+				statuses={statuses.data}
 			/>
 
 			<Box>
@@ -75,6 +78,7 @@ const ActionsBox = ({
 	setDebouncedQ,
 	triggerSearch,
 	countries,
+	statuses,
 }) => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const handleChange = (e) => {
@@ -106,6 +110,7 @@ const ActionsBox = ({
 							triggerSearch={triggerSearch}
 							onClose={onClose}
 							countries={countries}
+							statuses={statuses}
 						/>
 					</ModalBody>
 				</ModalContent>
