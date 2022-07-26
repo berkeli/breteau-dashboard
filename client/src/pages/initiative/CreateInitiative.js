@@ -3,6 +3,8 @@ import {
 	Button,
 	Center,
 	FormControl,
+	FormErrorMessage,
+	FormHelperText,
 	FormLabel,
 	Input,
 	Select,
@@ -117,28 +119,34 @@ const CreateInitiative = ({ triggerSearch, onClose, categories }) => {
 	return (
 		<>
 			<form>
-				<FormControl>
+				<FormControl isRequired isInvalid={formData.name === ""}>
 					<FormLabel htmlFor="name">Name</FormLabel>
 					<Input
 						id="name"
 						name="name"
 						aria-describedby="initiative name"
 						value={formData.name}
-						required
-						onChange={(e) => onChangeHandler(e)}
+						onChange={onChangeHandler}
 					/>
+					{!formData.name === "" ? (
+						<FormHelperText>Enter the name of the initiative.</FormHelperText>
+					) : (
+						<FormErrorMessage>Name is required.</FormErrorMessage>
+					)}
+				</FormControl>
+				<FormControl isRequired isInvalid={formData.category === ""}>
 					<FormLabel htmlFor="category" mt="4">
 						Category
 					</FormLabel>
 
 					{categoryDropdown ? (
 						<Select
-							placeholder="Select area"
+							placeholder="Select category"
 							name="category"
 							id="category"
 							aria-describedby="initiative category"
 							value={formData.category}
-							onChange={(e) => onChangeHandler(e)}
+							onChange={onChangeHandler}
 						>
 							{categories.map(({ category }) => (
 								<option value={category} key={category}>
@@ -152,11 +160,17 @@ const CreateInitiative = ({ triggerSearch, onClose, categories }) => {
 							id="category"
 							name="category"
 							aria-describedby="category"
-							required
 							value={formData.category}
-							onChange={(e) => onChangeHandler(e)}
+							onChange={onChangeHandler}
 							type="text"
 						/>
+					)}
+					{!formData.name === "" ? (
+						<FormHelperText>
+							Enter the category for the initiative.
+						</FormHelperText>
+					) : (
+						<FormErrorMessage>Category is required.</FormErrorMessage>
 					)}
 				</FormControl>
 				<FormControl mt="8">
@@ -173,7 +187,11 @@ const CreateInitiative = ({ triggerSearch, onClose, categories }) => {
 					/>
 				</FormControl>
 				<Center>
-					<Button mt="8" onClick={onSubmitHandler}>
+					<Button
+						mt="8"
+						onClick={onSubmitHandler}
+						disabled={formData.name === "" || formData.category === ""}
+					>
 						Submit
 					</Button>
 				</Center>
