@@ -71,11 +71,17 @@ const Initiatives = () => {
 								<Th>Category</Th>
 								<Th>Description</Th>
 								<Th>Created At</Th>
+								<Th>Created At</Th>
 							</Tr>
 						</Thead>
 						<Tbody>
 							{initiatives.map((initiative) => (
-								<InitiativeRow key={initiative.id} initiative={initiative} />
+								<InitiativeRow
+									key={initiative.id}
+									initiative={initiative}
+									categories={categories.data}
+									triggerSearch={fetchLatest}
+								/>
 							))}
 						</Tbody>
 					</Table>
