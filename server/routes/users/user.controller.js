@@ -66,7 +66,7 @@ export const createUser = async (req, res) => {
 			await assignRolesToUser(id, roles);
 			const query = {
 				text: "INSERT INTO person (auth0_id, full_name, email, roles, country) VALUES ($1, $2, $3, $4, $5) ON CONFLICT (email) DO UPDATE SET auth0_id = $1, full_name = $2, email = $3, roles = $4, country = $5",
-				values: [id, fullName, email, roles.join(","), country],
+				values: [id, fullName, email.toLowerCase(), roles.join(","), country],
 			};
 			await pool.query(query);
 			res.json(user);
@@ -103,7 +103,7 @@ export const updateUser = async (req, res) => {
 				values: [
 					auth0_id,
 					full_name,
-					email,
+					email.toLowerCase(),
 					roles.join(","),
 					country,
 					blocked || false,
@@ -168,7 +168,12 @@ const mergeRolesIntoUsers = async (users) => {
 					user.roles,
 					user.blocked || false,
 					user.last_login,
-				]
+				],
+				(err) => {
+					if (err) {
+						logger.error(err);
+					}
+				}
 			);
 		});
 	}
