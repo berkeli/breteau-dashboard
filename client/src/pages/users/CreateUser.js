@@ -128,6 +128,18 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 						onChange={(e) => onChangeHandler(e)}
 						type="email"
 					/>
+					<FormLabel htmlFor="country" mt="4">
+						Country
+					</FormLabel>
+					<Input
+						id="country"
+						name="country"
+						aria-describedby="country"
+						required
+						value={formData.country}
+						onChange={(e) => onChangeHandler(e)}
+						type="text"
+					/>
 				</FormControl>
 				<FormControl mt="8">
 					<CheckboxGroup p={2}>
@@ -137,7 +149,6 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 								<Checkbox
 									name="roles"
 									key={role.id}
-									size="lg"
 									isChecked={formData.roles.includes(role.id)}
 									value={role.id}
 									onChange={(e) => onChangeHandler(e)}

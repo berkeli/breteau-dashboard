@@ -6,6 +6,7 @@ const UsersTableHeader = () => {
 	return (
 		<Thead>
 			<Tr>
+				<Th>Status</Th>
 				<Th>Name</Th>
 				<Th>Email</Th>
 				<Th>Roles</Th>

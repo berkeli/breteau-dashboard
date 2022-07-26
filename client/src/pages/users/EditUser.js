@@ -22,10 +22,10 @@ const EditUser = ({ triggerSearch, onClose, roles, user }) => {
 		error: null,
 	});
 	const [formData, setFormData] = useState({
-		fullName: user.name,
+		fullName: user.full_name,
 		email: user.email,
 		country: user.country,
-		roles: user.roles.map((role) => role.id),
+		roles: user.roles,
 		user_id: user.user_id,
 		allRoles: roles.map((role) => role.id),
 	});
