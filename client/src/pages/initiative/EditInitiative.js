@@ -15,21 +15,19 @@ import {
 import { useAuth0 } from "@auth0/auth0-react";
 import _ from "lodash";
 
-const CreateInitiative = ({ triggerSearch, onClose, categories }) => {
+const EditInitiative = ({ triggerSearch, onClose, categories, initiative }) => {
 	const toast = useToast();
 	const { getAccessTokenSilently } = useAuth0();
 	const [submitState, setSubmitState] = useState({
 		loading: false,
 		error: null,
 	});
-	const [categoryDropdown, setCategoryDropdown] = useState(
-		categories.length > 0
-	);
+	const [categoryDropdown, setCategoryDropdown] = useState(true);
 
 	const [formData, setFormData] = useState({
-		name: "",
-		description: "",
-		category: "",
+		name: initiative.name,
+		description: initiative.description,
+		category: initiative.category,
 	});
 
 	const onChangeHandler = (e) => {
@@ -41,20 +39,6 @@ const CreateInitiative = ({ triggerSearch, onClose, categories }) => {
 			setCategoryDropdown(false);
 			setFormData({ ...formData, area: "" });
 			return;
-		}
-
-		if (e.target.name === "roles") {
-			if (e.target.checked) {
-				setFormData({
-					...formData,
-					roles: [...formData.roles, e.target.value],
-				});
-			} else {
-				setFormData({
-					...formData,
-					roles: formData.roles.filter((role) => role !== e.target.value),
-				});
-			}
 		} else {
 			setFormData({
 				...formData,
@@ -69,12 +53,12 @@ const CreateInitiative = ({ triggerSearch, onClose, categories }) => {
 		const token = await getAccessTokenSilently();
 
 		const options = {
-			method: "POST",
+			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${token}`,
 			},
-			body: JSON.stringify(formData),
+			body: JSON.stringify({ ...formData, id: initiative.id }),
 		};
 		fetch(`${process.env.API_URL}/initiatives`, options)
 			.then((res) => {
@@ -82,8 +66,8 @@ const CreateInitiative = ({ triggerSearch, onClose, categories }) => {
 					_.debounce(triggerSearch, 500)();
 					_.debounce(onClose, 500)();
 					toast({
-						title: "Initiative Created",
-						description: "Initiative created successfully",
+						title: "Initiative Updated",
+						description: "Initiative Updated successfully",
 						status: "success",
 						duration: 5000,
 						isClosable: true,
@@ -102,7 +86,7 @@ const CreateInitiative = ({ triggerSearch, onClose, categories }) => {
 				}
 			})
 			.catch((err) => {
-				setSubmitState({ ...submitState, loading: false, error: err });
+				setSubmitState({ ...submitState, loading: false, error: err.message });
 			});
 	};
 
@@ -116,7 +100,6 @@ const CreateInitiative = ({ triggerSearch, onClose, categories }) => {
 			</Center>
 		);
 	}
-
 	return (
 		<>
 			<form>
@@ -139,10 +122,9 @@ const CreateInitiative = ({ triggerSearch, onClose, categories }) => {
 					<FormLabel htmlFor="category" mt="4">
 						Category
 					</FormLabel>
-
 					{categoryDropdown ? (
 						<Select
-							placeholder="Select category"
+							placeholder="Select area"
 							name="category"
 							id="category"
 							aria-describedby="initiative category"
@@ -166,9 +148,9 @@ const CreateInitiative = ({ triggerSearch, onClose, categories }) => {
 							type="text"
 						/>
 					)}
-					{!formData.name === "" ? (
+					{!formData.category === "" ? (
 						<FormHelperText>
-							Enter the category for the initiative.
+							Enter the category of the initiative.
 						</FormHelperText>
 					) : (
 						<FormErrorMessage>Category is required.</FormErrorMessage>
@@ -184,7 +166,7 @@ const CreateInitiative = ({ triggerSearch, onClose, categories }) => {
 						aria-describedby="description"
 						required
 						value={formData.description}
-						onChange={(e) => onChangeHandler(e)}
+						onChange={onChangeHandler}
 					/>
 				</FormControl>
 				<Center>
@@ -202,4 +184,4 @@ const CreateInitiative = ({ triggerSearch, onClose, categories }) => {
 	);
 };
 
-export default CreateInitiative;
+export default EditInitiative;
