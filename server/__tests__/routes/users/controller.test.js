@@ -1,27 +1,12 @@
 import request from "supertest";
 import path from "path";
-
-jest.mock(
-	"../../../middleware/auth/auth.middleware",
-	() => (req, res, next) => {
-		if (!req) {
-			req = {};
-		}
-		req.user = {
-			id: "123",
-			email: "",
-			name: "Tes",
-		};
-		next();
-	}
-);
 import createServer from "../../../utils/createServer";
 
 const app = createServer(path.join(__dirname, "static"));
 
 const endpoint = "/api/users/";
 
-describe("GET users enpoint tests", () => {
+describe("GET users endpoint tests", () => {
 	it("should return a 401 unauthorized code without JWT token", (done) => {
 		request(app).get(endpoint).expect(401, done);
 	});

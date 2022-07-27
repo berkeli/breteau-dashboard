@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1658959486446" clover="3.2.0">
+  <project timestamp="1658959486446" name="All files">
+    <metrics statements="21" coveredstatements="18" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="3" elements="25" coveredelements="21" complexity="0" loc="21" ncloc="21" packages="1" files="1" classes="1"/>
+    <file name="useFetch.js" path="/Users/berkeli/Git/CodeYourFuture/ldn8-final-project/client/src/hooks/useFetch.js">
+      <metrics statements="21" coveredstatements="18" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="3"/>
+      <line num="4" count="1" type="stmt"/>
+      <line num="5" count="3" type="stmt"/>
+      <line num="6" count="3" type="stmt"/>
+      <line num="7" count="3" type="stmt"/>
+      <line num="8" count="3" type="stmt"/>
+      <line num="9" count="3" type="stmt"/>
+      <line num="11" count="3" type="stmt"/>
+      <line num="12" count="0" type="stmt"/>
+      <line num="15" count="3" type="stmt"/>
+      <line num="16" count="2" type="stmt"/>
+      <line num="17" count="2" type="stmt"/>
+      <line num="18" count="2" type="stmt"/>
+      <line num="19" count="2" type="stmt"/>
+      <line num="26" count="2" type="stmt"/>
+      <line num="30" count="2" type="stmt"/>
+      <line num="31" count="2" type="stmt"/>
+      <line num="32" count="2" type="stmt"/>
+      <line num="34" count="0" type="stmt"/>
+      <line num="35" count="0" type="stmt"/>
+      <line num="38" count="2" type="stmt"/>
+      <line num="40" count="3" type="stmt"/>
+    </file>
+  </project>
+</coverage>

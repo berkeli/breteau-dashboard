@@ -27,8 +27,11 @@ jobs:
       - name: Check for Linting Issues
         run: npm lint
 
-      - name: Run Tests
-        run: npm test
+      - name: Run Client Tests
+        run: npm test:client
+
+      - name: Run Server Tests
+        run: npm test:server
 
       - name: Build the app
         run: npm run build --if-present
