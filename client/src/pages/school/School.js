@@ -12,12 +12,7 @@ import {
 	ModalContent,
 	ModalHeader,
 	ModalOverlay,
-	Table,
-	Tbody,
 	Text,
-	Th,
-	Thead,
-	Tr,
 	useDisclosure,
 } from "@chakra-ui/react";
 import _ from "lodash";
@@ -25,7 +20,7 @@ import { BiSearchAlt } from "react-icons/bi";
 import useFetch from "../../hooks/useFetch";
 import CreateSchool from "./CreateSchool";
 import Loading from "../../components/Loading";
-import SchoolRow from "./SchoolRow";
+import CreateReactTableForSchool from "./CreateReactTableForSchool";
 
 const School = () => {
 	const [searchQuery, setSearchQuery] = useState("");
@@ -39,10 +34,12 @@ const School = () => {
 	} = useFetch(`/schools?searchQuery=${debouncedQ}`);
 
 	const countries = useFetch("/schools/countries");
+	const statuses = useFetch("/schools/statuses");
 
 	const fetchLatest = () => {
 		triggerSearch();
 		countries.triggerSearch();
+		statuses.triggerSearch();
 	};
 
 	return (
@@ -53,6 +50,7 @@ const School = () => {
 				setDebouncedQ={setDebouncedQ}
 				triggerSearch={fetchLatest}
 				countries={countries.data}
+				statuses={statuses.data}
 			/>
 
 			<Box>
@@ -63,26 +61,11 @@ const School = () => {
 						{error.message}
 					</Text>
 				)}
+				{/* Implemented as a React Table*/}
 				{schoolData && (
-					<Table variant="striped">
-						<Thead>
-							<Tr>
-								<Th>Country</Th>
-								<Th>Name</Th>
-								<Th>Location</Th>
-								<Th>Description</Th>
-								<Th>Person Responsible</Th>
-								<Th>Status</Th>
-								<Th>Deployment Date</Th>
-								<Th>Created At</Th>
-							</Tr>
-						</Thead>
-						<Tbody>
-							{schoolData.map((element) => (
-								<SchoolRow key={element.id} schoolData={element} />
-							))}
-						</Tbody>
-					</Table>
+					<CreateReactTableForSchool
+						schoolData={schoolData}
+					></CreateReactTableForSchool>
 				)}
 			</Box>
 		</>
@@ -95,6 +78,7 @@ const ActionsBox = ({
 	setDebouncedQ,
 	triggerSearch,
 	countries,
+	statuses,
 }) => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const handleChange = (e) => {
@@ -126,6 +110,7 @@ const ActionsBox = ({
 							triggerSearch={triggerSearch}
 							onClose={onClose}
 							countries={countries}
+							statuses={statuses}
 						/>
 					</ModalBody>
 				</ModalContent>
