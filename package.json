@@ -12,7 +12,7 @@
     "dev": "concurrently -k -n \"client,server\" \"npm run dev:client\" \"npm run dev:server\"",
     "dev:client": "webpack serve --config client/webpack/dev.config.js",
     "dev:server": "cross-env PORT=3100 nodemon --exitcrash --inspect --delay 500ms --watch server --exec babel-node server/server.js",
-    "lint": "npm run lint:eslint && npm run lint:prettier -- --check",
+    "lint": "npm run lint:eslint",
     "preserve": "npm run build",
     "test:client": "jest ./client/* --testEnvironment=jsdom",
     "test:server": "jest ./server/* --testEnvironment=node",
