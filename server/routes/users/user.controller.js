@@ -157,8 +157,12 @@ const mergeRolesIntoUsers = async (users) => {
 		const user = users[i];
 		await auth0.getUserRoles({ id: user.user_id }).then((roles) => {
 			user.roles = roles.map((role) => role.id).join(",");
+			const query =
+				"INSERT INTO person(auth0_id, country, email, full_name, created_at, roles, blocked, last_login) " +
+				"VALUES ($1, $2, $3, $4, $5, $6, $7, $8) ON CONFLICT (email)" +
+				"DO UPDATE SET auth0_id = $1, country = $2, email = $3, full_name = $4, created_at = $5, roles = $6, blocked=$7, last_login=$8";
 			pool.query(
-				"INSERT INTO person(auth0_id, country, email, full_name, created_at, roles, blocked, last_login) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) ON CONFLICT (email) DO UPDATE SET auth0_id = $1, country = $2, email = $3, full_name = $4, created_at = $5, roles = $6, blocked=$7, last_login=$8",
+				query,
 				[
 					user.user_id,
 					user.user_metadata?.country || "",
