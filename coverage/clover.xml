@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1658959486446" clover="3.2.0">
-  <project timestamp="1658959486446" name="All files">
+<coverage generated="1658960014004" clover="3.2.0">
+  <project timestamp="1658960014004" name="All files">
     <metrics statements="21" coveredstatements="18" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="3" elements="25" coveredelements="21" complexity="0" loc="21" ncloc="21" packages="1" files="1" classes="1"/>
     <file name="useFetch.js" path="/Users/berkeli/Git/CodeYourFuture/ldn8-final-project/client/src/hooks/useFetch.js">
       <metrics statements="21" coveredstatements="18" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="3"/>
