@@ -98,8 +98,11 @@ export const updateUser = async (req, res) => {
 			if (roles.length > 0) {
 				await assignRolesToUser(auth0_id, roles);
 			}
+			const text =
+				"INSERT INTO person (auth0_id, full_name, email, roles, country, blocked) VALUES ($1, $2, $3, $4, $5, $6) " +
+				"ON CONFLICT (email) DO UPDATE SET auth0_id = $1, full_name = $2, email = $3, roles = $4, country = $5, blocked = $6";
 			const query = {
-				text: "INSERT INTO person (auth0_id, full_name, email, roles, country, blocked) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT (email) DO UPDATE SET auth0_id = $1, full_name = $2, email = $3, roles = $4, country = $5, blocked = $6",
+				text,
 				values: [
 					auth0_id,
 					full_name,
@@ -159,7 +162,7 @@ const mergeRolesIntoUsers = async (users) => {
 			user.roles = roles.map((role) => role.id).join(",");
 			const query =
 				"INSERT INTO person(auth0_id, country, email, full_name, created_at, roles, blocked, last_login) " +
-				"VALUES ($1, $2, $3, $4, $5, $6, $7, $8) ON CONFLICT (email)" +
+				"VALUES ($1, $2, $3, $4, $5, $6, $7, $8) ON CONFLICT (email) " +
 				"DO UPDATE SET auth0_id = $1, country = $2, email = $3, full_name = $4, created_at = $5, roles = $6, blocked=$7, last_login=$8";
 			pool.query(
 				query,
