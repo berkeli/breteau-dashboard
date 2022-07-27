@@ -37,7 +37,7 @@ const EditInitiative = ({ triggerSearch, onClose, categories, initiative }) => {
 			e.target.value === "createnew"
 		) {
 			setCategoryDropdown(false);
-			setFormData({ ...formData, area: "" });
+			setFormData({ ...formData, category: "" });
 			return;
 		} else {
 			setFormData({
@@ -124,7 +124,7 @@ const EditInitiative = ({ triggerSearch, onClose, categories, initiative }) => {
 					</FormLabel>
 					{categoryDropdown ? (
 						<Select
-							placeholder="Select area"
+							placeholder="Select category"
 							name="category"
 							id="category"
 							aria-describedby="initiative category"

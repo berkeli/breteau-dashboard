@@ -31,7 +31,7 @@ const CreateSchool = ({ triggerSearch, onClose, countries, statuses }) => {
 		responsible: "",
 		status: "",
 		// Assume Today's Date
-		deploymentdate: new Date().toLocaleDateString("sv"),
+		deploymentdate: new Date().toLocaleDateString("sv-SE"), // sv-SE is YYYY-MM-DD format
 	});
 
 	const onChangeHandler = (e) => {

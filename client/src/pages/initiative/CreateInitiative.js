@@ -39,7 +39,7 @@ const CreateInitiative = ({ triggerSearch, onClose, categories }) => {
 			e.target.value === "createnew"
 		) {
 			setCategoryDropdown(false);
-			setFormData({ ...formData, area: "" });
+			setFormData({ ...formData, category: "" });
 			return;
 		}
 
