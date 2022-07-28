@@ -1,6 +1,7 @@
 # Starter Kit
 
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+[![codecov](https://codecov.io/gh/berkeli/breteau-dashboard/branch/main/graph/badge.svg?token=TYmTsqYTuM)](https://codecov.io/gh/berkeli/breteau-dashboard)
 
 - [x] Full stack ES8+ with [Babel]
 - [x] [Node] LTS support (verified working on 12.x, 14.x and 16.x LTS releases)
