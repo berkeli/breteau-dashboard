@@ -19,6 +19,8 @@ CREATE TABLE IF NOT EXISTS initiative (
    created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
+
+
 DROP TABLE IF EXISTS school;
 -- Create School Table
 -- Ensure 'person' database exist
@@ -68,4 +70,5 @@ CREATE TABLE scheduletracker (
                              REFERENCES school (id),
    FOREIGN KEY (programmeInitiativeId)
                              REFERENCES initiative (id));
+
 
