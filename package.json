@@ -46,6 +46,7 @@
     "@emotion/react": "^11.9.3",
     "@testing-library/react": "^13.3.0",
     "babel-loader": "^8.2.5",
+    "chakra-react-select": "^4.1.4",
     "concurrently": "^7.0.0",
     "cross-env": "^7.0.3",
     "css-loader": "^6.6.0",
@@ -94,7 +95,7 @@
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
     "morgan": "^1.10.0",
-    "pg": "^8.7.3",
+    "pg": "8.7.0",
     "pino": "^8.1.0",
     "pino-pretty": "^8.1.0",
     "react-table": "^7.8.0"
