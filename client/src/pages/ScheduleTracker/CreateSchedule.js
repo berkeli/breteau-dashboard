@@ -3,6 +3,8 @@ import {
 	Button,
 	Center,
 	FormControl,
+	FormErrorMessage,
+	FormHelperText,
 	FormLabel,
 	Input,
 	Select,
@@ -99,14 +101,14 @@ const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 	return (
 		<>
 			<form>
-				<FormControl>
+				<FormControl isRequired isInvalid={!formData.schoolId}>
 					<FormLabel htmlFor="schoolId">School</FormLabel>
 					<Select
 						placeholder="Select school"
 						name="schoolId"
 						id="schoolId"
 						aria-describedby="school name"
-						value={formData.school_id}
+						value={formData.schoolId}
 						onChange={(e) => onChangeHandler(e)}
 					>
 						{schools.map((school) => (
@@ -115,6 +117,13 @@ const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 							</option>
 						))}
 					</Select>
+					{formData.schoolId ? (
+						<FormHelperText>Please select school.</FormHelperText>
+					) : (
+						<FormErrorMessage>School is required.</FormErrorMessage>
+					)}
+				</FormControl>
+				<FormControl isRequired isInvalid={!formData.programmeInitiativeId}>
 					<FormLabel htmlFor="programmeInitiativeId">Initiative</FormLabel>
 					<Select
 						placeholder="Select Initiative"
@@ -130,6 +139,13 @@ const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 							</option>
 						))}
 					</Select>
+					{formData.programmeInitiativeId ? (
+						<FormHelperText>Please select Initiative.</FormHelperText>
+					) : (
+						<FormErrorMessage>Initiative is required.</FormErrorMessage>
+					)}
+				</FormControl>
+				<FormControl isInvalid={!formData.duration} isRequired>
 					<FormLabel htmlFor="duration">Duration by hour</FormLabel>
 					<Input
 						placeholder="Duration by hour"
@@ -141,6 +157,13 @@ const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 						value={formData.duration}
 						onChange={(e) => onChangeHandler(e)}
 					></Input>
+					{formData.duration ? (
+						<FormHelperText>Please input the duration.</FormHelperText>
+					) : (
+						<FormErrorMessage>Duration is required.</FormErrorMessage>
+					)}
+				</FormControl>
+				<FormControl isRequired isInvalid={!formData.briefSummary}>
 					<FormLabel htmlFor="briefSummary">Brief Summary</FormLabel>
 					<Textarea
 						placeholder="Brief Summary"
@@ -150,6 +173,13 @@ const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 						value={formData.briefSummary}
 						onChange={(e) => onChangeHandler(e)}
 					></Textarea>
+					{formData.briefSummary ? (
+						<FormHelperText>Please add brief summary.</FormHelperText>
+					) : (
+						<FormErrorMessage>Brief summary is required.</FormErrorMessage>
+					)}
+				</FormControl>
+				<FormControl isInvalid={!formData.numOfNewTeachers} isRequired>
 					<FormLabel htmlFor="numOfNewTeachers">
 						Number of New Teachers
 					</FormLabel>
@@ -163,6 +193,17 @@ const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 						value={formData.numOfNewTeachers}
 						onChange={(e) => onChangeHandler(e)}
 					></Input>
+					{formData.numOfNewTeachers ? (
+						<FormHelperText>
+							Please input the number of new teachers.
+						</FormHelperText>
+					) : (
+						<FormErrorMessage>
+							Number of new teachers is required.
+						</FormErrorMessage>
+					)}
+				</FormControl>
+				<FormControl isInvalid={!formData.numOfNewStudents} isRequired>
 					<FormLabel htmlFor="numOfNewStudents">
 						Number of New Students
 					</FormLabel>
@@ -176,6 +217,17 @@ const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 						value={formData.numOfNewStudents}
 						onChange={(e) => onChangeHandler(e)}
 					></Input>
+					{formData.numOfNewStudents ? (
+						<FormHelperText>
+							Please input number of new students.
+						</FormHelperText>
+					) : (
+						<FormErrorMessage>
+							Number of new students is required.
+						</FormErrorMessage>
+					)}
+				</FormControl>
+				<FormControl isInvalid={!formData.numOfExistingTeachers} isRequired>
 					<FormLabel htmlFor="numOfExistingTeachers">
 						Number Of Existing Teachers
 					</FormLabel>
@@ -189,6 +241,17 @@ const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 						value={formData.numOfExistingTeachers}
 						onChange={(e) => onChangeHandler(e)}
 					></Input>
+					{formData.numOfExistingTeachers ? (
+						<FormHelperText>
+							Please input number of new teachers.
+						</FormHelperText>
+					) : (
+						<FormErrorMessage>
+							Number of new teachers is required.
+						</FormErrorMessage>
+					)}
+				</FormControl>
+				<FormControl isInvalid={!formData.numOfExistingStudents} isRequired>
 					<FormLabel htmlFor="numOfExistingStudents">
 						Number Of Existing Students
 					</FormLabel>
@@ -202,6 +265,17 @@ const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 						value={formData.numOfExistingStudents}
 						onChange={(e) => onChangeHandler(e)}
 					></Input>
+					{formData.numOfExistingStudents ? (
+						<FormHelperText>
+							Please input number of existing students.
+						</FormHelperText>
+					) : (
+						<FormErrorMessage>
+							Number of existing students is required.
+						</FormErrorMessage>
+					)}
+				</FormControl>
+				<FormControl>
 					<FormLabel htmlFor="totalNumTablets">
 						Total Number of Tablets
 					</FormLabel>
@@ -215,6 +289,8 @@ const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 						value={formData.totalNumTablets}
 						onChange={(e) => onChangeHandler(e)}
 					></Input>
+				</FormControl>
+				<FormControl>
 					<FormLabel htmlFor="grades">Grades</FormLabel>
 					<Input
 						placeholder="Grades"
@@ -224,6 +300,8 @@ const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 						value={formData.grades}
 						onChange={(e) => onChangeHandler(e)}
 					></Input>
+				</FormControl>
+				<FormControl>
 					<FormLabel htmlFor="languagesTaught">Languages Taught</FormLabel>
 					<Input
 						placeholder="Languages Taught"
@@ -233,6 +311,8 @@ const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 						value={formData.languagesTaught}
 						onChange={(e) => onChangeHandler(e)}
 					></Input>
+				</FormControl>
+				<FormControl>
 					<FormLabel htmlFor="supportCategory">Support Category</FormLabel>
 					<Input
 						placeholder="Support Category"
@@ -242,6 +322,8 @@ const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 						value={formData.supportCategory}
 						onChange={(e) => onChangeHandler(e)}
 					></Input>
+				</FormControl>
+				<FormControl>
 					<FormLabel htmlFor="supportType">Support Type</FormLabel>
 					<Input
 						placeholder="Support Type"
