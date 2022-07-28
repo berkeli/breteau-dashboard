@@ -36,7 +36,7 @@ describe("useFetch", () => {
 		});
 		const { result } = hook;
 		expect(fetch).toHaveBeenCalledTimes(1);
-		expect(result.current.isLoading).toEqual(false);
+		expect(getAccessTokenSilently).toHaveBeenCalledTimes(1);
 		expect(result.current.data).toEqual({ message: "Test" });
 		expect(result.current.isLoading).toEqual(false);
 		expect(result.current.error).toEqual(null);

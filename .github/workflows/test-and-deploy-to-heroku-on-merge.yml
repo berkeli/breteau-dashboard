@@ -33,8 +33,13 @@ jobs:
       - name: Run Server Tests
         run: npm run test:server
 
+      - name: Upload to codecov
+        uses: codecov/codecov-action@v3.1.0
+        with:
+          files: ./coverage/clover.xml
+
       - name: Build the app
-        run: npm run build --if-present
+        run: npm run build --if-present  
 
       - uses: actions/checkout@v2
       - uses: akhileshns/heroku-deploy@v3.12.12
