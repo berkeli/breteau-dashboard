@@ -22,7 +22,10 @@ const CreateSchool = ({ triggerSearch, onClose, countries, statuses, persons }) 
 	});
 	const [countryDropdown, setCountryDropdown] = useState(countries.length > 0);
 	const [statusDropdown, setStatusDropdown] = useState(statuses.length > 0);
+
 	const blankRegex = new RegExp(/^[ \t]*$/);
+	// Arbitrary Limit 01/02/1970
+	const feb1970Limit = new Date(1970, 1, 1).getTime();
 
 	const [formData, setFormData] = useState({
 		name: "",
@@ -36,28 +39,28 @@ const CreateSchool = ({ triggerSearch, onClose, countries, statuses, persons }) 
 	});
 
 	const onChangeHandler = (e) => {
-		let newCountry = formData.country;
-		let newStatus = formData.status;
 
-		if (e.target.name === "country") {
-			if (countryDropdown && e.target.value === "createnew") {
+		if (e.target.name === "country" &&
+			countryDropdown &&
+			e.target.value === "createnew") {
 				setCountryDropdown(false);
-				newCountry = "";
+				setFormData({ ...formData, country:"" });
+				return;
 			}
-		}
 
-		if (e.target.name === "status") {
-			if (statusDropdown && e.target.value === "createnew") {
-				setStatusDropdown(false);
-				newStatus = "";
-			}
+		if (
+			e.target.name === "status" &&
+			statusDropdown &&
+			e.target.value === "createnew"
+		) {
+			setStatusDropdown(false);
+			setFormData({ ...formData, status: "" });
+			return;
 		}
 
 		setFormData({
 			...formData,
 			[e.target.name]: e.target.value,
-			country: newCountry,
-			status: newStatus,
 		});
 	};
 
@@ -70,42 +73,18 @@ const CreateSchool = ({ triggerSearch, onClose, countries, statuses, persons }) 
 		const date = new Date(dateStr);
 
 		const timestamp = date.getTime();
-		if (typeof timestamp !== "number" || Number.isNaN(timestamp)) {
+		if (
+			typeof timestamp !== "number" ||
+			Number.isNaN(timestamp) ||
+			timestamp < feb1970Limit
+		) {
 			return false;
 		}
 		return date.toISOString().startsWith(dateStr);
 	}
 
 	// Some Validation
-	const validateSubmission = (formData) => {
-		if (
-			formData.name === "" ||
-			formData.location === "" ||
-			formData.country === "" ||
-			formData.responsible === "" ||
-			formData.status === "" ||
-			formData.description === ""
-		) {
-			return {
-				result: false,
-				message: "Empty fields are not allowed. All fields must be filled in.",
-			};
-		}
-
-		// Date Validation
-
-		if (
-			formData.deploymentdate === "" ||
-			!dateIsValid(formData.deploymentdate)
-		) {
-			return { result: false, message: "Invalid Deployment Date" };
-		}
-
-		return { result: true }; // Passed Simple Validation
-	};
-
-	// Some Validation
-	const invalidateSubmission = (formData) => {
+	const isSubmissionInvalid = (formData) => {
 		if (
 			formData.name === "" ||
 			formData.location === "" ||
@@ -123,10 +102,10 @@ const CreateSchool = ({ triggerSearch, onClose, countries, statuses, persons }) 
 			formData.deploymentdate === "" ||
 			!dateIsValid(formData.deploymentdate)
 		) {
-			return { result: false, message: "Invalid Deployment Date" };
+			return true;
 		}
 
-		return { result: true }; // Passed Simple Validation
+		return false; // Passed Validation i.e. Not Invalid
 	};
 
 	const onSubmitHandler = async () => {
@@ -142,14 +121,7 @@ const CreateSchool = ({ triggerSearch, onClose, countries, statuses, persons }) 
 			deploymentdate: formData.deploymentdate.trim(),
 			description: formData.description.trim(),
 		});
-		// Validate
-		let response = validateSubmission(formData);
-		if (!response.result) {
-			setSubmitState({ ...submitState, error: response.message });
-			return;
-		}
 
-		// Otherwise continue
 		setSubmitState({ ...submitState, loading: true });
 		const token = await getAccessTokenSilently();
 
@@ -318,8 +290,11 @@ const CreateSchool = ({ triggerSearch, onClose, countries, statuses, persons }) 
 						/>
 					)}
 				</FormControl>
-				<FormControl mt="4">
-					isRequired isInvalid={blankRegex.test(formData.deploymentdate)}
+				<FormControl
+					isRequired
+					isInvalid={blankRegex.test(formData.deploymentdate)}
+					mt="4"
+				>
 					<FormLabel htmlFor="deploymentdate">Deployment Date</FormLabel>
 					<Input
 						id="deploymentdate"
@@ -347,7 +322,11 @@ const CreateSchool = ({ triggerSearch, onClose, countries, statuses, persons }) 
 					/>
 				</FormControl>
 				<Center>
-					<Button mt="8" onClick={onSubmitHandler}>
+					<Button
+						mt="8"
+						onClick={onSubmitHandler}
+						disabled={isSubmissionInvalid(formData)}
+					>
 						Submit
 					</Button>
 				</Center>
