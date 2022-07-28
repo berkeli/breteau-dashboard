@@ -1,13 +1,21 @@
 import { Router } from "express";
 import { checkPermissions } from "../../middleware/auth/permissions.middleware";
-import { createUser, getRoles, getUsers } from "./user.controller";
+import {
+	createUser,
+	getRoles,
+	getUsersFromDB,
+	resetPwdHandler,
+	updateUser,
+} from "./user.controller";
 
 const users = Router();
 
 users.use(checkPermissions("super-admin"));
 
-users.get("/", getUsers);
+users.get("/", getUsersFromDB);
 users.post("/", createUser);
 users.get("/roles", getRoles);
+users.put("/", updateUser);
+users.put("/reset-password/:user_id", resetPwdHandler);
 
 export default users;

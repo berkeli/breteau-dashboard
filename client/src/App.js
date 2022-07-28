@@ -35,6 +35,8 @@ const App = () => {
 						)}
 						<Route path="/initiatives" element={<Initiatives />} />
 						{user.isSuperAdmin && <Route path="/users" element={<Users />} />}
+						<Route path="/users" element={<Users />} />
+
 					</Routes>
 				</Layout>
 			) : (

@@ -5,6 +5,7 @@ import {
 	Flex,
 	HStack,
 	IconButton,
+	Image,
 	Link,
 	Stack,
 	useColorModeValue,
@@ -12,6 +13,8 @@ import {
 } from "@chakra-ui/react";
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import { Link as RouterLink } from "react-router-dom";
+import logo_dark from "../../assets/breteau_logo.png";
+import logo_light from "../../assets/breteau_logo_light.png";
 
 import ThemeToggle from "./ThemeToggle";
 import useAuth0Roles from "../../hooks/useAuth0Roles";
@@ -62,7 +65,10 @@ const Header = () => {
 					/>
 					<HStack spacing={8} alignItems={"center"}>
 						<NavLink as={RouterLink} to="/">
-							Breteau
+							<Image
+								src={useColorModeValue(logo_dark, logo_light)}
+								height={10}
+							/>
 						</NavLink>
 						<HStack
 							as={"nav"}

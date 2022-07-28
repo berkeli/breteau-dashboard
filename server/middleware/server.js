@@ -28,7 +28,7 @@ export const logErrors = () => (err, _, res, next) => {
 		return next(err);
 	}
 	logger.error(err);
-	res.sendStatus(500);
+	res.status(err.status).send(err.message);
 };
 
 export const pushStateRouting = (apiRoot, staticDir) => (req, res, next) => {

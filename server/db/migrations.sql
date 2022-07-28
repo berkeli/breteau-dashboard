@@ -1,13 +1,16 @@
-
-
-CREATE TABLE IF NOT EXISTS person (
+DROP TABLE IF EXISTS person;
+CREATE TABLE person (
    id serial PRIMARY KEY,
-   full_name VARCHAR(255) NOT NULL,
+   auth0_id VARCHAR(255) NOT NULL UNIQUE,
+   full_name VARCHAR(255) NOT NULL
    email VARCHAR(255) UNIQUE NOT NULL,
-   created_at TIMESTAMP NOT NULL DEFAULT NOW(), 
-   auth0_id VARCHAR(255) UNIQUE NOT NULL,
+   country VARCHAR(255),
+   blocked BOOLEAN NOT NULL DEFAULT false,
+   roles VARCHAR(255),
+   created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
+DROP TABLE IF EXISTS initiative;
 CREATE TABLE IF NOT EXISTS initiative (
    id serial PRIMARY KEY,
    name VARCHAR(255) NOT NULL,
