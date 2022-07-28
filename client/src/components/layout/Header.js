@@ -36,6 +36,7 @@ const Header = () => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const navLinks = [
 		{ name: "Schools", to: "/schools" },
+		{ name: "Schedule Tracker", to: "/schedule-tracker" },
 		{ name: "Initiatives", to: "/initiatives" },
 		{ name: "Users", to: "/users" },
 	];
