@@ -109,7 +109,7 @@ const EditUser = ({ triggerSearch, onClose, roles, user }) => {
 	return (
 		<>
 			<form>
-				<FormControl isRequired isInvalid={!formData.fullName}>
+				<FormControl isRequired isInvalid={!formData.fullName.trim()}>
 					<FormLabel htmlFor="fullName">Full Name</FormLabel>
 					<Input
 						id="fullName"
@@ -118,13 +118,13 @@ const EditUser = ({ triggerSearch, onClose, roles, user }) => {
 						value={formData.fullName}
 						onChange={onChangeHandler}
 					/>
-					{formData.fullName ? (
+					{formData.fullName.trim() ? (
 						<FormHelperText>Enter full name of the user.</FormHelperText>
 					) : (
 						<FormErrorMessage>Name is required.</FormErrorMessage>
 					)}
 				</FormControl>
-				<FormControl isRequired isInvalid={!formData.email}>
+				<FormControl isRequired isInvalid={!formData.email.trim()}>
 					<FormLabel htmlFor="email" mt="4">
 						Email
 					</FormLabel>
@@ -136,7 +136,7 @@ const EditUser = ({ triggerSearch, onClose, roles, user }) => {
 						onChange={onChangeHandler}
 						type="email"
 					/>
-					{formData.email ? (
+					{formData.email.trim() ? (
 						<FormHelperText>Enter email of the user.</FormHelperText>
 					) : (
 						<FormErrorMessage>Email is required.</FormErrorMessage>
@@ -154,7 +154,7 @@ const EditUser = ({ triggerSearch, onClose, roles, user }) => {
 						onChange={onChangeHandler}
 						type="text"
 					/>
-					{formData.country ? (
+					{formData.country.trim() ? (
 						<FormHelperText>Enter country of the user.</FormHelperText>
 					) : (
 						<FormErrorMessage>Country is required.</FormErrorMessage>
@@ -183,7 +183,7 @@ const EditUser = ({ triggerSearch, onClose, roles, user }) => {
 						mt="8"
 						onClick={onSubmitHandler}
 						disabled={
-							!formData.fullName || !formData.email || !formData.country
+							!formData.fullName.trim() || !formData.email.trim() || !formData.country.trim()
 						}
 					>
 						Submit

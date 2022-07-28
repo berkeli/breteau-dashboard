@@ -27,6 +27,7 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 	const [formData, setFormData] = useState({
 		fullName: "",
 		email: "",
+		country: "",
 		roles: [],
 	});
 
@@ -52,7 +53,9 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 	};
 
 	const validateInputs =
-		!formData.fullName || !formData.email || !formData.country;
+		!formData.fullName.trim() ||
+		!formData.email.trim() ||
+		!formData.country.trim();
 
 	const onSubmitHandler = async (e) => {
 		e.preventDefault();
@@ -112,7 +115,7 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 	return (
 		<>
 			<form>
-				<FormControl isRequired isInvalid={!formData.fullName}>
+				<FormControl isRequired isInvalid={!formData.fullName.trim()}>
 					<FormLabel htmlFor="fullName">Full Name</FormLabel>
 					<Input
 						id="fullName"
@@ -122,13 +125,13 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 						required
 						onChange={onChangeHandler}
 					/>
-					{formData.fullName ? (
+					{formData.fullName.trim() ? (
 						<FormHelperText>Enter full name of the user.</FormHelperText>
 					) : (
 						<FormErrorMessage>Name is required.</FormErrorMessage>
 					)}
 				</FormControl>
-				<FormControl isRequired isInvalid={!formData.email}>
+				<FormControl isRequired isInvalid={!formData.email.trim()}>
 					<FormLabel htmlFor="email" mt="4">
 						Email
 					</FormLabel>
@@ -141,13 +144,13 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 						onChange={onChangeHandler}
 						type="email"
 					/>
-					{formData.email ? (
+					{formData.email.trim() ? (
 						<FormHelperText>Enter email of the user.</FormHelperText>
 					) : (
 						<FormErrorMessage>Email is required.</FormErrorMessage>
 					)}
 				</FormControl>
-				<FormControl isRequired isInvalid={!formData.country}>
+				<FormControl isRequired isInvalid={!formData.country.trim()}>
 					<FormLabel htmlFor="country" mt="4">
 						Country
 					</FormLabel>
@@ -159,7 +162,7 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 						onChange={onChangeHandler}
 						type="text"
 					/>
-					{formData.country ? (
+					{formData.country.trim() ? (
 						<FormHelperText>Enter Country of the user.</FormHelperText>
 					) : (
 						<FormErrorMessage>Country is required.</FormErrorMessage>
