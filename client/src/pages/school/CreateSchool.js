@@ -3,6 +3,8 @@ import {
 	Button,
 	Center,
 	FormControl,
+	FormErrorMessage,
+	FormHelperText,
 	FormLabel,
 	Input,
 	Select,
@@ -86,21 +88,12 @@ const CreateSchool = ({ triggerSearch, onClose, countries, statuses, persons }) 
 	// Some Validation
 	const isSubmissionInvalid = (formData) => {
 		if (
-			formData.name === "" ||
-			formData.location === "" ||
-			formData.country === "" ||
-			formData.responsible === "" ||
-			formData.status === "" ||
-			formData.description === ""
-		) {
-			return true;
-		}
-
-		// Date Validation
-
-		if (
-			formData.deploymentdate === "" ||
-			!dateIsValid(formData.deploymentdate)
+			formData.name.trim() === "" ||
+			formData.location.trim() === "" ||
+			formData.country.trim() === "" ||
+			formData.responsible.trim() === "" ||
+			formData.status.trim() === "" ||
+			formData.description.trim() === ""
 		) {
 			return true;
 		}
@@ -108,19 +101,20 @@ const CreateSchool = ({ triggerSearch, onClose, countries, statuses, persons }) 
 		return false; // Passed Validation i.e. Not Invalid
 	};
 
-	const onSubmitHandler = async () => {
-		// Trim the inputted data
+	// Date Validation
+	const isDateInvalid = (theDate) => {
+		if (
+			!theDate ||
+			!dateIsValid(theDate)
+		) {
+			return true;
+		}
 
-		setFormData({
-			...formData,
-			name: formData.name.trim(),
-			location: formData.location.trim(),
-			country: formData.country.trim(),
-			responsible: formData.responsible.trim(),
-			status: formData.status.trim(),
-			deploymentdate: formData.deploymentdate.trim(),
-			description: formData.description.trim(),
-		});
+		return false; // Passed Validation i.e. Not Invalid
+	};
+
+	const onSubmitHandler = async (e) => {
+		e.preventDefault();
 
 		setSubmitState({ ...submitState, loading: true });
 		const token = await getAccessTokenSilently();
@@ -186,6 +180,13 @@ const CreateSchool = ({ triggerSearch, onClose, countries, statuses, persons }) 
 						value={formData.name}
 						onChange={(e) => onChangeHandler(e)}
 					/>
+					{formData.name === "" ? (
+						<FormHelperText>Enter the name of the school.</FormHelperText>
+					) : (
+						<FormErrorMessage>
+							School Name is required. It cannot be spaces.
+						</FormErrorMessage>
+					)}
 				</FormControl>
 				<FormControl
 					isRequired
@@ -202,12 +203,18 @@ const CreateSchool = ({ triggerSearch, onClose, countries, statuses, persons }) 
 						value={formData.location}
 						onChange={(e) => onChangeHandler(e)}
 					/>
+					{formData.location === "" ? (
+						<FormHelperText>Enter the name of the location.</FormHelperText>
+					) : (
+						<FormErrorMessage>
+							Location is required. It cannot be spaces.
+						</FormErrorMessage>
+					)}
 				</FormControl>
 				<FormControl isRequired isInvalid={blankRegex.test(formData.country)}>
 					<FormLabel htmlFor="country" mt="4">
 						Country
 					</FormLabel>
-
 					{countryDropdown ? (
 						<Select
 							placeholder="Select country"
@@ -262,7 +269,6 @@ const CreateSchool = ({ triggerSearch, onClose, countries, statuses, persons }) 
 					mt="4"
 				>
 					<FormLabel htmlFor="status">Status</FormLabel>
-
 					{statusDropdown ? (
 						<Select
 							placeholder="Select status"
@@ -292,7 +298,7 @@ const CreateSchool = ({ triggerSearch, onClose, countries, statuses, persons }) 
 				</FormControl>
 				<FormControl
 					isRequired
-					isInvalid={blankRegex.test(formData.deploymentdate)}
+					isInvalid={isDateInvalid(formData.deploymentdate)}
 					mt="4"
 				>
 					<FormLabel htmlFor="deploymentdate">Deployment Date</FormLabel>
@@ -304,6 +310,7 @@ const CreateSchool = ({ triggerSearch, onClose, countries, statuses, persons }) 
 						type="date" // Date Picker
 						onChange={(e) => onChangeHandler(e)}
 					/>
+					<FormErrorMessage>Valid Date required after 1970.</FormErrorMessage>
 				</FormControl>
 				<FormControl
 					isRequired
@@ -320,6 +327,13 @@ const CreateSchool = ({ triggerSearch, onClose, countries, statuses, persons }) 
 						value={formData.description}
 						onChange={(e) => onChangeHandler(e)}
 					/>
+					{formData.description === "" ? (
+						<FormHelperText>Enter a description of the school.</FormHelperText>
+					) : (
+						<FormErrorMessage>
+							A description of the school is required. It cannot be spaces.
+						</FormErrorMessage>
+					)}
 				</FormControl>
 				<Center>
 					<Button

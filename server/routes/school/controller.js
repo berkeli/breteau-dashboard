@@ -51,6 +51,11 @@ export const createSchool = async (req, res) => {
 	try {
 		const userId = await getUserId(req);
 
+		// Trim the data
+		for (let field in req.body) {
+			req.body[field] = req.body[field].trim();
+		}
+
 		let {
 			name,
 			description,
