@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import ScheduleRow from "./ScheduleRow";
+import CreateSchedule from "./CreateSchedule";
+
 import {
 	Box,
 	Button,
@@ -12,34 +15,37 @@ import {
 	ModalContent,
 	ModalHeader,
 	ModalOverlay,
+	Table,
+	Tbody,
 	Text,
+	Th,
+	Thead,
+	Tr,
 	useDisclosure,
 } from "@chakra-ui/react";
 import _ from "lodash";
 import { BiSearchAlt } from "react-icons/bi";
 import useFetch from "../../hooks/useFetch";
-import CreateSchool from "./CreateSchool";
-import Loading from "../../components/Loading";
-import CreateReactTableForSchool from "./CreateReactTableForSchool";
 
-const School = () => {
+import Loading from "../../components/Loading";
+
+const ScheduleTracker = () => {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [debouncedQ, setDebouncedQ] = useState("");
 
 	const {
-		data: schoolData,
+		data: schedules,
 		isLoading,
 		error,
 		triggerSearch,
-	} = useFetch(`/schools?searchQuery=${debouncedQ}`);
+	} = useFetch(`/schedule-tracker?searchQuery=${debouncedQ}`);
 
-	const countries = useFetch("/schools/countries");
-	const statuses = useFetch("/schools/statuses");
+	//users, schools, initiatives for dropdown;
+
+	const dropdownData = useFetch("/schedule-tracker/form-data");
 
 	const fetchLatest = () => {
 		triggerSearch();
-		countries.triggerSearch();
-		statuses.triggerSearch();
 	};
 
 	return (
@@ -49,8 +55,7 @@ const School = () => {
 				setSearchQuery={setSearchQuery}
 				setDebouncedQ={setDebouncedQ}
 				triggerSearch={fetchLatest}
-				countries={countries.data}
-				statuses={statuses.data}
+				dropdownData={dropdownData.data}
 			/>
 
 			<Box>
@@ -61,11 +66,30 @@ const School = () => {
 						{error.message}
 					</Text>
 				)}
-				{/* Implemented as a React Table*/}
-				{schoolData && (
-					<CreateReactTableForSchool
-						schoolData={schoolData}
-					></CreateReactTableForSchool>
+				{schedules && (
+					<Table variant="striped" size="sm">
+						<Thead>
+							<Tr>
+								<Th>School</Th>
+								<Th>Initiative</Th>
+								<Th>Duration by hour</Th>
+								<Th>Number of New Teachers</Th>
+								<Th>Number of New Students</Th>
+								<Th>Number of Existing Teachers</Th>
+								<Th>Number of Existing Students</Th>
+								<Th>Number of Tablets</Th>
+								<Th>Grades</Th>
+								<Th>Languages Taught</Th>
+								<Th>Support Category</Th>
+								<Th>Support Type</Th>
+							</Tr>
+						</Thead>
+						<Tbody>
+							{schedules.map((schedule) => (
+								<ScheduleRow key={schedule.id} schedule={schedule} />
+							))}
+						</Tbody>
+					</Table>
 				)}
 			</Box>
 		</>
@@ -77,8 +101,7 @@ const ActionsBox = ({
 	setSearchQuery,
 	setDebouncedQ,
 	triggerSearch,
-	countries,
-	statuses,
+	dropdownData,
 }) => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const handleChange = (e) => {
@@ -93,24 +116,23 @@ const ActionsBox = ({
 					<BiSearchAlt />
 				</InputLeftAddon>
 				<Input
-					placeholder="Search schools..."
+					placeholder="Search schedules..."
 					value={searchQuery}
 					width="auto"
 					onChange={handleChange}
 				/>
 			</InputGroup>
-			<Button onClick={onOpen}>Create School</Button>
+			<Button onClick={onOpen}>Create schedule</Button>
 			<Modal isOpen={isOpen} onClose={onClose}>
 				<ModalOverlay />
 				<ModalContent p={2}>
-					<ModalHeader> Create a new School </ModalHeader>
+					<ModalHeader> Create a new schedule </ModalHeader>
 					<ModalCloseButton />
 					<ModalBody>
-						<CreateSchool
+						<CreateSchedule
 							triggerSearch={triggerSearch}
 							onClose={onClose}
-							countries={countries}
-							statuses={statuses}
+							dropdownData={dropdownData}
 						/>
 					</ModalBody>
 				</ModalContent>
@@ -119,4 +141,4 @@ const ActionsBox = ({
 	);
 };
 
-export default School;
+export default ScheduleTracker;
