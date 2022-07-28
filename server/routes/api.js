@@ -1,8 +1,6 @@
 import { Router } from "express";
 import users from "./users";
 import { checkJwt } from "../middleware/auth/auth.middleware";
-import pool from "../db";
-import logger from "../utils/logger";
 import initiatives from "./initiative";
 import scheduleTracker from "./scheduleTracker";
 import schools from "./school";
