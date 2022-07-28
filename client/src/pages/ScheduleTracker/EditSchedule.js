@@ -12,10 +12,11 @@ import {
 } from "@chakra-ui/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import _ from "lodash";
+import { CreatableSelect } from "chakra-react-select";
 
 const EditSchedule = ({ schedule, triggerSearch, onClose, dropdownData }) => {
 	const toast = useToast();
-	const { schools, initiatives, persons } = dropdownData;
+	const { schools, initiatives, persons, languages } = dropdownData;
 	const { getAccessTokenSilently } = useAuth0();
 	const [submitState, setSubmitState] = useState({
 		loading: false,
@@ -32,7 +33,10 @@ const EditSchedule = ({ schedule, triggerSearch, onClose, dropdownData }) => {
 		totalNumTablets: schedule.totalnumtablets,
 		duration: schedule.duration,
 		grades: schedule.grades,
-		languagesTaught: schedule.languagestaught,
+		languagesTaught: schedule.languagestaught
+			.split(",")
+			.filter((e) => e)
+			.map((e) => ({ value: e, label: e })),
 		supportCategory: schedule.supportcategory,
 		supportType: schedule.supporttype,
 		deliveredById: schedule.deliveredbyid,
@@ -42,6 +46,13 @@ const EditSchedule = ({ schedule, triggerSearch, onClose, dropdownData }) => {
 		setFormData({
 			...formData,
 			[e.target.name]: e.target.value,
+		});
+	};
+
+	const onLanguageSelect = (e) => {
+		setFormData({
+			...formData,
+			languagesTaught: e,
 		});
 	};
 	const onSubmitHandler = async () => {
@@ -54,7 +65,10 @@ const EditSchedule = ({ schedule, triggerSearch, onClose, dropdownData }) => {
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${token}`,
 			},
-			body: JSON.stringify(formData),
+			body: JSON.stringify({
+				...formData,
+				languagesTaught: formData.languagesTaught.map((e) => e.value).join(","),
+			}),
 		};
 		fetch(`${process.env.API_URL}/schedule-tracker/${schedule.id}`, options)
 			.then((res) => {
@@ -244,14 +258,13 @@ const EditSchedule = ({ schedule, triggerSearch, onClose, dropdownData }) => {
 						onChange={onChangeHandler}
 					></Input>
 					<FormLabel htmlFor="languagesTaught">Languages Taught</FormLabel>
-					<Input
-						placeholder="Languages Taught"
+					<CreatableSelect
+						isMulti
+						defaultValue={formData.languagesTaught}
 						name="languagesTaught"
-						id="languagesTaught"
-						aria-describedby="languagesTaught"
-						value={formData.languagesTaught}
-						onChange={onChangeHandler}
-					></Input>
+						options={languages}
+						onChange={onLanguageSelect}
+					/>
 					<FormLabel htmlFor="supportCategory">Support Category</FormLabel>
 					<Input
 						placeholder="Support Category"

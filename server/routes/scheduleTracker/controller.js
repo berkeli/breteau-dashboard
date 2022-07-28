@@ -45,10 +45,17 @@ export const getFormData = async (req, res) => {
 		const persons = await pool.query(
 			"SELECT id, full_name, auth0_id FROM person"
 		);
+		const languages = await pool.query(
+			"SELECT DISTINCT(UNNEST(STRING_TO_ARRAY(languagestaught,','))) FROM scheduleTracker"
+		);
 		res.json({
 			schools: schools.rows,
 			initiatives: initiatives.rows,
 			persons: persons.rows,
+			languages: languages.rows.map((el) => ({
+				value: el.unnest,
+				label: el.unnest,
+			})),
 		});
 	} catch (error) {
 		res.status(400).json({ message: error.message });
