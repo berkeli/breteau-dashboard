@@ -118,7 +118,7 @@ const EditUser = ({ triggerSearch, onClose, roles, user }) => {
 						value={formData.fullName}
 						onChange={onChangeHandler}
 					/>
-					{!formData.fullName === "" ? (
+					{formData.fullName ? (
 						<FormHelperText>Enter full name of the user.</FormHelperText>
 					) : (
 						<FormErrorMessage>Name is required.</FormErrorMessage>
@@ -136,7 +136,7 @@ const EditUser = ({ triggerSearch, onClose, roles, user }) => {
 						onChange={onChangeHandler}
 						type="email"
 					/>
-					{!formData.fullName === "" ? (
+					{formData.email ? (
 						<FormHelperText>Enter email of the user.</FormHelperText>
 					) : (
 						<FormErrorMessage>Email is required.</FormErrorMessage>
@@ -154,7 +154,7 @@ const EditUser = ({ triggerSearch, onClose, roles, user }) => {
 						onChange={onChangeHandler}
 						type="text"
 					/>
-					{!formData.country === "" ? (
+					{formData.country ? (
 						<FormHelperText>Enter country of the user.</FormHelperText>
 					) : (
 						<FormErrorMessage>Country is required.</FormErrorMessage>

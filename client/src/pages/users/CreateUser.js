@@ -122,16 +122,12 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 						required
 						onChange={onChangeHandler}
 					/>
-					{!formData.fullName === "" ? (
+					{formData.fullName ? (
 						<FormHelperText>Enter full name of the user.</FormHelperText>
 					) : (
 						<FormErrorMessage>Name is required.</FormErrorMessage>
 					)}
 				</FormControl>
-				<FormControl
-					isRequired
-					isInvalid={formData.category === ""}
-				></FormControl>
 				<FormControl isRequired isInvalid={!formData.email}>
 					<FormLabel htmlFor="email" mt="4">
 						Email
@@ -145,7 +141,7 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 						onChange={onChangeHandler}
 						type="email"
 					/>
-					{!formData.email === "" ? (
+					{formData.email ? (
 						<FormHelperText>Enter email of the user.</FormHelperText>
 					) : (
 						<FormErrorMessage>Email is required.</FormErrorMessage>
@@ -163,7 +159,7 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 						onChange={onChangeHandler}
 						type="text"
 					/>
-					{!formData.country === "" ? (
+					{formData.country ? (
 						<FormHelperText>Enter Country of the user.</FormHelperText>
 					) : (
 						<FormErrorMessage>Country is required.</FormErrorMessage>
