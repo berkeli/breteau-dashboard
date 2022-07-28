@@ -40,6 +40,11 @@ const Header = () => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const user = useAuth0Roles();
 	const navLinks = [
+		{
+			name: "Schedule Tracker",
+			to: "/schedule-tracker",
+			role: "isCountryManager",
+		},
 		{ name: "Schools", to: "/schools", role: "isCountryManager" },
 		{ name: "Initiatives", to: "/initiatives", role: "isAdmin" },
 		{ name: "Users", to: "/users", role: "isSuperAdmin" },

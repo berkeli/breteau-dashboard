@@ -14,6 +14,16 @@ const Footer = () => {
 				<Link href="https://google.com" isExternal rel="noopener noreferrer">
 					&nbsp;Team Ashgabat
 				</Link>
+				<Text>
+					courtesy of
+					<Link
+						href="https://codeyourfuture.io/"
+						isExternal
+						rel="noopener noreferrer"
+					>
+						&nbsp;CodeYourFuture
+					</Link>
+				</Text>
 			</Text>
 		</Flex>
 	);

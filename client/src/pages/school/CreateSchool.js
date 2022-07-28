@@ -13,7 +13,7 @@ import {
 import { useAuth0 } from "@auth0/auth0-react";
 import _ from "lodash";
 
-const CreateSchool = ({ triggerSearch, onClose, countries }) => {
+const CreateSchool = ({ triggerSearch, onClose, countries, statuses }) => {
 	const toast = useToast();
 	const { getAccessTokenSilently } = useAuth0();
 	const [submitState, setSubmitState] = useState({
@@ -21,6 +21,7 @@ const CreateSchool = ({ triggerSearch, onClose, countries }) => {
 		error: null,
 	});
 	const [countryDropdown, setCountryDropdown] = useState(countries.length > 0);
+	const [statusDropdown, setStatusDropdown] = useState(statuses.length > 0);
 
 	const [formData, setFormData] = useState({
 		name: "",
@@ -29,24 +30,34 @@ const CreateSchool = ({ triggerSearch, onClose, countries }) => {
 		country: "",
 		responsible: "",
 		status: "",
-		deploymentdate: "",
+		// Assume Today's Date
+		deploymentdate: new Date().toLocaleDateString("sv-SE"), // sv-SE is YYYY-MM-DD format
 	});
 
 	const onChangeHandler = (e) => {
-		if (
-			e.target.name === "country" &&
-			countryDropdown &&
-			e.target.value === "createnew"
-		) {
-			setCountryDropdown(false);
-			setFormData({ ...formData, country: "" });
-			return;
-		} else {
-			setFormData({
-				...formData,
-				[e.target.name]: e.target.value,
-			});
+		let newCountry = formData.country;
+		let newStatus = formData.status;
+
+		if (e.target.name === "country") {
+			if (countryDropdown && e.target.value === "createnew") {
+				setCountryDropdown(false);
+				newCountry = "";
+			}
 		}
+
+		if (e.target.name === "status") {
+			if (statusDropdown && e.target.value === "createnew") {
+				setStatusDropdown(false);
+				newStatus = "";
+			}
+		}
+
+		setFormData({
+			...formData,
+			country: newCountry,
+			status: newStatus,
+			[e.target.name]: e.target.value,
+		});
 	};
 
 	// Date format is `yyyy-mm-dd`
@@ -94,6 +105,7 @@ const CreateSchool = ({ triggerSearch, onClose, countries }) => {
 
 	const onSubmitHandler = async () => {
 		// Trim the inputted data
+
 		setFormData({
 			...formData,
 			name: formData.name.trim(),
@@ -102,6 +114,7 @@ const CreateSchool = ({ triggerSearch, onClose, countries }) => {
 			responsible: formData.responsible.trim(),
 			status: formData.status.trim(),
 			deploymentdate: formData.deploymentdate.trim(),
+			description: formData.description,
 		});
 		// Validate
 		let response = validateSubmission(formData);
@@ -236,14 +249,34 @@ const CreateSchool = ({ triggerSearch, onClose, countries }) => {
 				</FormControl>
 				<FormControl mt="4">
 					<FormLabel htmlFor="status">Status</FormLabel>
-					<Input
-						id="status"
-						name="status"
-						aria-describedby="status"
-						value={formData.status}
-						required
-						onChange={(e) => onChangeHandler(e)}
-					/>
+
+					{statusDropdown ? (
+						<Select
+							placeholder="Select status"
+							name="status"
+							id="status"
+							aria-describedby="school status"
+							value={formData.status}
+							onChange={(e) => onChangeHandler(e)}
+						>
+							{statuses.map(({ status }) => (
+								<option value={status} key={status}>
+									{status}
+								</option>
+							))}
+							<option value="createnew">Create a New Status</option>
+						</Select>
+					) : (
+						<Input
+							id="status"
+							name="status"
+							aria-describedby="status"
+							required
+							value={formData.status}
+							onChange={(e) => onChangeHandler(e)}
+							type="text"
+						/>
+					)}
 				</FormControl>
 				<FormControl mt="4">
 					<FormLabel htmlFor="deploymentdate">Deployment Date</FormLabel>

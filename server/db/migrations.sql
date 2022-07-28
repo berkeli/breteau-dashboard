@@ -1,8 +1,11 @@
+
+
 CREATE TABLE IF NOT EXISTS person (
    id serial PRIMARY KEY,
    full_name VARCHAR(255) NOT NULL,
    email VARCHAR(255) UNIQUE NOT NULL,
-   created_at TIMESTAMP NOT NULL DEFAULT NOW()
+   created_at TIMESTAMP NOT NULL DEFAULT NOW(), 
+   auth0_id VARCHAR(255) UNIQUE NOT NULL,
 );
 
 CREATE TABLE IF NOT EXISTS initiative (
@@ -12,6 +15,8 @@ CREATE TABLE IF NOT EXISTS initiative (
    category VARCHAR(255) NOT NULL,
    created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
+
+
 
 DROP TABLE IF EXISTS school;
 -- Create School Table
@@ -62,4 +67,5 @@ CREATE TABLE scheduletracker (
                              REFERENCES school (id),
    FOREIGN KEY (programmeInitiativeId)
                              REFERENCES initiative (id));
+
 
