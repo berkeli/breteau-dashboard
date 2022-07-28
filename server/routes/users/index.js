@@ -16,6 +16,6 @@ users.get("/", getUsersFromDB);
 users.post("/", createUser);
 users.get("/roles", getRoles);
 users.put("/", updateUser);
-users.put("/reset-password/:user_id", resetPwdHandler);
+users.put("/reset-password/:email", resetPwdHandler);
 
 export default users;

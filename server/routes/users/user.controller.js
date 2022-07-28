@@ -1,6 +1,6 @@
 import config from "../../config";
 import logger from "../../utils/logger";
-import { auth0 } from "./helpers";
+import { auth0, AuthClient } from "./helpers";
 import pool from "../../db/";
 
 export const getUsersFromDB = (req, res) => {
@@ -62,7 +62,7 @@ export const createUser = async (req, res) => {
 		.createUser(user)
 		.then(async (user) => {
 			const id = user.user_id;
-			await resetUserPassword(id);
+			await resetUserPassword(user.email);
 			await assignRolesToUser(id, roles);
 			const query = {
 				text: "INSERT INTO person (auth0_id, full_name, email, roles, country) VALUES ($1, $2, $3, $4, $5) ON CONFLICT (email) DO UPDATE SET auth0_id = $1, full_name = $2, email = $3, roles = $4, country = $5",
@@ -139,16 +139,24 @@ export const getRoles = (_, res) => {
 };
 
 export const resetPwdHandler = async (req, res) => {
-	const { user_id } = req.params;
-	await resetUserPassword(user_id);
+	const { email } = req.params;
+	await resetUserPassword(email);
 	res.json({ message: "Password reset ticket sent" });
 };
 
-const resetUserPassword = async (user_id) => {
-	await auth0.createPasswordChangeTicket({
-		result_url: config.AUTH0_REDIRECT,
-		user_id,
-	});
+const resetUserPassword = async (email) => {
+	AuthClient.requestChangePasswordEmail(
+		{
+			email,
+			connection: config.AUTH0_CONNECTION,
+			client_id: config.AUTH0_CLIENT_ID,
+		},
+		(err) => {
+			if (err) {
+				logger.error(err);
+			}
+		}
+	);
 };
 
 const assignRolesToUser = async (id, roles) => {
