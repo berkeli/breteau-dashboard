@@ -22,8 +22,6 @@ const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 		error: null,
 	});
 
-	console.log(dropdownData);
-
 	const [formData, setFormData] = useState({
 		schoolId: "",
 		programmeInitiativeId: "",
@@ -48,8 +46,6 @@ const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 	const onSubmitHandler = async () => {
 		setSubmitState({ ...submitState, loading: true });
 		const token = await getAccessTokenSilently();
-
-		console.log("formData ", formData);
 
 		const options = {
 			method: "POST",

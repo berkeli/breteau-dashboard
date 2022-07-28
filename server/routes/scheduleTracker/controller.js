@@ -5,7 +5,13 @@ import { objectToQuery } from "../../utils/objectToQuery";
 export const getSchedules = (req, res) => {
 	const { searchQuery } = req.query;
 	const query = {
-		text: "SELECT school.name as school, initiative.name as initiative, scheduleTracker.duration, scheduleTracker.numofnewstudents, scheduleTracker.numofexistingstudents,	scheduleTracker.numofnewteachers, scheduleTracker.numofexistingteachers, scheduleTracker.grades, scheduleTracker.languagestaught, scheduleTracker.totalnumtablets, scheduleTracker.supportcategory,	scheduleTracker.supporttype FROM scheduleTracker inner join school on school.id = scheduleTracker.schoolId inner join initiative on initiative.id = scheduleTracker.programmeInitiativeId",
+		text: `SELECT school.name as school, initiative.name as initiative, scheduleTracker.duration, 
+		scheduleTracker.numofnewstudents, scheduleTracker.numofexistingstudents,	
+		scheduleTracker.numofnewteachers, scheduleTracker.numofexistingteachers, 
+		scheduleTracker.grades, scheduleTracker.languagestaught, scheduleTracker.totalnumtablets, 
+		scheduleTracker.supportcategory, scheduleTracker.supporttype 
+		FROM scheduleTracker inner join school on school.id = scheduleTracker.schoolId 
+		inner join initiative on initiative.id = scheduleTracker.programmeInitiativeId`,
 	};
 
 	if (searchQuery) {
