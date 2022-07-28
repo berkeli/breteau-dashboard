@@ -29,3 +29,4 @@ router.use("/schedule-tracker", scheduleTracker);
 router.use("/schools", schools);
 
 export default router;
+

@@ -16,19 +16,20 @@ import {
 import { useAuth0 } from "@auth0/auth0-react";
 import _ from "lodash";
 
-const CreateUser = ({ triggerSearch, onClose, roles }) => {
+const EditUser = ({ triggerSearch, onClose, roles, user }) => {
 	const toast = useToast();
 	const { getAccessTokenSilently } = useAuth0();
 	const [submitState, setSubmitState] = useState({
 		loading: false,
 		error: null,
 	});
-
 	const [formData, setFormData] = useState({
-		fullName: "",
-		email: "",
-		country: "",
-		roles: [],
+		fullName: user.full_name,
+		email: user.email,
+		country: user.country,
+		roles: user.roles,
+		user_id: user.user_id,
+		allRoles: roles.map((role) => role.id),
 	});
 
 	const onChangeHandler = (e) => {
@@ -52,18 +53,12 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 		}
 	};
 
-	const validateInputs =
-		!formData.fullName.trim() ||
-		!formData.email.trim() ||
-		!formData.country.trim();
-
-	const onSubmitHandler = async (e) => {
-		e.preventDefault();
+	const onSubmitHandler = async () => {
 		setSubmitState({ ...submitState, loading: true });
 		const token = await getAccessTokenSilently();
 
 		const options = {
-			method: "POST",
+			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${token}`,
@@ -76,9 +71,8 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 					_.debounce(triggerSearch, 500)();
 					_.debounce(onClose, 500)();
 					toast({
-						title: "User Created",
-						description:
-							"We have created the user account and sent invitation email",
+						title: "User Updated",
+						description: "User has been updated successfully.",
 						status: "success",
 						duration: 5000,
 						isClosable: true,
@@ -122,7 +116,6 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 						name="fullName"
 						aria-describedby="full name"
 						value={formData.fullName}
-						required
 						onChange={onChangeHandler}
 					/>
 					{formData.fullName.trim() ? (
@@ -139,7 +132,6 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 						id="email"
 						name="email"
 						aria-describedby="email"
-						required
 						value={formData.email}
 						onChange={onChangeHandler}
 						type="email"
@@ -150,7 +142,7 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 						<FormErrorMessage>Email is required.</FormErrorMessage>
 					)}
 				</FormControl>
-				<FormControl isRequired isInvalid={!formData.country.trim()}>
+				<FormControl isRequired isInvalid={!formData.country}>
 					<FormLabel htmlFor="country" mt="4">
 						Country
 					</FormLabel>
@@ -163,22 +155,22 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 						type="text"
 					/>
 					{formData.country.trim() ? (
-						<FormHelperText>Enter Country of the user.</FormHelperText>
+						<FormHelperText>Enter country of the user.</FormHelperText>
 					) : (
 						<FormErrorMessage>Country is required.</FormErrorMessage>
 					)}
 				</FormControl>
 				<FormControl mt="8">
-					<CheckboxGroup p={2}>
+					<CheckboxGroup p={2} defaultValue={formData.roles}>
 						<FormLabel>Assign Roles</FormLabel>
 						<Stack spacing={5} direction="row">
 							{roles.map((role) => (
 								<Checkbox
 									name="roles"
 									key={role.id}
-									isChecked={formData.roles.includes(role.id)}
+									size="md"
 									value={role.id}
-									onChange={(e) => onChangeHandler(e)}
+									onChange={onChangeHandler}
 								>
 									{role.name}
 								</Checkbox>
@@ -190,8 +182,9 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 					<Button
 						mt="8"
 						onClick={onSubmitHandler}
-						type="submit"
-						disabled={validateInputs}
+						disabled={
+							!formData.fullName.trim() || !formData.email.trim() || !formData.country.trim()
+						}
 					>
 						Submit
 					</Button>
@@ -201,4 +194,4 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 	);
 };
 
-export default CreateUser;
+export default EditUser;

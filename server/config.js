@@ -3,6 +3,7 @@ import * as env from "dotenv";
 env.config();
 
 const config = {
+	DATABASE_URL: process.env.DATABASE_URL,
 	AUTH0_DOMAIN: process.env.AUTH0_DOMAIN,
 	AUTH0_CLIENT_ID: process.env.M2M_AUTH0_CLIENT_ID,
 	AUTH0_CLIENT_SECRET: process.env.M2M_AUTH0_CLIENT_SECRET,
