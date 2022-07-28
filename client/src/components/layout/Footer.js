@@ -11,18 +11,22 @@ const Footer = () => {
 		>
 			<Text>
 				{new Date().getFullYear()} - Developed by
-				<Link href="https://google.com" isExternal rel="noopener noreferrer">
+				<Link
+					href="https://github.com/berkeli/breteau-dashboard"
+					isExternal
+					rel="noopener noreferrer"
+				>
 					&nbsp;Team Ashgabat
 				</Link>
 				<Text>
-					courtesy of{" "}
+					Courtesy of{" "}
 					<Link
 						href="https://codeyourfuture.io/"
 						isExternal
 						rel="noopener noreferrer"
 					>
 						&nbsp;CodeYourFuture
-					</Link>{" "}
+					</Link>
 				</Text>
 			</Text>
 		</Flex>
