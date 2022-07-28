@@ -70,6 +70,7 @@ const ScheduleTracker = () => {
 					<Table variant="striped" size="sm">
 						<Thead>
 							<Tr>
+								<Th>Delivered By</Th>
 								<Th>School</Th>
 								<Th>Initiative</Th>
 								<Th>Duration by hour</Th>

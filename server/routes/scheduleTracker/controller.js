@@ -5,13 +5,14 @@ import { objectToQuery } from "../../utils/objectToQuery";
 export const getSchedules = (req, res) => {
 	const { searchQuery } = req.query;
 	const query = {
-		text: `SELECT school.name as school, initiative.name as initiative, scheduleTracker.duration, 
+		text: `SELECT school.name as school, person.full_name, initiative.name as initiative, scheduleTracker.duration, 
 		scheduleTracker.numofnewstudents, scheduleTracker.numofexistingstudents,	
 		scheduleTracker.numofnewteachers, scheduleTracker.numofexistingteachers, 
 		scheduleTracker.grades, scheduleTracker.languagestaught, scheduleTracker.totalnumtablets, 
 		scheduleTracker.supportcategory, scheduleTracker.supporttype 
 		FROM scheduleTracker inner join school on school.id = scheduleTracker.schoolId 
-		inner join initiative on initiative.id = scheduleTracker.programmeInitiativeId`,
+		inner join initiative on initiative.id = scheduleTracker.programmeInitiativeId 
+		inner join person on scheduleTracker.deliveredById = person.id `,
 	};
 
 	if (searchQuery) {
@@ -34,7 +35,14 @@ export const getFormData = async (req, res) => {
 		const initiatives = await pool.query(
 			"SELECT DISTINCT(name), id FROM initiative"
 		);
-		res.json({ schools: schools.rows, initiatives: initiatives.rows });
+		const persons = await pool.query(
+			"SELECT id, auth0_id, full_name FROM person"
+		);
+		res.json({
+			schools: schools.rows,
+			initiatives: initiatives.rows,
+			persons: persons.rows,
+		});
 	} catch (error) {
 		res.status(400).json({ message: error.message });
 	}

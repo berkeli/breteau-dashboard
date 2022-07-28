@@ -1,8 +1,9 @@
-import { Td, Text, Tr } from "@chakra-ui/react";
+import { Td, Tr } from "@chakra-ui/react";
 import React from "react";
 
 const ScheduleRow = ({ schedule }) => {
 	const {
+		full_name,
 		school,
 		initiative,
 		duration,
@@ -18,6 +19,7 @@ const ScheduleRow = ({ schedule }) => {
 	} = schedule;
 	return (
 		<Tr>
+			<Td>{full_name}</Td>
 			<Td>{school}</Td>
 			<Td>{initiative}</Td>
 			<Td>{duration}</Td>
@@ -26,10 +28,8 @@ const ScheduleRow = ({ schedule }) => {
 			<Td>{numofexistingteachers}</Td>
 			<Td>{numofexistingstudents}</Td>
 			<Td>{totalnumtablets}</Td>
-
 			<Td>{grades}</Td>
 			<Td>{languagestaught}</Td>
-
 			<Td>{supportcategory}</Td>
 			<Td>{supporttype}</Td>
 		</Tr>
