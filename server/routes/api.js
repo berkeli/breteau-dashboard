@@ -11,14 +11,7 @@ import stats from "./stats";
 const router = Router();
 
 router.get("/", (_, res) => {
-	pool.query("SELECT * FROM person", (err, result) => {
-		if (err) {
-			logger.error(err);
-			res.status(500).json({ message: err.message });
-		} else {
-			res.json(result.rows);
-		}
-	});
+	res.status(200).json({ message: "Breteau Dashboard API" });
 });
 
 function genericIntErrorMessage(theId, response, errType, text = "") {
