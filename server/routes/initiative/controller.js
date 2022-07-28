@@ -64,10 +64,6 @@ export const createInitiative = (req, res) => {
 	);
 };
 
-<<<<<<< HEAD
-export const CreateSchool = (req, res) => {
-	res.send("Hello World");
-=======
 export const updateInitiative = (req, res) => {
 	const { name, category, description, id } = req.body;
 	pool.query(
@@ -107,5 +103,4 @@ export const deleteInitiative = async (req, res) => {
 			res.json(results.rows[0]);
 		}
 	);
->>>>>>> main
 };
