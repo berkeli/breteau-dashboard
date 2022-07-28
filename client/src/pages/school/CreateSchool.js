@@ -13,7 +13,7 @@ import {
 import { useAuth0 } from "@auth0/auth0-react";
 import _ from "lodash";
 
-const CreateSchool = ({ triggerSearch, onClose, countries, statuses }) => {
+const CreateSchool = ({ triggerSearch, onClose, countries, statuses, persons }) => {
 	const toast = useToast();
 	const { getAccessTokenSilently } = useAuth0();
 	const [submitState, setSubmitState] = useState({
@@ -22,6 +22,7 @@ const CreateSchool = ({ triggerSearch, onClose, countries, statuses }) => {
 	});
 	const [countryDropdown, setCountryDropdown] = useState(countries.length > 0);
 	const [statusDropdown, setStatusDropdown] = useState(statuses.length > 0);
+	const blankRegex = new RegExp(/^[ \t]*$/);
 
 	const [formData, setFormData] = useState({
 		name: "",
@@ -54,9 +55,9 @@ const CreateSchool = ({ triggerSearch, onClose, countries, statuses }) => {
 
 		setFormData({
 			...formData,
+			[e.target.name]: e.target.value,
 			country: newCountry,
 			status: newStatus,
-			[e.target.name]: e.target.value,
 		});
 	};
 
@@ -103,6 +104,31 @@ const CreateSchool = ({ triggerSearch, onClose, countries, statuses }) => {
 		return { result: true }; // Passed Simple Validation
 	};
 
+	// Some Validation
+	const invalidateSubmission = (formData) => {
+		if (
+			formData.name === "" ||
+			formData.location === "" ||
+			formData.country === "" ||
+			formData.responsible === "" ||
+			formData.status === "" ||
+			formData.description === ""
+		) {
+			return true;
+		}
+
+		// Date Validation
+
+		if (
+			formData.deploymentdate === "" ||
+			!dateIsValid(formData.deploymentdate)
+		) {
+			return { result: false, message: "Invalid Deployment Date" };
+		}
+
+		return { result: true }; // Passed Simple Validation
+	};
+
 	const onSubmitHandler = async () => {
 		// Trim the inputted data
 
@@ -114,7 +140,7 @@ const CreateSchool = ({ triggerSearch, onClose, countries, statuses }) => {
 			responsible: formData.responsible.trim(),
 			status: formData.status.trim(),
 			deploymentdate: formData.deploymentdate.trim(),
-			description: formData.description,
+			description: formData.description.trim(),
 		});
 		// Validate
 		let response = validateSubmission(formData);
@@ -179,18 +205,21 @@ const CreateSchool = ({ triggerSearch, onClose, countries, statuses }) => {
 	return (
 		<>
 			<form>
-				<FormControl>
+				<FormControl isRequired isInvalid={blankRegex.test(formData.name)}>
 					<FormLabel htmlFor="name">Name</FormLabel>
 					<Input
 						id="name"
 						name="name"
 						aria-describedby="school name"
 						value={formData.name}
-						required
 						onChange={(e) => onChangeHandler(e)}
 					/>
 				</FormControl>
-				<FormControl mt="4">
+				<FormControl
+					isRequired
+					isInvalid={blankRegex.test(formData.location)}
+					mt="4"
+				>
 					<FormLabel htmlFor="location" mt="4">
 						Location
 					</FormLabel>
@@ -198,12 +227,11 @@ const CreateSchool = ({ triggerSearch, onClose, countries, statuses }) => {
 						id="location"
 						name="location"
 						aria-describedby="location"
-						required
 						value={formData.location}
 						onChange={(e) => onChangeHandler(e)}
 					/>
 				</FormControl>
-				<FormControl>
+				<FormControl isRequired isInvalid={blankRegex.test(formData.country)}>
 					<FormLabel htmlFor="country" mt="4">
 						Country
 					</FormLabel>
@@ -229,25 +257,38 @@ const CreateSchool = ({ triggerSearch, onClose, countries, statuses }) => {
 							id="country"
 							name="country"
 							aria-describedby="country"
-							required
 							value={formData.country}
 							onChange={(e) => onChangeHandler(e)}
 							type="text"
 						/>
 					)}
 				</FormControl>
-				<FormControl mt="5">
+				<FormControl
+					isRequired
+					isInvalid={blankRegex.test(formData.responsible)}
+					mt="5"
+				>
 					<FormLabel htmlFor="responsible">Person Responsible</FormLabel>
-					<Input
-						id="responsible"
+					<Select
+						placeholder="Select person"
 						name="responsible"
+						id="responsible"
 						aria-describedby="person responsible"
 						value={formData.responsible}
-						required
 						onChange={(e) => onChangeHandler(e)}
-					/>
+					>
+						{persons.map(({ name }) => (
+							<option value={name} key={name}>
+								{name}
+							</option>
+						))}
+					</Select>
 				</FormControl>
-				<FormControl mt="4">
+				<FormControl
+					isRequired
+					isInvalid={blankRegex.test(formData.status)}
+					mt="4"
+				>
 					<FormLabel htmlFor="status">Status</FormLabel>
 
 					{statusDropdown ? (
@@ -271,7 +312,6 @@ const CreateSchool = ({ triggerSearch, onClose, countries, statuses }) => {
 							id="status"
 							name="status"
 							aria-describedby="status"
-							required
 							value={formData.status}
 							onChange={(e) => onChangeHandler(e)}
 							type="text"
@@ -279,18 +319,22 @@ const CreateSchool = ({ triggerSearch, onClose, countries, statuses }) => {
 					)}
 				</FormControl>
 				<FormControl mt="4">
+					isRequired isInvalid={blankRegex.test(formData.deploymentdate)}
 					<FormLabel htmlFor="deploymentdate">Deployment Date</FormLabel>
 					<Input
 						id="deploymentdate"
 						name="deploymentdate"
 						aria-describedby="deployment date"
 						value={formData.deploymentdate}
-						required
 						type="date" // Date Picker
 						onChange={(e) => onChangeHandler(e)}
 					/>
 				</FormControl>
-				<FormControl mt="4">
+				<FormControl
+					isRequired
+					isInvalid={blankRegex.test(formData.description)}
+					mt="4"
+				>
 					<FormLabel htmlFor="description" mt="4">
 						Description
 					</FormLabel>
@@ -298,7 +342,6 @@ const CreateSchool = ({ triggerSearch, onClose, countries, statuses }) => {
 						id="description"
 						name="description"
 						aria-describedby="description"
-						required
 						value={formData.description}
 						onChange={(e) => onChangeHandler(e)}
 					/>

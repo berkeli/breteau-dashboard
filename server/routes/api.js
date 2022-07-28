@@ -11,7 +11,7 @@ import stats from "./stats";
 const router = Router();
 
 router.get("/", (_, res) => {
-	pool.query("SELECT * FROM person", (err, result) => {
+	pool.query("SELECT * FROM person WHERE NOT blocked", (err, result) => {
 		if (err) {
 			logger.error(err);
 			res.status(500).json({ message: err.message });
