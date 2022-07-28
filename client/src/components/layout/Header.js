@@ -17,31 +17,40 @@ import logo_dark from "../../assets/breteau_logo.png";
 import logo_light from "../../assets/breteau_logo_light.png";
 
 import ThemeToggle from "./ThemeToggle";
+import useAuth0Roles from "../../hooks/useAuth0Roles";
 
-const NavLink = ({ to, children }) => (
-	<Link
-		px={2}
-		py={1}
-		as={RouterLink}
-		to={to}
-		rounded={"md"}
-		_hover={{
-			textDecoration: "none",
-			bg: useColorModeValue("gray.200", "gray.700"),
-		}}
-	>
-		{children}
-	</Link>
-);
+const NavLink = ({ to, children }) => {
+	const bg = useColorModeValue("gray.200", "gray.700");
+	return (
+		<Link
+			px={2}
+			py={1}
+			as={RouterLink}
+			to={to}
+			rounded={"md"}
+			_hover={{
+				textDecoration: "none",
+				bg,
+			}}
+		>
+			{children}
+		</Link>
+	);
+};
 
 const Header = () => {
 	const { logout } = useAuth0();
 	const { isOpen, onOpen, onClose } = useDisclosure();
+	const user = useAuth0Roles();
 	const navLinks = [
-		{ name: "Schools", to: "/schools" },
-		{ name: "Schedule Tracker", to: "/schedule-tracker" },
-		{ name: "Initiatives", to: "/initiatives" },
-		{ name: "Users", to: "/users" },
+		{
+			name: "Schedule Tracker",
+			to: "/schedule-tracker",
+			role: "isCountryManager",
+		},
+		{ name: "Schools", to: "/schools", role: "isCountryManager" },
+		{ name: "Initiatives", to: "/initiatives", role: "isAdmin" },
+		{ name: "Users", to: "/users", role: "isSuperAdmin" },
 	];
 	return (
 		<>
@@ -66,11 +75,17 @@ const Header = () => {
 							spacing={4}
 							display={{ base: "none", md: "flex" }}
 						>
-							{navLinks.map((link) => (
-								<NavLink as={RouterLink} key={link.to} to={link.to}>
-									{link.name}
-								</NavLink>
-							))}
+							{navLinks.map((link) => {
+								if (user[link.role]) {
+									return (
+										<NavLink as={RouterLink} key={link.to} to={link.to}>
+											{link.name}
+										</NavLink>
+									);
+								} else {
+									return null;
+								}
+							})}
 						</HStack>
 					</HStack>
 					<Flex alignItems={"center"}>
