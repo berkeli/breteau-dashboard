@@ -13,7 +13,7 @@ import {
 	useToast,
 } from "@chakra-ui/react";
 import { useAuth0 } from "@auth0/auth0-react";
-import _ from "lodash";
+import _, { isNaN } from "lodash";
 
 const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 	const toast = useToast();
@@ -145,7 +145,13 @@ const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 						<FormErrorMessage>Initiative is required.</FormErrorMessage>
 					)}
 				</FormControl>
-				<FormControl isInvalid={!formData.duration} isRequired>
+				<FormControl
+					isInvalid={
+						Number(formData.duration) < 0 ||
+						(!formData.duration && formData.duration !== 0)
+					}
+					isRequired
+				>
 					<FormLabel htmlFor="duration">Duration by hour</FormLabel>
 					<Input
 						placeholder="Duration by hour"
@@ -179,7 +185,13 @@ const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 						<FormErrorMessage>Brief summary is required.</FormErrorMessage>
 					)}
 				</FormControl>
-				<FormControl isInvalid={!formData.numOfNewTeachers} isRequired>
+				<FormControl
+					isInvalid={
+						Number(formData.numOfNewTeachers) < 0 ||
+						(!formData.numOfNewTeachers && formData.numOfNewTeachers !== 0)
+					}
+					isRequired
+				>
 					<FormLabel htmlFor="numOfNewTeachers">
 						Number of New Teachers
 					</FormLabel>
@@ -203,7 +215,13 @@ const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 						</FormErrorMessage>
 					)}
 				</FormControl>
-				<FormControl isInvalid={!formData.numOfNewStudents} isRequired>
+				<FormControl
+					isInvalid={
+						Number(formData.numOfNewStudents) < 0 ||
+						(!formData.numOfNewStudents && formData.numOfNewStudents !== 0)
+					}
+					isRequired
+				>
 					<FormLabel htmlFor="numOfNewStudents">
 						Number of New Students
 					</FormLabel>
@@ -227,7 +245,14 @@ const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 						</FormErrorMessage>
 					)}
 				</FormControl>
-				<FormControl isInvalid={!formData.numOfExistingTeachers} isRequired>
+				<FormControl
+					isInvalid={
+						Number(formData.numOfExistingTeachers) < 0 ||
+						(!formData.numOfExistingTeachers &&
+							formData.numOfExistingTeachers !== 0)
+					}
+					isRequired
+				>
 					<FormLabel htmlFor="numOfExistingTeachers">
 						Number Of Existing Teachers
 					</FormLabel>
@@ -251,7 +276,14 @@ const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 						</FormErrorMessage>
 					)}
 				</FormControl>
-				<FormControl isInvalid={!formData.numOfExistingStudents} isRequired>
+				<FormControl
+					isInvalid={
+						Number(formData.numOfExistingStudents) < 0 ||
+						(!formData.numOfExistingStudents &&
+							formData.numOfExistingStudents !== 0)
+					}
+					isRequired
+				>
 					<FormLabel htmlFor="numOfExistingStudents">
 						Number Of Existing Students
 					</FormLabel>
