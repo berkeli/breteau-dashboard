@@ -39,8 +39,6 @@ const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 		supportType: "",
 	});
 
-	console.log(formData, user);
-
 	const onChangeHandler = (e) => {
 		setFormData({
 			...formData,
