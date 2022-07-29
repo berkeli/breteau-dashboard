@@ -111,6 +111,7 @@ module.exports = {
 	projects: [
 		{
 			testEnvironment: "jsdom",
+			setupFiles: ["<rootDir>/.jest/setEnvVars.js"],
 			setupFilesAfterEnv: ["<rootDir>.jest/setup.js"],
 			displayName: "Client tests",
 			moduleNameMapper: {
@@ -121,6 +122,7 @@ module.exports = {
 		},
 		{
 			testEnvironment: "node",
+			setupFiles: ["<rootDir>/.jest/setEnvVars.js"],
 			setupFilesAfterEnv: ["<rootDir>.jest/setup.js"],
 			displayName: "Server tests",
 			testMatch: ["<rootDir>/server/**/?(*.)+(spec|test).[jt]s?(x)"],
