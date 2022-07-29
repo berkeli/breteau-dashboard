@@ -1,7 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1659114676723" clover="3.2.0">
-  <project timestamp="1659114676723" name="All files">
-    <metrics statements="325" coveredstatements="83" conditionals="88" coveredconditionals="2" methods="76" coveredmethods="7" elements="489" coveredelements="92" complexity="0" loc="325" ncloc="325" packages="11" files="23" classes="23"/>
+<coverage generated="1659115290014" clover="3.2.0">
+  <project timestamp="1659115290014" name="All files">
+    <metrics statements="391" coveredstatements="136" conditionals="116" coveredconditionals="25" methods="92" coveredmethods="19" elements="599" coveredelements="180" complexity="0" loc="391" ncloc="391" packages="15" files="28" classes="28"/>
+    <package name=".jest">
+      <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="fileMock.js" path="/Users/berkeli/Git/CodeYourFuture/ldn8-final-project/.jest/fileMock.js">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="client.src.hooks">
+      <metrics statements="27" coveredstatements="24" conditionals="9" coveredconditionals="9" methods="5" coveredmethods="4"/>
+      <file name="useAuth0Roles.js" path="/Users/berkeli/Git/CodeYourFuture/ldn8-final-project/client/src/hooks/useAuth0Roles.js">
+        <metrics statements="6" coveredstatements="6" conditionals="9" coveredconditionals="9" methods="1" coveredmethods="1"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="4" type="stmt"/>
+        <line num="6" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="8" count="4" type="cond" truecount="3" falsecount="0"/>
+        <line num="11" count="4" type="cond" truecount="4" falsecount="0"/>
+        <line num="15" count="4" type="stmt"/>
+      </file>
+      <file name="useFetch.js" path="/Users/berkeli/Git/CodeYourFuture/ldn8-final-project/client/src/hooks/useFetch.js">
+        <metrics statements="21" coveredstatements="18" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="3"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="2" type="stmt"/>
+        <line num="6" count="2" type="stmt"/>
+        <line num="7" count="2" type="stmt"/>
+        <line num="8" count="2" type="stmt"/>
+        <line num="9" count="2" type="stmt"/>
+        <line num="11" count="2" type="stmt"/>
+        <line num="12" count="0" type="stmt"/>
+        <line num="15" count="2" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="26" count="1" type="stmt"/>
+        <line num="30" count="1" type="stmt"/>
+        <line num="31" count="1" type="stmt"/>
+        <line num="32" count="1" type="stmt"/>
+        <line num="34" count="0" type="stmt"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="38" count="1" type="stmt"/>
+        <line num="40" count="2" type="stmt"/>
+      </file>
+    </package>
+    <package name="client.src.pages">
+      <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+      <file name="LoginPage.js" path="/Users/berkeli/Git/CodeYourFuture/ldn8-final-project/client/src/pages/LoginPage.js">
+        <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="13" count="2" type="stmt"/>
+        <line num="14" count="2" type="stmt"/>
+        <line num="15" count="2" type="stmt"/>
+        <line num="28" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="client.src.pages.users">
+      <metrics statements="33" coveredstatements="23" conditionals="19" coveredconditionals="14" methods="9" coveredmethods="6"/>
+      <file name="CreateUser.js" path="/Users/berkeli/Git/CodeYourFuture/ldn8-final-project/client/src/pages/users/CreateUser.js">
+        <metrics statements="33" coveredstatements="23" conditionals="19" coveredconditionals="14" methods="9" coveredmethods="6"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="20" count="22" type="stmt"/>
+        <line num="21" count="22" type="stmt"/>
+        <line num="22" count="22" type="stmt"/>
+        <line num="27" count="22" type="stmt"/>
+        <line num="34" count="22" type="stmt"/>
+        <line num="35" count="12" type="cond" truecount="1" falsecount="1"/>
+        <line num="36" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="37" count="0" type="stmt"/>
+        <line num="42" count="0" type="stmt"/>
+        <line num="44" count="0" type="stmt"/>
+        <line num="48" count="12" type="stmt"/>
+        <line num="56" count="22" type="cond" truecount="3" falsecount="0"/>
+        <line num="60" count="22" type="stmt"/>
+        <line num="61" count="2" type="stmt"/>
+        <line num="62" count="2" type="stmt"/>
+        <line num="63" count="2" type="stmt"/>
+        <line num="65" count="2" type="stmt"/>
+        <line num="73" count="2" type="stmt"/>
+        <line num="75" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="76" count="0" type="stmt"/>
+        <line num="77" count="0" type="stmt"/>
+        <line num="78" count="0" type="stmt"/>
+        <line num="87" count="2" type="stmt"/>
+        <line num="90" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="91" count="2" type="stmt"/>
+        <line num="93" count="0" type="stmt"/>
+        <line num="100" count="0" type="stmt"/>
+        <line num="104" count="22" type="cond" truecount="2" falsecount="0"/>
+        <line num="105" count="2" type="stmt"/>
+        <line num="115" count="20" type="stmt"/>
+        <line num="176" count="60" type="stmt"/>
+        <line num="181" count="0" type="stmt"/>
+      </file>
+    </package>
     <package name="server">
       <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="config.js" path="/Users/berkeli/Git/CodeYourFuture/ldn8-final-project/server/config.js">

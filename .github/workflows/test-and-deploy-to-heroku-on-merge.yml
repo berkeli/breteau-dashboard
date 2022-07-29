@@ -27,11 +27,8 @@ jobs:
       - name: Check for Linting Issues
         run: npm run lint
 
-      - name: Run Client Tests
-        run: npm run test:client
-
-      - name: Run Server Tests
-        run: npm run test:server
+      - name: Run Tests
+        run: npm run test
 
       - name: Upload to codecov
         uses: codecov/codecov-action@v3.1.0

@@ -108,7 +108,24 @@ module.exports = {
 	// preset: undefined,
 
 	// Run tests from one or more projects
-	// projects: undefined,
+	projects: [
+		{
+			testEnvironment: "jsdom",
+			setupFilesAfterEnv: ["<rootDir>.jest/setup.js"],
+			displayName: "Client tests",
+			moduleNameMapper: {
+				"\\.(jpg|jpeg|png|svg)$": "<rootDir>/.jest/fileMock.js",
+				"\\.(css|scss)$": "identity-obj-proxy",
+			},
+			testMatch: ["<rootDir>/client/**/?(*.)+(spec|test).[jt]s?(x)"],
+		},
+		{
+			testEnvironment: "node",
+			setupFilesAfterEnv: ["<rootDir>.jest/setup.js"],
+			displayName: "Server tests",
+			testMatch: ["<rootDir>/server/**/?(*.)+(spec|test).[jt]s?(x)"],
+		},
+	],
 
 	// Use this configuration option to add custom reporters to Jest
 	// reporters: undefined,
