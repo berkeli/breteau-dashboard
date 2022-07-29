@@ -9,6 +9,11 @@ module.exports = {
 	setupFiles: ["<rootDir>/.jest/setEnvVars.js"],
 	// Stop running tests after `n` failures
 	// bail: 0,
+	setupFilesAfterEnv: ["<rootDir>/.jest/setup.js"],
+	moduleNameMapper: {
+		"\\.(jpg|jpeg|png|svg)$": "<rootDir>/.jest/fileMock.js",
+		"\\.(css|scss)$": "identity-obj-proxy",
+	},
 
 	// The directory where Jest should store its cached dependency information
 	// cacheDirectory: "/private/var/folders/v9/wxxnjzpx3b97mq05zy0v2xyh0000gn/T/jest_dx",
