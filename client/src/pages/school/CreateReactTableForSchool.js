@@ -1,10 +1,21 @@
 import React, { useMemo, useEffect } from "react";
 import { useTable, useSortBy } from "react-table";
-import { Table, Tbody, Th, Thead, Tr, Td, chakra } from "@chakra-ui/react";
+import { Table, Tbody, Td, Th, Thead, Tr, chakra } from "@chakra-ui/react";
+import SchoolRow from "./SchoolRow";
 import processSchoolRow from "./processSchoolRow";
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 
-const CreateReactTableForSchool = ({ schoolData }) => {
+const menuDefinition = (
+	<></>
+)
+
+const CreateReactTableForSchool = ({
+	schoolData,
+	triggerSearch,
+	countries,
+	statuses,
+	persons,
+}) => {
 	// Prepare the data for React Table
 	const reactTableColumns = useMemo(
 		() => [
@@ -50,6 +61,14 @@ const CreateReactTableForSchool = ({ schoolData }) => {
 			{
 				Header: "Created At",
 				accessor: "created_at",
+			},
+			{
+				Header: "Edit",
+				accessor: "edit",
+				disableSortBy: true,
+				Cell:function renderCell() {
+					return ( menuDefinition );
+				},
 			},
 		],
 		[]

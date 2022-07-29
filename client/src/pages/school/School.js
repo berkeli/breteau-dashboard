@@ -24,6 +24,34 @@ import CreateReactTableForSchool from "./CreateReactTableForSchool";
 
 let sortedPersons;
 
+
+
+const checkPersons = (persons) => {
+
+
+		// Just in case, check that all persons have been retrieved correctly
+		if (!persons || !persons.length) {
+			// Hopefully, this should never happen!
+			return { jsx:(
+				<Text align="center">
+					Something went wrong... <br />
+					No users have been found!
+				</Text>
+			) };
+		} else {
+			// display the names in alphabetical order in the drop down list
+			sortedPersons = persons
+				.map((element) => ({
+					name: element.full_name,
+				}))
+				.sort(function (a, z) {
+					return a.name.localeCompare(z.name);
+				});
+			return { sorted: true };
+		}
+};
+
+
 const School = () => {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [debouncedQ, setDebouncedQ] = useState("");
@@ -35,17 +63,45 @@ const School = () => {
 		triggerSearch,
 	} = useFetch(`/schools?searchQuery=${debouncedQ}`);
 
-	const countries = useFetch("/schools/countries");
-	const statuses = useFetch("/schools/statuses");
+const countries = useFetch("/schools/countries");
+const statuses = useFetch("/schools/statuses");
+const persons = useFetch("/");
 
-	const persons = useFetch("/users");
-
-	const fetchLatest = () => {
+const fetchLatest = () => {
 		triggerSearch();
 		countries.triggerSearch();
 		statuses.triggerSearch();
 		persons.triggerSearch();
 	};
+
+	console.log(schoolData)
+	console.log(countries)
+	console.log(persons)
+	console.log(fetchLatest);
+	console.log(persons)
+	// Just in case, check that all persons have been retrieved correctly
+	if (!persons || !persons.data) {
+			return ( <Loading /> );
+	}
+
+	// Hopefully, this should never happen!
+	if (!persons.data.length) {
+			return (
+				<Text align="center">
+					Something went wrong... <br />
+					No users have been found!
+				</Text>
+			);
+		} else {
+			// display the names in alphabetical order in the drop down list
+			sortedPersons = persons.data
+				.map((element) => ({
+					name: element.full_name,
+				}))
+				.sort(function (a, z) {
+					return a.name.localeCompare(z.name);
+				});
+		}
 
 	return (
 		<>
@@ -56,7 +112,7 @@ const School = () => {
 				triggerSearch={fetchLatest}
 				countries={countries.data}
 				statuses={statuses.data}
-				persons={persons.data}
+				persons={sortedPersons}
 			/>
 
 			<Box>
@@ -71,6 +127,10 @@ const School = () => {
 				{schoolData && (
 					<CreateReactTableForSchool
 						schoolData={schoolData}
+						triggerSearch={triggerSearch}
+						countries={countries}
+						statuses={statuses}
+						persons={sortedPersons}
 					></CreateReactTableForSchool>
 				)}
 			</Box>
@@ -94,7 +154,8 @@ const ActionsBox = ({
 		debounce();
 	};
 
-	if (persons) {
+	console.log(persons)
+/*
 	// Just in case, check that all persons have been retrieved correctly
 	if (!persons || !persons.length) {
 		return (
@@ -103,18 +164,20 @@ const ActionsBox = ({
 				No users have been found!
 			</Text>
 		);
+//		return (<Loading />);
 	} else {
 
 		// display the names in alphabetical order in the drop down list
 		sortedPersons = persons
 			.map((element) => ({
-				name: element.name,
+				name: element.full_name,
 			}))
 			.sort(function (a, z) {
 				return a.name.localeCompare(z.name);
 			});
+			console.log(sortedPersons);
 	}
-}
+*/
 
 	return (
 		<Flex mb="8" px="4" justifyContent="space-between">
@@ -141,7 +204,7 @@ const ActionsBox = ({
 							onClose={onClose}
 							countries={countries}
 							statuses={statuses}
-							persons={sortedPersons}
+							persons={persons}
 						/>
 					</ModalBody>
 				</ModalContent>
