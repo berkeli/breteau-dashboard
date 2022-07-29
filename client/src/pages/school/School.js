@@ -46,11 +46,6 @@ const fetchLatest = () => {
 		persons.triggerSearch();
 	};
 
-	console.log(schoolData)
-	console.log(countries)
-	console.log(persons)
-	console.log(fetchLatest);
-	console.log(persons)
 	// Just in case, check that all persons have been retrieved correctly
 	if (!persons || !persons.data) {
 			return ( <Loading /> );
@@ -74,7 +69,7 @@ const fetchLatest = () => {
 					return a.name.localeCompare(z.name);
 				});
 		}
-console.log("ST", statuses)
+
 	return (
 		<>
 			<ActionsBox
@@ -125,32 +120,6 @@ const ActionsBox = ({
 		const debounce = _.debounce(() => setDebouncedQ(e.target.value), 500);
 		debounce();
 	};
-
-	console.log(persons)
-	console.log(statuses)
-/* DG
-	// Just in case, check that all persons have been retrieved correctly
-	if (!persons || !persons.length) {
-		return (
-			<Text align="center">
-				Something went wrong... <br />
-				No users have been found!
-			</Text>
-		);
-//		return (<Loading />);
-	} else {
-
-		// display the names in alphabetical order in the drop down list
-		sortedPersons = persons
-			.map((element) => ({
-				name: element.full_name,
-			}))
-			.sort(function (a, z) {
-				return a.name.localeCompare(z.name);
-			});
-			console.log(sortedPersons);
-	}
-*/
 
 	return (
 		<Flex mb="8" px="4" justifyContent="space-between">

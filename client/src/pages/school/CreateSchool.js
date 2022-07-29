@@ -14,6 +14,8 @@ import {
 } from "@chakra-ui/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import _ from "lodash";
+import { isSubmissionInvalid } from "../../utils/isSubmissionInvalid";
+import { isDateInvalid } from "../../utils/isDateInvalid";
 
 const CreateSchool = ({ triggerSearch, onClose, countries, statuses, persons }) => {
 	const toast = useToast();
@@ -26,15 +28,13 @@ const CreateSchool = ({ triggerSearch, onClose, countries, statuses, persons }) 
 	const [statusDropdown, setStatusDropdown] = useState(statuses.length > 0);
 
 	const blankRegex = new RegExp(/^[ \t]*$/);
-	// Arbitrary Limit 01/02/1970
-	const feb1970Limit = new Date(1970, 1, 1).getTime();
 
 	const [formData, setFormData] = useState({
 		name: "",
 		description: "",
 		location: "",
 		country: "",
-		responsible: "",
+		responsiblename: "",
 		status: "",
 		// Assume Today's Date
 		deploymentdate: new Date().toLocaleDateString("sv-SE"), // sv-SE is YYYY-MM-DD format
@@ -64,53 +64,6 @@ const CreateSchool = ({ triggerSearch, onClose, countries, statuses, persons }) 
 			...formData,
 			[e.target.name]: e.target.value,
 		});
-	};
-
-	// Date format is `yyyy-mm-dd`
-	function dateIsValid(dateStr) {
-		const regex = /^\d{4}-\d{2}-\d{2}$/;
-		if (dateStr.match(regex) === null) {
-			return false;
-		}
-		const date = new Date(dateStr);
-
-		const timestamp = date.getTime();
-		if (
-			typeof timestamp !== "number" ||
-			Number.isNaN(timestamp) ||
-			timestamp < feb1970Limit
-		) {
-			return false;
-		}
-		return date.toISOString().startsWith(dateStr);
-	}
-
-	// Some Validation
-	const isSubmissionInvalid = (formData) => {
-		if (
-			formData.name.trim() === "" ||
-			formData.location.trim() === "" ||
-			formData.country.trim() === "" ||
-			formData.responsible.trim() === "" ||
-			formData.status.trim() === "" ||
-			formData.description.trim() === ""
-		) {
-			return true;
-		}
-
-		return false; // Passed Validation i.e. Not Invalid
-	};
-
-	// Date Validation
-	const isDateInvalid = (theDate) => {
-		if (
-			!theDate ||
-			!dateIsValid(theDate)
-		) {
-			return true;
-		}
-
-		return false; // Passed Validation i.e. Not Invalid
 	};
 
 	const onSubmitHandler = async (e) => {
@@ -244,16 +197,16 @@ const CreateSchool = ({ triggerSearch, onClose, countries, statuses, persons }) 
 				</FormControl>
 				<FormControl
 					isRequired
-					isInvalid={blankRegex.test(formData.responsible)}
+					isInvalid={blankRegex.test(formData.responsiblename)}
 					mt="5"
 				>
 					<FormLabel htmlFor="responsible">Person Responsible</FormLabel>
 					<Select
 						placeholder="Select person"
-						name="responsible"
+						name="responsiblename"
 						id="responsible"
 						aria-describedby="person responsible"
-						value={formData.responsible}
+						value={formData.responsiblename}
 						onChange={(e) => onChangeHandler(e)}
 					>
 						{persons.map(({ name }) => (

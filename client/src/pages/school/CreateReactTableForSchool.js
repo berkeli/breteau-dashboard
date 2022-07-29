@@ -1,7 +1,6 @@
 import React, { useMemo, useEffect } from "react";
 import { useTable, useSortBy } from "react-table";
 import { Table, Tbody, Td, Th, Thead, Tr, chakra } from "@chakra-ui/react";
-import SchoolRow from "./SchoolRow";
 import processSchoolRow from "./processSchoolRow";
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 import SetupMenuColumn from "./SetupMenuColumn";
@@ -15,7 +14,7 @@ const CreateReactTableForSchool = ({
 	statuses,
 	persons,
 }) => {
-	globalRowNum = 0;
+	globalRowNum = 0; // Unique Row Number
 	// Prepare the data for React Table
 	const reactTableColumns = useMemo(
 		() => [
@@ -72,16 +71,13 @@ const CreateReactTableForSchool = ({
 				accessor: "edit",
 				disableSortBy: true,
 				Cell: function renderCell() {
-					console.log(globalRowNum)
-					console.log(statuses)
 					return (
 						<SetupMenuColumn
 							triggerSearch={triggerSearch}
 							countries={countries.data}
 							statuses={statuses.data}
 							persons={persons}
-							schoolData={schoolData[globalRowNum]}
-							rowNum={globalRowNum++}
+							schoolData={schoolData[globalRowNum++]} // Incremented
 						/>
 					);
 				},
@@ -89,7 +85,7 @@ const CreateReactTableForSchool = ({
 		],
 		[countries, persons, schoolData, statuses, triggerSearch]
 	);
-console.log(schoolData)
+
 	const reactTableData = useMemo(
 		() => schoolData.map((element) => processSchoolRow(element)),
 		[schoolData]
@@ -124,6 +120,7 @@ console.log(schoolData)
 				.map((column) => column.accessor)
 		);
 	}, [setHiddenColumns, reactTableColumns]);
+
 	return (
 		<Table variant="striped" {...getTableProps()}>
 			<Thead>

@@ -18,7 +18,8 @@ export const getSchools = (req, res) => {
 	query.text += " ORDER BY country, name, location";
 	pool.query(query, (err, results) => {
 		if (err) {
-			throw err;
+				res.status(400).json({ message: err.message });
+				return;
 		}
 		res.json(results.rows);
 	});
@@ -29,7 +30,8 @@ export const getSchoolCountries = (_, res) => {
 		"SELECT DISTINCT(country) FROM school ORDER BY country",
 		(err, results) => {
 			if (err) {
-				throw err;
+				res.status(400).json({ message: err.message });
+				return;
 			}
 			res.json(results.rows);
 		}
@@ -41,7 +43,8 @@ export const getSchoolStatuses = (_, res) => {
 		"SELECT DISTINCT(status) FROM school ORDER BY status",
 		(err, results) => {
 			if (err) {
-				throw err;
+				res.status(400).json({ message: err.message });
+				return;
 			}
 			res.json(results.rows);
 		}
@@ -62,7 +65,7 @@ export const createSchool = async (req, res) => {
 			description,
 			location,
 			country,
-			responsible,
+			responsiblename,
 			status,
 			deploymentdate,
 		} = req.body;
@@ -70,17 +73,18 @@ export const createSchool = async (req, res) => {
 		// Verify that the name of the 'Person Responsible' exists in the 'person' database
 		pool.query(
 			"SELECT * FROM person WHERE full_name = $1",
-			[responsible],
+			[responsiblename],
 			(err, results) => {
 				if (err) {
-					throw err;
+					res.status(400).json({ message: err.message });
+					return;
 				}
 
 				if (results.rows.length === 0) {
 					// No such person exists
 					return res
 						.status(400) // Bad request
-						.json({ message: `No user exists with the name '${responsible}'` });
+						.json({ message: `No user exists with the name '${responsiblename}'` });
 				}
 				// Otherwise fetch the person 'id'
 				let responsibleId = results.rows[0].id;
@@ -101,7 +105,8 @@ export const createSchool = async (req, res) => {
 					],
 					(err, results) => {
 						if (err) {
-							throw err;
+							res.status(400).json({ message: err.message });
+							return;
 						}
 						res.json(results.rows);
 					}
@@ -115,7 +120,7 @@ export const createSchool = async (req, res) => {
 
 
 export const updateSchool = (req, res) => {
-	console.log(req.body.id)
+
 	try {
 		//const userId = await getUserId(req);
 
@@ -125,8 +130,6 @@ export const updateSchool = (req, res) => {
 					req.body[field] = req.body[field].trim();
 			}
 		}
-
-		console.log(req.body)
 
 		let {
 			name,
@@ -145,14 +148,15 @@ export const updateSchool = (req, res) => {
 			[responsiblename],
 			(err, results) => {
 				if (err) {
-					throw err;
+					res.status(400).json({ message: err.message });
+					return;
 				}
 
 				if (results.rows.length === 0) {
 					// No such person exists
 					return res
 						.status(400) // Bad request
-						.json({ message: `No user exists with the name '${responsible}'` });
+						.json({ message: `No user exists with the name '${responsiblename}'` });
 				}
 				// Otherwise fetch the person 'id'
 				let responsibleId = results.rows[0].id;
@@ -193,15 +197,15 @@ export const updateSchool = (req, res) => {
 };
 
 export const deleteSchool = async (req, res) => {
-	const { id } = req.params;
-	console.log(id)
+	const { id } = req.params; // ID of the record to be deleted
 
 	pool.query(
 		"DELETE FROM school WHERE id = $1 RETURNING *",
 		[id],
 		(err, results) => {
 			if (err) {
-				throw err;
+				res.status(400).json({ message: err.message });
+				return;
 			}
 			res.json(results.rows[0]);
 		}
