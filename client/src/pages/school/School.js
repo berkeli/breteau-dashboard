@@ -37,7 +37,7 @@ const School = () => {
 
 const countries = useFetch("/schools/countries");
 const statuses = useFetch("/schools/statuses");
-const persons = useFetch("/");
+const persons = useFetch("/users");
 
 const fetchLatest = () => {
 		triggerSearch();
