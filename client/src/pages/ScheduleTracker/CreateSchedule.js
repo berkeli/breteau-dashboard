@@ -15,7 +15,8 @@ import _ from "lodash";
 
 const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 	const toast = useToast();
-	const { schools, initiatives } = dropdownData;
+	const { schools, initiatives, persons } = dropdownData;
+	const { user } = useAuth0();
 	const { getAccessTokenSilently } = useAuth0();
 	const [submitState, setSubmitState] = useState({
 		loading: false,
@@ -25,6 +26,7 @@ const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 	const [formData, setFormData] = useState({
 		schoolId: "",
 		programmeInitiativeId: "",
+		deliveredById: persons.find((e) => e.auth0_id === user.sub)?.id || "",
 		numOfNewStudents: 0,
 		numOfExistingStudents: 0,
 		numOfNewTeachers: 0,
@@ -130,6 +132,23 @@ const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 							</option>
 						))}
 					</Select>
+					<FormControl isRequired isInvalid={!formData.deliveredById}>
+						<FormLabel htmlFor="deliveredById">Delivered By</FormLabel>
+						<Select
+							placeholder="Delivered By"
+							name="deliveredById"
+							id="deliveredById"
+							aria-describedby="Delivered By"
+							value={formData.deliveredById}
+							onChange={(e) => onChangeHandler(e)}
+						>
+							{persons.map((person) => (
+								<option value={person.id} key={person.full_name}>
+									{person.full_name}
+								</option>
+							))}
+						</Select>
+					</FormControl>
 					<FormLabel htmlFor="duration">Duration by hour</FormLabel>
 					<Input
 						placeholder="Duration by hour"

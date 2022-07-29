@@ -17,6 +17,7 @@ import {
 	useDisclosure,
 	useToast,
 } from "@chakra-ui/react";
+
 import React from "react";
 import EditSchedule from "./EditSchedule";
 import useAuth0Roles from "../../hooks/useAuth0Roles";
@@ -26,6 +27,7 @@ const ScheduleRow = ({ schedule, triggerSearch, dropdownData }) => {
 	const userRole = useAuth0Roles();
 	const { getAccessTokenSilently, user } = useAuth0();
 	const {
+		full_name,
 		school,
 		initiative,
 		duration,
@@ -81,6 +83,7 @@ const ScheduleRow = ({ schedule, triggerSearch, dropdownData }) => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	return (
 		<Tr>
+			<Td>{full_name}</Td>
 			<Td>{school}</Td>
 			<Td>{initiative}</Td>
 			<Td>{duration}</Td>
@@ -89,10 +92,8 @@ const ScheduleRow = ({ schedule, triggerSearch, dropdownData }) => {
 			<Td>{numofexistingteachers}</Td>
 			<Td>{numofexistingstudents}</Td>
 			<Td>{totalnumtablets}</Td>
-
 			<Td>{grades}</Td>
 			<Td>{languagestaught}</Td>
-
 			<Td>{supportcategory}</Td>
 			<Td>{supporttype}</Td>
 			<Td>
