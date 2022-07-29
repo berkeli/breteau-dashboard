@@ -22,6 +22,8 @@ import CreateSchool from "./CreateSchool";
 import Loading from "../../components/Loading";
 import CreateReactTableForSchool from "./CreateReactTableForSchool";
 
+let sortedPersons;
+
 const School = () => {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [debouncedQ, setDebouncedQ] = useState("");
@@ -33,14 +35,40 @@ const School = () => {
 		triggerSearch,
 	} = useFetch(`/schools?searchQuery=${debouncedQ}`);
 
-	const countries = useFetch("/schools/countries");
-	const statuses = useFetch("/schools/statuses");
+const countries = useFetch("/schools/countries");
+const statuses = useFetch("/schools/statuses");
+const persons = useFetch("/users");
 
-	const fetchLatest = () => {
+const fetchLatest = () => {
 		triggerSearch();
 		countries.triggerSearch();
 		statuses.triggerSearch();
+		persons.triggerSearch();
 	};
+
+	// Just in case, check that all persons have been retrieved correctly
+	if (!persons || !persons.data) {
+			return ( <Loading /> );
+	}
+
+	// Hopefully, this should never happen!
+	if (!persons.data.length) {
+			return (
+				<Text align="center">
+					Something went wrong... <br />
+					No users have been found!
+				</Text>
+			);
+		} else {
+			// display the names in alphabetical order in the drop down list
+			sortedPersons = persons.data
+				.map((element) => ({
+					name: element.full_name,
+				}))
+				.sort(function (a, z) {
+					return a.name.localeCompare(z.name);
+				});
+		}
 
 	return (
 		<>
@@ -51,6 +79,7 @@ const School = () => {
 				triggerSearch={fetchLatest}
 				countries={countries.data}
 				statuses={statuses.data}
+				persons={sortedPersons}
 			/>
 
 			<Box>
@@ -65,6 +94,10 @@ const School = () => {
 				{schoolData && (
 					<CreateReactTableForSchool
 						schoolData={schoolData}
+						triggerSearch={triggerSearch}
+						countries={countries}
+						statuses={statuses}
+						persons={sortedPersons}
 					></CreateReactTableForSchool>
 				)}
 			</Box>
@@ -79,6 +112,7 @@ const ActionsBox = ({
 	triggerSearch,
 	countries,
 	statuses,
+	persons,
 }) => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const handleChange = (e) => {
@@ -86,6 +120,7 @@ const ActionsBox = ({
 		const debounce = _.debounce(() => setDebouncedQ(e.target.value), 500);
 		debounce();
 	};
+
 	return (
 		<Flex mb="8" px="4" justifyContent="space-between">
 			<InputGroup>
@@ -111,6 +146,7 @@ const ActionsBox = ({
 							onClose={onClose}
 							countries={countries}
 							statuses={statuses}
+							persons={persons}
 						/>
 					</ModalBody>
 				</ModalContent>

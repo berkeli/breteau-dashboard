@@ -1,10 +1,19 @@
 import { Router } from "express";
-import { createScheduleTracker, getFormData, getSchedules } from "./controller";
+import {
+	createScheduleTracker,
+	deleteSchedule,
+	getFormData,
+	getSchedules,
+	updateSchedule,
+} from "./controller";
 
 const scheduleTracker = Router();
 
-scheduleTracker.get("/", getSchedules);
-scheduleTracker.get("/form-data", getFormData);
-scheduleTracker.post("/", createScheduleTracker);
+scheduleTracker
+	.get("/", getSchedules)
+	.get("/form-data", getFormData)
+	.post("/", createScheduleTracker)
+	.put("/:id", updateSchedule)
+	.delete("/:id", deleteSchedule);
 
 export default scheduleTracker;

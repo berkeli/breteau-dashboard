@@ -9,3 +9,12 @@ export const objectToQuery = (obj) => {
 
 	return query;
 };
+
+export const objectToQueryUpdate = (obj) => {
+	let query = "";
+	for (const [key, value] of Object.entries(obj)) {
+		query += `${key} = '${value}', `;
+	}
+
+	return query.slice(0, -2);
+};

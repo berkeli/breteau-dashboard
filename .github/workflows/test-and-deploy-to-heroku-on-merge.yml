@@ -1,0 +1,46 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check for Linting Issues
+        run: npm run lint
+
+      - name: Run Tests
+        run: npm run test
+
+      - name: Upload to codecov
+        uses: codecov/codecov-action@v3.1.0
+        with:
+          files: ./coverage/clover.xml
+
+      - name: Build the app
+        run: npm run build --if-present  
+
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "ldn8-cyf-breteau" 
+          heroku_email: "berkelih@gmail.com"

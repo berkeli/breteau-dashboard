@@ -46,6 +46,7 @@ const ScheduleTracker = () => {
 
 	const fetchLatest = () => {
 		triggerSearch();
+		dropdownData.triggerSearch();
 	};
 
 	return (
@@ -83,11 +84,17 @@ const ScheduleTracker = () => {
 								<Th>Languages Taught</Th>
 								<Th>Support Category</Th>
 								<Th>Support Type</Th>
+								<Th>Edit</Th>
 							</Tr>
 						</Thead>
 						<Tbody>
 							{schedules.map((schedule) => (
-								<ScheduleRow key={schedule.id} schedule={schedule} />
+								<ScheduleRow
+									key={schedule.id}
+									schedule={schedule}
+									dropdownData={dropdownData}
+									triggerSearch={fetchLatest}
+								/>
 							))}
 						</Tbody>
 					</Table>
