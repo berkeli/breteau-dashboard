@@ -1,10 +1,20 @@
 import React, { useMemo, useEffect } from "react";
 import { useTable, useSortBy } from "react-table";
-import { Table, Tbody, Th, Thead, Tr, Td, chakra } from "@chakra-ui/react";
+import { Table, Tbody, Td, Th, Thead, Tr, chakra } from "@chakra-ui/react";
 import processSchoolRow from "./processSchoolRow";
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
+import SetupMenuColumn from "./SetupMenuColumn";
+//const menuDefinition = <SetupMenuColumn />;
+let globalRowNum;
 
-const CreateReactTableForSchool = ({ schoolData }) => {
+const CreateReactTableForSchool = ({
+	schoolData,
+	triggerSearch,
+	countries,
+	statuses,
+	persons,
+}) => {
+	globalRowNum = 0; // Unique Row Number
 	// Prepare the data for React Table
 	const reactTableColumns = useMemo(
 		() => [
@@ -43,16 +53,37 @@ const CreateReactTableForSchool = ({ schoolData }) => {
 				},
 			},
 			{
-				Header: "hidedate", // for sorting purposes only - see above
+				Header: "hide-date", // Hidden: for sorting purposes only - see above
 				accessor: "deploymentdate_sortvalue",
+				isVisible: true,
+			},
+			{
+				Header: "hide-id", // Hidden: to determine record to be edited
+				accessor: "id",
 				isVisible: true,
 			},
 			{
 				Header: "Created At",
 				accessor: "created_at",
 			},
+			{
+				Header: "Edit",
+				accessor: "edit",
+				disableSortBy: true,
+				Cell: function renderCell() {
+					return (
+						<SetupMenuColumn
+							triggerSearch={triggerSearch}
+							countries={countries.data}
+							statuses={statuses.data}
+							persons={persons}
+							schoolData={schoolData[globalRowNum++]} // Incremented
+						/>
+					);
+				},
+			},
 		],
-		[]
+		[countries, persons, schoolData, statuses, triggerSearch]
 	);
 
 	const reactTableData = useMemo(
@@ -89,6 +120,7 @@ const CreateReactTableForSchool = ({ schoolData }) => {
 				.map((column) => column.accessor)
 		);
 	}, [setHiddenColumns, reactTableColumns]);
+
 	return (
 		<Table variant="striped" {...getTableProps()}>
 			<Thead>

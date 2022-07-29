@@ -10,9 +10,8 @@ import {
 
 const users = Router();
 
-users.use(checkPermissions("super-admin"));
-
 users.get("/", getUsersFromDB);
+users.use(checkPermissions("super-admin"));
 users.post("/", createUser);
 users.get("/roles", getRoles);
 users.put("/", updateUser);

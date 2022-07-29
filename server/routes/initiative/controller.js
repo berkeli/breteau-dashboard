@@ -13,7 +13,8 @@ export const getInitiatives = (req, res) => {
 
 	pool.query(query, (err, results) => {
 		if (err) {
-			throw err;
+			res.status(400).json({ message: err.message });
+			return;
 		}
 		res.json(results.rows);
 	});
@@ -35,7 +36,8 @@ export const getInitiativeStats = (req, res) => {
 
 	pool.query(query, (err, results) => {
 		if (err) {
-			throw err;
+			res.status(400).json({ message: err.message });
+			return;
 		}
 		res.json(results.rows);
 	});
@@ -44,7 +46,8 @@ export const getInitiativeStats = (req, res) => {
 export const getInitiativeCategories = (_, res) => {
 	pool.query("SELECT DISTINCT(category) FROM initiative", (err, results) => {
 		if (err) {
-			throw err;
+			res.status(400).json({ message: err.message });
+			return;
 		}
 		res.json(results.rows);
 	});
@@ -57,7 +60,8 @@ export const createInitiative = (req, res) => {
 		[name, category, description],
 		(err, results) => {
 			if (err) {
-				throw err;
+				res.status(400).json({ message: err.message });
+				return;
 			}
 			res.json(results.rows);
 		}
@@ -71,7 +75,8 @@ export const updateInitiative = (req, res) => {
 		[name, category, description, id],
 		(err, results) => {
 			if (err) {
-				throw err;
+				res.status(400).json({ message: err.message });
+				return;
 			}
 			res.json(results.rows[0]);
 		}
@@ -98,7 +103,8 @@ export const deleteInitiative = async (req, res) => {
 		[id],
 		(err, results) => {
 			if (err) {
-				throw err;
+				res.status(400).json({ message: err.message });
+				return;
 			}
 			res.json(results.rows[0]);
 		}

@@ -17,7 +17,14 @@ import _ from "lodash";
 import { isSubmissionInvalid } from "../../utils/isSubmissionInvalid";
 import { isDateInvalid } from "../../utils/isDateInvalid";
 
-const CreateSchool = ({ triggerSearch, onClose, countries, statuses, persons }) => {
+const EditSchool = ({
+	triggerSearch,
+	onClose,
+	countries,
+	statuses,
+	persons,
+	schoolData,
+}) => {
 	const toast = useToast();
 	const { getAccessTokenSilently } = useAuth0();
 	const [submitState, setSubmitState] = useState({
@@ -27,28 +34,31 @@ const CreateSchool = ({ triggerSearch, onClose, countries, statuses, persons }) 
 	const [countryDropdown, setCountryDropdown] = useState(countries.length > 0);
 	const [statusDropdown, setStatusDropdown] = useState(statuses.length > 0);
 
+	// sv-SE is YYYY-MM-DD format
+	const convertDate = (dateStr) =>
+		new Date(dateStr).toLocaleDateString("sv-SE").split("T")[0];
+
 	const blankRegex = new RegExp(/^[ \t]*$/);
 
 	const [formData, setFormData] = useState({
-		name: "",
-		description: "",
-		location: "",
-		country: "",
-		responsiblename: "",
-		status: "",
-		// Assume Today's Date
-		deploymentdate: new Date().toLocaleDateString("sv-SE"), // sv-SE is YYYY-MM-DD format
+		// name: initiative.name,
+		// description: initiative.description,
+		// category: initiative.category,
+		...schoolData,
+		responsiblename: schoolData.full_name,
+		deploymentdate: convertDate(schoolData.deploymentdate),
 	});
 
 	const onChangeHandler = (e) => {
-
-		if (e.target.name === "country" &&
+		if (
+			e.target.name === "country" &&
 			countryDropdown &&
-			e.target.value === "createnew") {
-				setCountryDropdown(false);
-				setFormData({ ...formData, country:"" });
-				return;
-			}
+			e.target.value === "createnew"
+		) {
+			setCountryDropdown(false);
+			setFormData({ ...formData, country: "" });
+			return;
+		}
 
 		if (
 			e.target.name === "status" &&
@@ -73,7 +83,7 @@ const CreateSchool = ({ triggerSearch, onClose, countries, statuses, persons }) 
 		const token = await getAccessTokenSilently();
 
 		const options = {
-			method: "POST",
+			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${token}`,
@@ -86,8 +96,8 @@ const CreateSchool = ({ triggerSearch, onClose, countries, statuses, persons }) 
 					_.debounce(triggerSearch, 500)();
 					_.debounce(onClose, 500)();
 					toast({
-						title: "School Created",
-						description: "School created successfully",
+						title: "School Updated",
+						description: "School Updated successfully",
 						status: "success",
 						duration: 5000,
 						isClosable: true,
@@ -106,7 +116,7 @@ const CreateSchool = ({ triggerSearch, onClose, countries, statuses, persons }) 
 				}
 			})
 			.catch((err) => {
-				setSubmitState({ ...submitState, loading: false, error: err });
+				setSubmitState({ ...submitState, loading: false, error: err.message });
 			});
 	};
 
@@ -305,4 +315,4 @@ const CreateSchool = ({ triggerSearch, onClose, countries, statuses, persons }) 
 	);
 };
 
-export default CreateSchool;
+export default EditSchool;
