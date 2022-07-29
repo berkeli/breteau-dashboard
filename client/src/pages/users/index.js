@@ -47,19 +47,24 @@ const Users = () => {
 				roles={roles.data}
 			/>
 			<Box>
-				{isLoading && <Loading />}
+				{(isLoading || roles.isLoading) && <Loading />}
 				{error && (
 					<Text align="center">
 						Something went wrong... <br />
 						{error.message}
 					</Text>
 				)}
-				{users && (
+				{users && roles.data && (
 					<Table variant="striped">
 						<UsersTableHeader />
 						<Tbody>
 							{users.map((user) => (
-								<UserRow key={user.user_id} user={user} />
+								<UserRow
+									key={user.user_id}
+									user={user}
+									triggerSearch={triggerSearch}
+									roles={roles.data}
+								/>
 							))}
 						</Tbody>
 					</Table>

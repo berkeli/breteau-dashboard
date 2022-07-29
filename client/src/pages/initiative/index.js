@@ -33,7 +33,6 @@ const Initiatives = () => {
 	const [expandedId, setExpandedId] = useState(null);
 
 	const expandRow = (e, id) => {
-		console.log(e.target.tagName);
 		if (
 			e.target.tagName === "path" ||
 			e.target.tagName === "svg" ||

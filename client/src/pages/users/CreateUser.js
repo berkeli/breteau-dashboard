@@ -5,6 +5,8 @@ import {
 	Checkbox,
 	CheckboxGroup,
 	FormControl,
+	FormErrorMessage,
+	FormHelperText,
 	FormLabel,
 	Input,
 	Stack,
@@ -25,6 +27,7 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 	const [formData, setFormData] = useState({
 		fullName: "",
 		email: "",
+		country: "",
 		roles: [],
 	});
 
@@ -49,7 +52,13 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 		}
 	};
 
-	const onSubmitHandler = async () => {
+	const validateInputs =
+		!formData.fullName.trim() ||
+		!formData.email.trim() ||
+		!formData.country.trim();
+
+	const onSubmitHandler = async (e) => {
+		e.preventDefault();
 		setSubmitState({ ...submitState, loading: true });
 		const token = await getAccessTokenSilently();
 
@@ -106,7 +115,7 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 	return (
 		<>
 			<form>
-				<FormControl>
+				<FormControl isRequired isInvalid={!formData.fullName.trim()}>
 					<FormLabel htmlFor="fullName">Full Name</FormLabel>
 					<Input
 						id="fullName"
@@ -114,8 +123,15 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 						aria-describedby="full name"
 						value={formData.fullName}
 						required
-						onChange={(e) => onChangeHandler(e)}
+						onChange={onChangeHandler}
 					/>
+					{formData.fullName.trim() ? (
+						<FormHelperText>Enter full name of the user.</FormHelperText>
+					) : (
+						<FormErrorMessage>Name is required.</FormErrorMessage>
+					)}
+				</FormControl>
+				<FormControl isRequired isInvalid={!formData.email.trim()}>
 					<FormLabel htmlFor="email" mt="4">
 						Email
 					</FormLabel>
@@ -125,9 +141,32 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 						aria-describedby="email"
 						required
 						value={formData.email}
-						onChange={(e) => onChangeHandler(e)}
+						onChange={onChangeHandler}
 						type="email"
 					/>
+					{formData.email.trim() ? (
+						<FormHelperText>Enter email of the user.</FormHelperText>
+					) : (
+						<FormErrorMessage>Email is required.</FormErrorMessage>
+					)}
+				</FormControl>
+				<FormControl isRequired isInvalid={!formData.country.trim()}>
+					<FormLabel htmlFor="country" mt="4">
+						Country
+					</FormLabel>
+					<Input
+						id="country"
+						name="country"
+						aria-describedby="country"
+						value={formData.country}
+						onChange={onChangeHandler}
+						type="text"
+					/>
+					{formData.country.trim() ? (
+						<FormHelperText>Enter Country of the user.</FormHelperText>
+					) : (
+						<FormErrorMessage>Country is required.</FormErrorMessage>
+					)}
 				</FormControl>
 				<FormControl mt="8">
 					<CheckboxGroup p={2}>
@@ -137,7 +176,6 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 								<Checkbox
 									name="roles"
 									key={role.id}
-									size="lg"
 									isChecked={formData.roles.includes(role.id)}
 									value={role.id}
 									onChange={(e) => onChangeHandler(e)}
@@ -149,7 +187,12 @@ const CreateUser = ({ triggerSearch, onClose, roles }) => {
 					</CheckboxGroup>
 				</FormControl>
 				<Center>
-					<Button mt="8" onClick={onSubmitHandler}>
+					<Button
+						mt="8"
+						onClick={onSubmitHandler}
+						type="submit"
+						disabled={validateInputs}
+					>
 						Submit
 					</Button>
 				</Center>

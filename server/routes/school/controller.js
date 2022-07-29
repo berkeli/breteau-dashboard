@@ -18,7 +18,8 @@ export const getSchools = (req, res) => {
 	query.text += " ORDER BY country, name, location";
 	pool.query(query, (err, results) => {
 		if (err) {
-			throw err;
+				res.status(400).json({ message: err.message });
+				return;
 		}
 		res.json(results.rows);
 	});
@@ -29,7 +30,8 @@ export const getSchoolCountries = (_, res) => {
 		"SELECT DISTINCT(country) FROM school ORDER BY country",
 		(err, results) => {
 			if (err) {
-				throw err;
+				res.status(400).json({ message: err.message });
+				return;
 			}
 			res.json(results.rows);
 		}
@@ -41,22 +43,29 @@ export const getSchoolStatuses = (_, res) => {
 		"SELECT DISTINCT(status) FROM school ORDER BY status",
 		(err, results) => {
 			if (err) {
-				throw err;
+				res.status(400).json({ message: err.message });
+				return;
 			}
 			res.json(results.rows);
 		}
 	);
 };
+
 export const createSchool = async (req, res) => {
 	try {
 		const userId = await getUserId(req);
+
+		// Trim the data
+		for (let field in req.body) {
+			req.body[field] = req.body[field].trim();
+		}
 
 		let {
 			name,
 			description,
 			location,
 			country,
-			responsible,
+			responsiblename,
 			status,
 			deploymentdate,
 		} = req.body;
@@ -64,17 +73,18 @@ export const createSchool = async (req, res) => {
 		// Verify that the name of the 'Person Responsible' exists in the 'person' database
 		pool.query(
 			"SELECT * FROM person WHERE full_name = $1",
-			[responsible],
+			[responsiblename],
 			(err, results) => {
 				if (err) {
-					throw err;
+					res.status(400).json({ message: err.message });
+					return;
 				}
 
 				if (results.rows.length === 0) {
 					// No such person exists
 					return res
 						.status(400) // Bad request
-						.json({ message: `No user exists with the name '${responsible}'` });
+						.json({ message: `No user exists with the name '${responsiblename}'` });
 				}
 				// Otherwise fetch the person 'id'
 				let responsibleId = results.rows[0].id;
@@ -95,7 +105,8 @@ export const createSchool = async (req, res) => {
 					],
 					(err, results) => {
 						if (err) {
-							throw err;
+							res.status(400).json({ message: err.message });
+							return;
 						}
 						res.json(results.rows);
 					}
@@ -105,4 +116,98 @@ export const createSchool = async (req, res) => {
 	} catch (error) {
 		res.status(400).json({ message: error.message });
 					}
+};
+
+
+export const updateSchool = (req, res) => {
+
+	try {
+		//const userId = await getUserId(req);
+
+		// Trim the data
+		for (let field in req.body) {
+			if (field !== "id") { // This is a number!
+					req.body[field] = req.body[field].trim();
+			}
+		}
+
+		let {
+			name,
+			description,
+			location,
+			country,
+			responsiblename,
+			status,
+			deploymentdate,
+			id,
+		} = req.body;
+
+		// Verify that the name of the 'Person Responsible' exists in the 'person' database
+		pool.query(
+			"SELECT * FROM person WHERE full_name = $1",
+			[responsiblename],
+			(err, results) => {
+				if (err) {
+					res.status(400).json({ message: err.message });
+					return;
+				}
+
+				if (results.rows.length === 0) {
+					// No such person exists
+					return res
+						.status(400) // Bad request
+						.json({ message: `No user exists with the name '${responsiblename}'` });
+				}
+				// Otherwise fetch the person 'id'
+				let responsibleId = results.rows[0].id;
+
+				pool.query(
+					`UPDATE school
+						SET name = $1,
+							description = $2, 
+							location = $3, 
+							country = $4,
+							responsibleid = $5, 
+							status = $6, 
+							deploymentdate = $7
+								WHERE id = $8 RETURNING *`,
+					[
+						name,
+						description,
+						location,
+						country,
+						responsibleId,
+						status,
+						deploymentdate,
+						id, // ID of the School record in the database
+					],
+					(err, results) => {
+						if (err) {
+							res.status(400).json({ message: err.message });
+							return;
+						}
+						res.json(results.rows);
+					}
+				);
+			}
+		);
+	} catch (error) {
+		res.status(400).json({ message: error.message });
+	}
+};
+
+export const deleteSchool = async (req, res) => {
+	const { id } = req.params; // ID of the record to be deleted
+
+	pool.query(
+		"DELETE FROM school WHERE id = $1 RETURNING *",
+		[id],
+		(err, results) => {
+			if (err) {
+				res.status(400).json({ message: err.message });
+				return;
+			}
+			res.json(results.rows[0]);
+		}
+	);
 };
