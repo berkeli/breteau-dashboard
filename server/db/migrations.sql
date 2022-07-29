@@ -1,12 +1,17 @@
-CREATE TABLE IF NOT EXISTS person (
+DROP TABLE IF EXISTS person;
+CREATE TABLE person (
    id serial PRIMARY KEY,
-   full_name VARCHAR(255) NOT NULL,
+   auth0_id VARCHAR(255) NOT NULL UNIQUE,
+   full_name VARCHAR(255) NOT NULL
    email VARCHAR(255) UNIQUE NOT NULL,
--- created_At TIMESTAMP NOT NULL DEFAULT NOW(),
-   created_At TIMESTAMP WITH TIME ZONE,
+   country VARCHAR(255),
+   blocked BOOLEAN NOT NULL DEFAULT false,
+   roles VARCHAR(255),
+   created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 ALTER TABLE person ALTER COLUMN created_At SET NOT NULL;
 
+DROP TABLE IF EXISTS initiative;
 CREATE TABLE IF NOT EXISTS initiative (
    id serial PRIMARY KEY,
    name VARCHAR(255) NOT NULL,
@@ -16,6 +21,8 @@ CREATE TABLE IF NOT EXISTS initiative (
    created_At TIMESTAMP WITH TIME ZONE,
 );
 ALTER TABLE initiative ALTER COLUMN created_At SET NOT NULL;
+
+
 
 DROP TABLE IF EXISTS school;
 -- Create School Table
@@ -71,4 +78,5 @@ CREATE TABLE scheduletracker (
    FOREIGN KEY (programmeInitiativeId)
                              REFERENCES initiative (id));
    ALTER TABLE scheduletracker ALTER COLUMN created_At SET NOT NULL;
+
 
