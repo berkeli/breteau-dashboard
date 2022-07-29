@@ -4,10 +4,9 @@ import { Table, Tbody, Td, Th, Thead, Tr, chakra } from "@chakra-ui/react";
 import SchoolRow from "./SchoolRow";
 import processSchoolRow from "./processSchoolRow";
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
-
-const menuDefinition = (
-	<></>
-)
+import SetupMenuColumn from "./SetupMenuColumn";
+//const menuDefinition = <SetupMenuColumn />;
+let globalRowNum;
 
 const CreateReactTableForSchool = ({
 	schoolData,
@@ -16,6 +15,7 @@ const CreateReactTableForSchool = ({
 	statuses,
 	persons,
 }) => {
+	globalRowNum = 0;
 	// Prepare the data for React Table
 	const reactTableColumns = useMemo(
 		() => [
@@ -54,8 +54,13 @@ const CreateReactTableForSchool = ({
 				},
 			},
 			{
-				Header: "hidedate", // for sorting purposes only - see above
+				Header: "hide-date", // Hidden: for sorting purposes only - see above
 				accessor: "deploymentdate_sortvalue",
+				isVisible: true,
+			},
+			{
+				Header: "hide-id", // Hidden: to determine record to be edited
+				accessor: "id",
 				isVisible: true,
 			},
 			{
@@ -66,14 +71,25 @@ const CreateReactTableForSchool = ({
 				Header: "Edit",
 				accessor: "edit",
 				disableSortBy: true,
-				Cell:function renderCell() {
-					return ( menuDefinition );
+				Cell: function renderCell() {
+					console.log(globalRowNum)
+					console.log(statuses)
+					return (
+						<SetupMenuColumn
+							triggerSearch={triggerSearch}
+							countries={countries.data}
+							statuses={statuses.data}
+							persons={persons}
+							schoolData={schoolData[globalRowNum]}
+							rowNum={globalRowNum++}
+						/>
+					);
 				},
 			},
 		],
-		[]
+		[countries, persons, schoolData, statuses, triggerSearch]
 	);
-
+console.log(schoolData)
 	const reactTableData = useMemo(
 		() => schoolData.map((element) => processSchoolRow(element)),
 		[schoolData]

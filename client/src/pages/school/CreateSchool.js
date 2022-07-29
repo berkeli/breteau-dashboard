@@ -339,7 +339,10 @@ const CreateSchool = ({ triggerSearch, onClose, countries, statuses, persons }) 
 					<Button
 						mt="8"
 						onClick={onSubmitHandler}
-						disabled={isSubmissionInvalid(formData)}
+						disabled={
+							isSubmissionInvalid(formData) ||
+							isDateInvalid(formData.deploymentdate)
+						}
 					>
 						Submit
 					</Button>

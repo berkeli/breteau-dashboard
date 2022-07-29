@@ -24,34 +24,6 @@ import CreateReactTableForSchool from "./CreateReactTableForSchool";
 
 let sortedPersons;
 
-
-
-const checkPersons = (persons) => {
-
-
-		// Just in case, check that all persons have been retrieved correctly
-		if (!persons || !persons.length) {
-			// Hopefully, this should never happen!
-			return { jsx:(
-				<Text align="center">
-					Something went wrong... <br />
-					No users have been found!
-				</Text>
-			) };
-		} else {
-			// display the names in alphabetical order in the drop down list
-			sortedPersons = persons
-				.map((element) => ({
-					name: element.full_name,
-				}))
-				.sort(function (a, z) {
-					return a.name.localeCompare(z.name);
-				});
-			return { sorted: true };
-		}
-};
-
-
 const School = () => {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [debouncedQ, setDebouncedQ] = useState("");
@@ -102,7 +74,7 @@ const fetchLatest = () => {
 					return a.name.localeCompare(z.name);
 				});
 		}
-
+console.log("ST", statuses)
 	return (
 		<>
 			<ActionsBox
@@ -155,7 +127,8 @@ const ActionsBox = ({
 	};
 
 	console.log(persons)
-/*
+	console.log(statuses)
+/* DG
 	// Just in case, check that all persons have been retrieved correctly
 	if (!persons || !persons.length) {
 		return (
