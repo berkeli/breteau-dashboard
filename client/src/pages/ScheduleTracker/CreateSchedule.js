@@ -13,7 +13,7 @@ import {
 	useToast,
 } from "@chakra-ui/react";
 import { useAuth0 } from "@auth0/auth0-react";
-import _, { isNaN } from "lodash";
+import _ from "lodash";
 
 const CreateSchedule = ({ triggerSearch, onClose, dropdownData }) => {
 	const toast = useToast();
