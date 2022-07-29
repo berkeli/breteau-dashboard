@@ -75,10 +75,7 @@ const UserRow = ({ user, triggerSearch, roles }) => {
 				"Content-Type": "application/json",
 			},
 		};
-		fetch(
-			`${process.env.API_URL}/users/reset-password/${user.auth0_id}`,
-			options
-		)
+		fetch(`${process.env.API_URL}/users/reset-password/${user.email}`, options)
 			.then((res) => res.json())
 			.then(() => {
 				toast({
