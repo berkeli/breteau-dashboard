@@ -9,6 +9,11 @@ module.exports = {
 	setupFiles: ["<rootDir>/.jest/setEnvVars.js"],
 	// Stop running tests after `n` failures
 	// bail: 0,
+	setupFilesAfterEnv: ["<rootDir>/.jest/setup.js"],
+	moduleNameMapper: {
+		"\\.(jpg|jpeg|png|svg)$": "<rootDir>/.jest/fileMock.js",
+		"\\.(css|scss)$": "identity-obj-proxy",
+	},
 
 	// The directory where Jest should store its cached dependency information
 	// cacheDirectory: "/private/var/folders/v9/wxxnjzpx3b97mq05zy0v2xyh0000gn/T/jest_dx",
@@ -103,7 +108,26 @@ module.exports = {
 	// preset: undefined,
 
 	// Run tests from one or more projects
-	// projects: undefined,
+	projects: [
+		{
+			testEnvironment: "jsdom",
+			setupFiles: ["<rootDir>/.jest/setEnvVars.js"],
+			setupFilesAfterEnv: ["<rootDir>.jest/setup.js"],
+			displayName: "Client tests",
+			moduleNameMapper: {
+				"\\.(jpg|jpeg|png|svg)$": "<rootDir>/.jest/fileMock.js",
+				"\\.(css|scss)$": "identity-obj-proxy",
+			},
+			testMatch: ["<rootDir>/client/**/?(*.)+(spec|test).[jt]s?(x)"],
+		},
+		{
+			testEnvironment: "node",
+			setupFiles: ["<rootDir>/.jest/setEnvVars.js"],
+			setupFilesAfterEnv: ["<rootDir>.jest/setup.js"],
+			displayName: "Server tests",
+			testMatch: ["<rootDir>/server/**/?(*.)+(spec|test).[jt]s?(x)"],
+		},
+	],
 
 	// Use this configuration option to add custom reporters to Jest
 	// reporters: undefined,
