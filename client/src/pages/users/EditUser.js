@@ -25,6 +25,7 @@ const EditUser = ({ triggerSearch, onClose, roles, user }) => {
 	});
 	const [formData, setFormData] = useState({
 		fullName: user.full_name,
+		auth0_id: user.auth0_id,
 		email: user.email,
 		country: user.country,
 		roles: user.roles,

@@ -78,11 +78,11 @@ export const createUser = async (req, res) => {
 };
 
 export const updateUser = async (req, res) => {
-	const { full_name, email, roles, country, auth0_id, allRoles, blocked } =
+	const { fullName, email, roles, country, auth0_id, allRoles, blocked } =
 		req.body;
 
 	const user = {
-		name: full_name,
+		name: fullName,
 		email,
 		blocked,
 		user_metadata: {
@@ -105,7 +105,7 @@ export const updateUser = async (req, res) => {
 				text,
 				values: [
 					auth0_id,
-					full_name,
+					fullName,
 					email.toLowerCase(),
 					roles.join(","),
 					country,
