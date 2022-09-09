@@ -45,6 +45,7 @@ const UserRow = ({ user, triggerSearch, roles }) => {
 			},
 			body: JSON.stringify({
 				...user,
+				fullName: user.full_name,
 				blocked,
 				allRoles: roles.map((role) => role.id),
 			}),

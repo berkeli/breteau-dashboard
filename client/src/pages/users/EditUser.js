@@ -184,7 +184,9 @@ const EditUser = ({ triggerSearch, onClose, roles, user }) => {
 						mt="8"
 						onClick={onSubmitHandler}
 						disabled={
-							!formData.fullName.trim() || !formData.email.trim() || !formData.country.trim()
+							!formData.fullName.trim() ||
+							!formData.email.trim() ||
+							!formData.country.trim()
 						}
 					>
 						Submit
